@@ -61,11 +61,43 @@
       align-items: center;
     }
 
+    .controls {
+      display: flex;
+      gap: 0.8rem;
+      margin-bottom: 1rem;
+      width: 100%;
+      max-width: 500px;
+      justify-content: center;
+    }
+    .btn {
+      padding: 0.8rem 1.2rem;
+      background: var(--ios-card);
+      backdrop-filter: var(--ios-blur);
+      -webkit-backdrop-filter: var(--ios-blur);
+      border: none;
+      border-radius: 14px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--ios-primary);
+      cursor: pointer;
+      box-shadow: var(--ios-shadow);
+      transition: all 0.25s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .btn:active {
+      transform: scale(0.96);
+      box-shadow: 0 3px 10px rgba(0, 122, 255, 0.2);
+    }
+    .btn-refresh { color: var(--ios-success); }
+    .btn-add { color: var(--ios-primary); }
+
     .search-box {
       position: relative;
       margin-bottom: 1.3rem;
       width: 100%;
-      max-width: 400px;
+      max-width: 500px;
     }
     .search-box input {
       width: 100%;
@@ -79,9 +111,7 @@
       box-shadow: var(--ios-shadow);
       outline: none;
       transition: all 0.3s ease;
-      text-align: center;
     }
-    .search-box input::placeholder { text-align: center; }
     .search-box input:focus {
       transform: translateY(-2px);
       box-shadow: 0 8px 25px rgba(0, 122, 255, 0.25);
@@ -339,7 +369,7 @@
     @media (min-width: 600px) {
       .modal { align-items: center; }
       .modal-content { border-radius: 22px; max-height: 82vh; }
-      .keys-list { max-width: 600px; }
+      .keys-list, .controls, .search-box { max-width: 600px; }
     }
   </style>
 </head>
@@ -356,6 +386,15 @@
   <header><h1>Админ-панель</h1></header>
 
   <div class="container">
+    <div class="controls">
+      <button id="refreshBtn" class="btn btn-refresh">
+        <span class="material-icons">refresh</span> Обновить
+      </button>
+      <button id="addBtn" class="btn btn-add">
+        <span class="material-icons">add</span> Добавить
+      </button>
+    </div>
+
     <div class="search-box">
       <span class="material-icons">search</span>
       <input type="text" placeholder="Поиск по ключу, username, ID..." id="searchInput">
@@ -366,6 +405,7 @@
     </div>
   </div>
 
+  <!-- Модалка редактирования -->
   <div id="userModal" class="modal">
     <div class="modal-content">
       <div class="modal-header">
@@ -376,18 +416,58 @@
     </div>
   </div>
 
+  <!-- Модалка добавления -->
+  <div id="addModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Добавить пользователя</h2>
+        <button class="modal-close" data-target="addModal">×</button>
+      </div>
+      <div class="modal-body" id="addModalBody">
+        <div class="field"><label>Username</label><input type="text" id="addUsername" placeholder="@username"></div>
+        <div class="field"><label>ID</label><input type="text" id="addId" placeholder="123456"></div>
+        <div class="field"><label>Ключ</label><input type="text" id="addKey" placeholder="abc123xyz"></div>
+        <div class="field"><label>Ссылка</label><input type="text" id="addLink" placeholder="https://t.me/..."></div>
+        <div class="field"><label>Статус</label>
+          <select id="addStatus">
+            <option value="Активный">Активный</option>
+            <option value="Партнер">Партнер</option>
+            <option value="Закончился">Закончился</option>
+            <option value="удален">удален</option>
+          </select>
+        </div>
+        <div class="field"><label>Сервер</label>
+          <select id="addServer">
+            <option value="Нидерланды №1">Нидерланды №1</option>
+            <option value="Нидерланды №2">Нидерланды №2</option>
+          </select>
+        </div>
+        <div class="field"><label>Тариф</label>
+          <select id="addTariff">
+            <option value="Личный">Личный</option>
+            <option value="Семейный">Семейный</option>
+            <option value="Премиум">Премиум</option>
+          </select>
+        </div>
+        <button id="saveNewBtn" class="btn-link">Сохранить</button>
+      </div>
+    </div>
+  </div>
+
   <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyOd85Z2_Ivd9hKwaUoGsyJiyCtK21r4izBACdcL3bb9OQLjFIB7VcC5mA4kQ_0iCM4/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzUUuOArL_1_RhKfZUYeF-LRKqE7WFUH_VPIpZhjWrXwj9sHvYhNgUn9ksBjy1LuCiB/exec';
     const PASSWORD = '12345';
 
     const loginScreen = document.getElementById('loginScreen');
     const passwordInput = document.getElementById('passwordInput');
     const loginBtn = document.getElementById('loginBtn');
+    const refreshBtn = document.getElementById('refreshBtn');
+    const addBtn = document.getElementById('addBtn');
     const searchInput = document.getElementById('searchInput');
     const keysContainer = document.getElementById('keysContainer');
-    const modal = document.getElementById('userModal');
-    const modalBody = document.getElementById('modalBody');
-    const modalClose = document.querySelector('.modal-close');
+    const userModal = document.getElementById('userModal');
+    const addModal = document.getElementById('addModal');
+    const modalCloseButtons = document.querySelectorAll('.modal-close');
 
     let allData = [];
 
@@ -401,30 +481,40 @@
         passwordInput.value = '';
       }
     };
+    passwordInput.addEventListener('keyup', e => { if (e.key === 'Enter') loginBtn.click(); });
 
-    passwordInput.addEventListener('keyup', e => {
-      if (e.key === 'Enter') loginBtn.click();
+    // Обновить
+    refreshBtn.onclick = () => loadData();
+
+    // Добавить
+    addBtn.onclick = () => {
+      addModal.classList.add('active');
+    };
+
+    // Закрытие модалок
+    modalCloseButtons.forEach(btn => {
+      btn.onclick = () => {
+        const target = btn.dataset.target || 'userModal';
+        document.getElementById(target).classList.remove('active');
+      };
+    });
+    [userModal, addModal].forEach(m => {
+      m.onclick = e => { if (e.target === m) m.classList.remove('active'); };
     });
 
-    // Загрузка
+    // Загрузка данных
     async function loadData() {
       try {
         keysContainer.innerHTML = '<div class="loading">Загрузка...</div>';
         const resp = await fetch(`${SCRIPT_URL}?action=getAll`, { signal: AbortSignal.timeout(10000) });
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const text = await resp.text();
-
-        if (text.includes('<html')) {
-          keysContainer.innerHTML = `<div class="error">Ошибка доступа</div>`;
-          return;
-        }
-
+        if (text.includes('<html')) throw new Error('Ошибка доступа');
         const data = JSON.parse(text);
         if (!data.length) {
           keysContainer.innerHTML = '<div class="no-results">Нет данных</div>';
           return;
         }
-
         allData = data.map(r => ({
           status: (r[0] || '').toString().trim(),
           server: (r[1] || '').toString().trim(),
@@ -434,14 +524,13 @@
           key: (r[5] || '').toString().trim(),
           link: (r[6] || '').toString().trim()
         })).filter(u => u.key);
-
         renderKeys(allData);
       } catch (e) {
         keysContainer.innerHTML = `<div class="error">Ошибка: ${e.message}</div>`;
       }
     }
 
-    // Рендер ключей: ключ слева, плашка справа
+    // Рендер ключей
     function renderKeys(list) {
       if (!list.length) {
         keysContainer.innerHTML = '<div class="no-results">Ничего не найдено</div>';
@@ -459,15 +548,17 @@
       return { 'Активный':'status-active','Партнер':'status-partner','Закончился':'status-ended','удален':'status-deleted' }[s] || '';
     }
 
+    // Клик по ключу
     keysContainer.addEventListener('click', e => {
       const item = e.target.closest('.key-item');
       if (!item) return;
-      showModal(allData[+item.dataset.index], +item.dataset.index);
+      showEditModal(allData[+item.dataset.index], +item.dataset.index);
     });
 
-    function showModal(user, idx) {
+    // Редактирование
+    function showEditModal(user, idx) {
       const statusCls = getStatusClass(user.status);
-      modalBody.innerHTML = `
+      document.getElementById('modalBody').innerHTML = `
         <div class="field"><label>Статус</label>
           <select id="s1" class="${statusCls}">
             <option value="Активный"   ${user.status==='Активный'?'selected':''}>Активный</option>
@@ -498,13 +589,13 @@
       `;
 
       ['s1','s2','s3'].forEach(id => {
-        document.getElementById(id).onchange = () => save(idx);
+        document.getElementById(id).onchange = () => saveEdit(idx);
       });
 
-      modal.classList.add('active');
+      userModal.classList.add('active');
     }
 
-    async function save(idx) {
+    async function saveEdit(idx) {
       const p = {
         row: idx + 2,
         status: document.getElementById('s1').value,
@@ -518,10 +609,46 @@
           headers: {'Content-Type':'text/plain'}
         });
         allData[idx].status = p.status;
-        renderKeys(allData); // обновляем плашку
+        renderKeys(allData);
       } catch (e) { alert('Ошибка'); }
     }
 
+    // Добавление нового
+    document.getElementById('saveNewBtn').onclick = async () => {
+      const newUser = {
+        status: document.getElementById('addStatus').value,
+        server: document.getElementById('addServer').value,
+        tariff: document.getElementById('addTariff').value,
+        username: document.getElementById('addUsername').value.trim(),
+        id: document.getElementById('addId').value.trim(),
+        key: document.getElementById('addKey').value.trim(),
+        link: document.getElementById('addLink').value.trim()
+      };
+
+      if (!newUser.key || !newUser.id) {
+        alert('Ключ и ID обязательны');
+        return;
+      }
+
+      try {
+        const resp = await fetch(`${SCRIPT_URL}?action=add`, {
+          method: 'POST',
+          body: JSON.stringify(newUser),
+          headers: {'Content-Type':'text/plain'}
+        });
+        const result = await resp.text();
+        if (result.includes('OK')) {
+          addModal.classList.remove('active');
+          loadData();
+        } else {
+          alert('Ошибка: ' + result);
+        }
+      } catch (e) {
+        alert('Ошибка добавления');
+      }
+    };
+
+    // Поиск
     searchInput.addEventListener('input', () => {
       const term = searchInput.value.trim().toLowerCase();
       if (!term) return renderKeys(allData);
@@ -532,9 +659,6 @@
       );
       renderKeys(filtered);
     });
-
-    modalClose.onclick = () => modal.classList.remove('active');
-    modal.onclick = e => { if (e.target === modal) modal.classList.remove('active'); };
 
     function escape(s){return s?s.toString().replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]):'';}
   </script>
