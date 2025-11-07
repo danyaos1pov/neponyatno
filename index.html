@@ -7,100 +7,40 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
-/* === Глобальные стили и переменные === */
+/* === Глобальные стили === */
 :root {
-    --primary-color: #007bff;
-    --secondary-color: #28a745;
-    --bg-dark: #0d1117;
-    --card-bg: #161b22;
-    --text-color: #e6edf3;
-    --accent-red: #dc3545;
-    --gold-color: #ffd700;
-    --personal-color: var(--text-color);
-    --family-color: var(--secondary-color);
-    --premium-color: var(--gold-color);
-    --toggle-active-bg: #37475a;
+    --primary-color: #007bff; --secondary-color: #28a745; --bg-dark: #0d1117;
+    --card-bg: #161b22; --text-color: #e6edf3; --accent-red: #dc3545;
 }
-* { 
-    box-sizing: border-box; 
-    margin: 0; 
-    padding: 0;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol';
-}
-body { 
-    background: var(--bg-dark); 
-    color: var(--text-color); 
-    text-align: center; 
-    min-height: 100vh; 
-    padding-bottom: 50px;
-}
-a { 
-    text-decoration: none;
-    color: inherit;
-}
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+body { background: var(--bg-dark); color: var(--text-color); text-align: center; min-height: 100vh; padding-bottom: 50px; }
+a { text-decoration: none; color: inherit; }
 
 /* === МОДАЛЬНОЕ ОКНО === */
-#modal-overlay {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0,0,0,0.7); backdrop-filter: blur(5px);
-    display: none; justify-content: center; align-items: center;
-    z-index: 10002; opacity: 0; transition: opacity 0.3s ease;
-}
+#modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); backdrop-filter: blur(5px); display: none; justify-content: center; align-items: center; z-index: 10002; opacity: 0; transition: opacity 0.3s ease; }
 #modal-overlay.visible { display: flex; opacity: 1; }
-#modal-popup {
-    background: var(--card-bg); padding: 25px; border-radius: 20px;
-    border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-    width: 90%; max-width: 380px; text-align: center;
-    transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.3,0.7,0.4,1.2);
-}
+#modal-popup { background: var(--card-bg); padding: 25px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5); width: 90%; max-width: 380px; text-align: center; transform: scale(0.9); transition: transform 0.3s cubic-bezier(0.3,0.7,0.4,1.2); }
 #modal-overlay.visible #modal-popup { transform: scale(1); }
 #modal-popup i { font-size: 48px; color: var(--primary-color); margin-bottom: 15px; }
 #modal-title { font-size: 1.5em; font-weight: 700; margin-bottom: 10px; }
 #modal-message { font-size: 1em; color: #b0b8c2; line-height: 1.6; margin-bottom: 25px; }
-#modal-close-button {
-    background: var(--primary-color); color: white; border: none;
-    border-radius: 10px; padding: 12px 0; width: 100%; font-size: 1em;
-    font-weight: 600; cursor: pointer; transition: background 0.2s;
-}
+#modal-close-button { background: var(--primary-color); color: white; border: none; border-radius: 10px; padding: 12px 0; width: 100%; font-size: 1em; font-weight: 600; cursor: pointer; transition: background 0.2s; }
 #modal-close-button:hover { background: #0056b3; }
 
-/* === SPLASH SCREEN === */
-#splash-screen {
-    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: var(--bg-dark); display: flex; justify-content: center;
-    align-items: center; flex-direction: column; z-index: 1000;
-    opacity: 1; transition: opacity 0.7s ease-out;
-}
+/* === SPLASH === */
+#splash-screen { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-dark); display: flex; justify-content: center; align-items: center; flex-direction: column; z-index: 1000; opacity: 1; transition: opacity 0.7s ease-out; }
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 .spin { animation: spin 1s linear infinite; }
 .pulse-container { position: relative; width: 120px; height: 120px; margin: 30px auto 10px; }
-.pulse-container img { 
-    position: absolute; top:0; left:0; width:100%; height:100%; 
-    border-radius:50%; z-index:10; border:4px solid var(--primary-color); object-fit: cover;
-}
-.pulse-circle {
-    position: absolute; top:50%; left:50%; width:120px; height:120px;
-    border-radius:50%; border: 2px solid rgba(0,123,255,0.5); 
-    transform: translate(-50%,-50%) scale(0);
-    animation: pulse 2.5s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94); 
-}
+.pulse-container img { position: absolute; top:0; left:0; width:100%; height:100%; border-radius:50%; z-index:10; border:4px solid var(--primary-color); object-fit: cover; }
+.pulse-circle { position: absolute; top:50%; left:50%; width:120px; height:120px; border-radius:50%; border: 2px solid rgba(0,123,255,0.5); transform: translate(-50%,-50%) scale(0); animation: pulse 2.5s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94); }
 .pulse-circle:nth-child(2) { animation-delay:0.5s; }
 .pulse-circle:nth-child(3) { animation-delay:1s; }
-@keyframes pulse {
-    0% { transform: translate(-50%,-50%) scale(0.8); opacity:1; }
-    100% { transform: translate(-50%,-50%) scale(1.5); opacity:0; }
-}
+@keyframes pulse { 0% { transform: translate(-50%,-50%) scale(0.8); opacity:1; } 100% { transform: translate(-50%,-50%) scale(1.5); opacity:0; } }
 
 /* === СТРАНИЦЫ === */
-.page {
-    position: absolute; top: 0; left: 50%; width: 100%; max-width: 600px;
-    padding: 20px 15px; transition: transform 0.4s cubic-bezier(0.2,0.8,0.4,1), opacity 0.4s;
-    display: none; z-index: 10; transform: translate(-50%,0) scale(1); opacity: 1;
-}
-@media (max-width: 600px) {
-    #home, #subscription, #buy, #renew, #install, #status, #faq, #support, #ideas { padding-top: 15px; }
-}
+.page { position: absolute; top: 0; left: 50%; width: 100%; max-width: 600px; padding: 20px 15px; transition: transform 0.4s cubic-bezier(0.2,0.8,0.4,1), opacity 0.4s; display: none; z-index: 10; transform: translate(-50%,0) scale(1); opacity: 1; }
+@media (max-width: 600px) { #home, #subscription, #buy, #renew, #install, #status, #faq, #support, #ideas { padding-top: 15px; } }
 .page.enter-forward { transform: translate(-50%,0) scale(0.9); opacity: 0; display: block; z-index: 20; }
 .page.exit-forward { transform: translate(-50%,0) scale(0.95); opacity: 0; display: block; z-index: 10; }
 .page.enter-backward { transform: translate(-50%,0) scale(0.95); opacity: 0; display: block; z-index: 10; }
@@ -110,17 +50,10 @@ a {
 /* === ТЕКСТ === */
 h1 { font-size: 2.2em; margin-bottom: 5px; color: var(--primary-color); }
 h2 { font-size: 1.8em; margin: 0 0 20px; border-bottom: 2px solid rgba(255,255,255,0.1); padding-bottom: 10px; }
-h3,h4 { margin:15px 0; }
 p { margin:10px 0; line-height:1.6; color: #b0b8c2; }
 
 /* === КАРТОЧКИ === */
-.subscription-status-card {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 15px; margin: 20px auto 10px; max-width: 500px;
-    background: var(--card-bg); border-radius: 15px; cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    border: 1px solid rgba(255,255,255,0.05);
-}
+.subscription-status-card { display: flex; justify-content: space-between; align-items: center; padding: 15px; margin: 20px auto 10px; max-width: 500px; background: var(--card-bg); border-radius: 15px; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
 .subscription-status-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.6); border-color: var(--primary-color); }
 .status-icon { font-size: 28px; color: var(--primary-color); min-width: 40px; }
 .status-info { flex-grow: 1; text-align: center; margin: 0 10px; }
@@ -129,37 +62,18 @@ p { margin:10px 0; line-height:1.6; color: #b0b8c2; }
 .status-arrow { font-size: 1.2em; color: #b0b8c2; }
 
 /* === МЕНЮ === */
-.menu-grid { 
-    display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
-    max-width:500px; margin:10px auto 20px; 
-}
-.menu-card { 
-    background: var(--card-bg); padding: 15px 10px; border-radius:15px; 
-    display:flex; flex-direction:column; justify-content:center; align-items:center; 
-    cursor:pointer; transition: transform 0.2s, box-shadow 0.2s; 
-    font-weight:600; color: var(--text-color); box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    border: 1px solid rgba(255,255,255,0.05); min-height: 80px; font-size: 0.85em;
-}
+.menu-grid { display:grid; grid-template-columns: repeat(3, 1fr); gap: 10px; max-width:500px; margin:10px auto 20px; }
+.menu-card { background: var(--card-bg); padding: 15px 10px; border-radius:15px; display:flex; flex-direction:column; justify-content:center; align-items:center; cursor:pointer; transition: transform 0.2s, box-shadow 0.2s; font-weight:600; color: var(--text-color); box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); min-height: 80px; font-size: 0.85em; }
 .menu-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.6); border-color: var(--primary-color); }
 .menu-card i { font-size: 24px; margin-bottom: 5px; color: var(--primary-color); }
 
 /* === КНОПКИ === */
-.button { 
-    display:block; width:100%; max-width:300px; margin:20px auto; 
-    padding:12px 0; border-radius: 8px; background: var(--primary-color);
-    color: white; border: none; box-shadow: 0 2px 5px rgba(0,0,0,0.4);
-    font-weight:700; transition: all 0.2s; cursor: pointer; text-align: center;
-}
+.button { display:block; width:100%; max-width:300px; margin:20px auto; padding:12px 0; border-radius: 8px; background: var(--primary-color); color: white; border: none; box-shadow: 0 2px 5px rgba(0,0,0,0.4); font-weight:700; transition: all 0.2s; cursor: pointer; text-align: center; }
 .button:hover { background: #0056b3; }
 .button.disabled { background: #343a40 !important; color: #b0b8c2 !important; cursor: not-allowed; opacity: 0.7; }
 
 /* === ПРОФИЛЬ === */
-.user-profile {
-    display: flex; align-items: center; justify-content: flex-start;
-    margin: 20px auto; max-width: 500px; padding: 15px; gap: 12px;
-    background: var(--card-bg); border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    border: 1px solid rgba(255,255,255,0.05);
-}
+.user-profile { display: flex; align-items: center; justify-content: flex-start; margin: 20px auto; max-width: 500px; padding: 15px; gap: 12px; background: var(--card-bg); border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
 .user-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
 .user-greeting { font-size: 1.1em; font-weight: 600; text-align: left; margin-bottom: 3px; }
 .user-id { font-size: 0.85em; color: #b0b8c2; text-align: left; }
@@ -233,15 +147,12 @@ p { margin:10px 0; line-height:1.6; color: #b0b8c2; }
                              color: var(--text-color); font-size: 1em; resize: none; margin-bottom: 15px;"></textarea>
             
             <button class="button" onclick="sendIdea()">
-                <i class="fas fa-paper-plane"></i> Отправить идею
+                Отправить идею
             </button>
         </div>
 
         <div id="idea-status" style="margin-top: 15px; font-size: 0.9em; color: #b0b8c2; text-align: center;"></div>
     </div>
-
-    <!-- Другие страницы (subscription, buy, renew, install, status, faq, support) -->
-    <!-- Вставь сюда свои старые страницы, если нужно. Для теста — можно оставить только home и ideas -->
 
 </div> 
 
@@ -335,7 +246,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// === ОТПРАВКА ИДЕИ ===
+// === ОТПРАВКА ИДЕИ (ОБНОВЛЕНО) ===
 function sendIdea() {
     const text = document.getElementById('idea-text').value.trim();
     const statusEl = document.getElementById('idea-status');
@@ -359,7 +270,9 @@ function sendIdea() {
 
     const fullMessage = `Новая идея\n\nОт: ${userInfo}\n\n${text}`;
     const encoded = encodeURIComponent(fullMessage);
-    const botUsername = 'on1x_feedback_bot';
+    
+    // ← НОВАЯ ССЫЛКА →
+    const botUsername = 'statusON1X_bot';
     const url = `https://t.me/${botUsername}?start=feedback_${encoded}`;
 
     statusEl.innerHTML = '<span style="color: var(--secondary-color);"><i class="fas fa-spinner spin"></i> Отправка...</span>';
