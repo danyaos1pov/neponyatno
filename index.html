@@ -746,26 +746,31 @@ p {
 
 /* === НОВЫЕ СТИЛИ ДЛЯ ПРОФИЛЯ ПОЛЬЗОВАТЕЛЯ === */
 .user-profile {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
     margin: 20px auto;
-    text-align: center;
+    max-width: 500px;
+    padding: 0 15px;
+    gap: 12px;
 }
 .user-avatar {
-    width: 80px;
-    height: 80px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    border: 3px solid var(--primary-color);
     object-fit: cover;
-    margin-bottom: 10px;
 }
-.user-name {
-    font-size: 1.3em;
+.user-greeting {
+    font-size: 1.1em;
     font-weight: 600;
     color: var(--text-color);
-    margin-bottom: 5px;
+    text-align: left;
+    margin-bottom: 3px;
 }
 .user-id {
-    font-size: 0.9em;
+    font-size: 0.85em;
     color: #b0b8c2;
+    text-align: left;
 }
 </style>
 </head>
@@ -787,8 +792,10 @@ p {
         
         <div class="user-profile">
             <img id="user-avatar" class="user-avatar" src="" alt="Аватар пользователя">
-            <div id="user-name" class="user-name"></div>
-            <div id="user-id" class="user-id"></div>
+            <div>
+                <div id="user-greeting" class="user-greeting">Добро пожаловать, </div>
+                <div id="user-id" class="user-id"></div>
+            </div>
         </div>
         
         <div class="pulse-container" style="margin: 30px auto 10px; width: 120px; height: 120px;">
@@ -1326,7 +1333,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const user = Telegram.WebApp.initDataUnsafe.user;
         
         const avatarImg = document.getElementById('user-avatar');
-        const nameDiv = document.getElementById('user-name');
+        const greetingDiv = document.getElementById('user-greeting');
         const idDiv = document.getElementById('user-id');
         
         if (user.photo_url) {
@@ -1335,7 +1342,8 @@ document.addEventListener('DOMContentLoaded', () => {
             avatarImg.src = 'https://sun9-8.userapi.com/s/v1/ig2/YBkIITuiQ13e1vw3WhNGJekU_fMB3jXEeTjqLb-EAnydjnDmqCVu7sATDepkrUUo6UXWQ4x74BtgfBrgdhWUZZlN.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640&from=bu&cs=640x0';
         }
         
-        nameDiv.textContent = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+        const fullName = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+        greetingDiv.textContent = 'Добро пожаловать, ' + fullName;
         idDiv.textContent = 'ID: ' + user.id;
     }
     // =================================================================
