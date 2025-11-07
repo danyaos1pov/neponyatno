@@ -743,6 +743,30 @@ p {
 .support-card .button.secondary:hover {
     background: #37475a;
 }
+
+/* === НОВЫЕ СТИЛИ ДЛЯ ПРОФИЛЯ ПОЛЬЗОВАТЕЛЯ === */
+.user-profile {
+    margin: 20px auto;
+    text-align: center;
+}
+.user-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    border: 3px solid var(--primary-color);
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+.user-name {
+    font-size: 1.3em;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 5px;
+}
+.user-id {
+    font-size: 0.9em;
+    color: #b0b8c2;
+}
 </style>
 </head>
 <body>
@@ -760,6 +784,12 @@ p {
 
 
     <div id="home" class="page"> 
+        
+        <div class="user-profile">
+            <img id="user-avatar" class="user-avatar" src="" alt="Аватар пользователя">
+            <div id="user-name" class="user-name"></div>
+            <div id="user-id" class="user-id"></div>
+        </div>
         
         <div class="pulse-container" style="margin: 30px auto 10px; width: 120px; height: 120px;">
             <div class="pulse-circle"></div>
@@ -1290,6 +1320,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (document.getElementById('buy')) switchBuyTariff('personal');
     if (document.getElementById('renew')) switchRenewTariff('personal'); 
+    
+    // === ДОБАВЛЕННЫЙ КОД: Отображение данных пользователя из Telegram ===
+    if (typeof Telegram !== 'undefined' && Telegram.WebApp && Telegram.WebApp.initDataUnsafe && Telegram.WebApp.initDataUnsafe.user) {
+        const user = Telegram.WebApp.initDataUnsafe.user;
+        
+        const avatarImg = document.getElementById('user-avatar');
+        const nameDiv = document.getElementById('user-name');
+        const idDiv = document.getElementById('user-id');
+        
+        if (user.photo_url) {
+            avatarImg.src = user.photo_url;
+        } else {
+            avatarImg.src = 'https://sun9-8.userapi.com/s/v1/ig2/YBkIITuiQ13e1vw3WhNGJekU_fMB3jXEeTjqLb-EAnydjnDmqCVu7sATDepkrUUo6UXWQ4x74BtgfBrgdhWUZZlN.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640&from=bu&cs=640x0';
+        }
+        
+        nameDiv.textContent = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+        idDiv.textContent = 'ID: ' + user.id;
+    }
+    // =================================================================
 });
 
 // === ФУНКЦИИ ДЛЯ ПОКУПКИ (КУПИТЬ) ===
