@@ -798,13 +798,6 @@ p {
             </div>
         </div>
         
-        <div class="pulse-container" style="margin: 30px auto 10px; width: 120px; height: 120px;">
-            <div class="pulse-circle"></div>
-            <div class="pulse-circle"></div>
-            <div class="pulse-circle"></div>
-            <img class="logo" src="https://sun9-8.userapi.com/s/v1/ig2/YBkIITuiQ13e1vw3WhNGJekU_fMB3jXEeTjqLb-EAnydjnDmqCVu7sATDepkrUUo6UXWQ4x74BtgfBrgdhWUZZlN.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640&from=bu&cs=640x0" alt="ON1X VPN">
-        </div>
-        
         <h1><span style="color: var(--text-color);">ON1X</span> VPN</h1>
         
         <div class="subscription-status-card" onclick="showPage('subscription')">
@@ -1208,7 +1201,7 @@ function showPage(id){
 
     // Определяем направление анимации (вперед или назад)
     if (currentPageId) {
-        // Если новая страница является родителем текущей, значит, идем "назад"
+        // Если новая страница является родителям текущей, значит, идем "назад"
         if (getParentId(currentPageId) === id) {
             isBack = true;
         } 
