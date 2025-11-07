@@ -6,7 +6,6 @@
   <title>Админ-панель</title>
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <style>
-    /* === Глобальные стили и переменные === */
     :root {
       --primary-color: #007bff;
       --secondary-color: #28a745;
@@ -14,393 +13,145 @@
       --card-bg: #161b22;
       --text-color: #e6edf3;
       --accent-red: #dc3545;
-      --gold-color: #ffd700;
-      --toggle-active-bg: #37475a;
     }
-    * { 
-      box-sizing: border-box; 
-      margin: 0; 
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    }
-    body { 
-      background: var(--bg-dark); 
-      color: var(--text-color); 
-      text-align: center; 
-      min-height: 100vh; 
-      padding-bottom: 50px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      overflow-x: hidden;
-    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    body { background: var(--bg-dark); color: var(--text-color); min-height: 100vh; padding-bottom: 50px; display: flex; flex-direction: column; align-items: center; overflow-x: hidden; }
 
-    /* === ШАПКА — ВЫШЕ ВСЕГО === */
     header {
-      background: var(--card-bg);
-      color: var(--text-color);
-      text-align: center;
-      padding: 1.4rem;
-      width: 100%;
-      position: sticky;
-      top: 0;
-      z-index: 1100; /* ВЫШЕ МОДАЛОК */
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-      border-bottom: 1px solid rgba(255,255,255,0.1);
+      background: var(--card-bg); color: var(--text-color); text-align: center; padding: 1.4rem; width: 100%; position: sticky; top: 0; z-index: 1100;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5); border-bottom: 1px solid rgba(255,255,255,0.1);
     }
-    header h1 {
-      font-size: 1.3rem;
-      font-weight: 700;
-    }
+    header h1 { font-size: 1.3rem; font-weight: 700; }
 
-    .container {
-      width: 100%;
-      max-width: 100%;
-      margin: 1.5rem 0;
-      padding: 0 1rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-      z-index: 1;
-    }
+    .container { width: 100%; max-width: 100%; margin: 1.5rem 0; padding: 0 1rem; display: flex; flex-direction: column; align-items: center; }
 
-    /* === КНОПКИ В ОДНОЙ СТРОКЕ === */
     .controls {
-      display: flex;
-      gap: 0.8rem;
-      margin-bottom: 1rem;
-      width: 100%;
-      flex-wrap: nowrap;
+      display: flex; gap: 0.8rem; margin-bottom: 1rem; width: 100%; flex-wrap: nowrap;
     }
     .btn {
-      flex: 1;
-      padding: 0.9rem 1rem;
-      background: var(--primary-color);
-      border: none;
-      border-radius: 10px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: white;
-      cursor: pointer;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.4);
-      transition: all 0.2s ease;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
-      min-width: 0;
+      flex: 1; padding: 0.9rem 1rem; background: var(--primary-color); border: none; border-radius: 10px; font-size: 0.95rem; font-weight: 600;
+      color: white; cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.4); transition: all 0.2s ease; display: flex; align-items: center;
+      justify-content: center; gap: 0.5rem; min-width: 0; text-decoration: none;
     }
-    .btn:hover, .btn:active {
-      background: #0056b3;
-    }
+    .btn:hover, .btn:active { background: #0056b3; }
     .btn-refresh { background: var(--secondary-color); }
     .btn-refresh:hover { background: #218838; }
 
-    .search-box {
-      position: relative;
-      margin-bottom: 1.3rem;
-      width: 100%;
-    }
+    .search-box { position: relative; margin-bottom: 1.3rem; width: 100%; }
     .search-box input {
-      width: 100%;
-      padding: 1rem 1rem 1rem 3rem;
-      font-size: 1.1rem;
-      border: none;
-      border-radius: 10px;
-      background: var(--card-bg);
-      color: var(--text-color);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      border: 1px solid rgba(255,255,255,0.05);
-      outline: none;
+      width: 100%; padding: 1rem 1rem 1rem 3rem; font-size: 1.1rem; border: none; border-radius: 10px; background: var(--card-bg);
+      color: var(--text-color); box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); outline: none;
     }
-    .search-box input:focus {
-      border-color: var(--primary-color);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
-    }
-    .search-box .material-icons {
-      position: absolute;
-      left: 1rem;
-      top: 50%;
-      transform: translateY(-50%);
-      color: var(--primary-color);
-      font-size: 1.4rem;
-      pointer-events: none;
-    }
+    .search-box input:focus { border-color: var(--primary-color); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6); }
+    .search-box .material-icons { position: absolute; left: 1rem; top: 50%; transform: translateY(-50%); color: var(--primary-color); font-size: 1.4rem; pointer-events: none; }
 
-    .keys-list { 
-      display: grid; 
-      grid-template-columns: 1fr; 
-      gap: 10px;
-      width: 100%;
-      margin: 10px 0 20px;
-      padding: 0 0.5rem;
-    }
-    .key-item { 
-      background: var(--card-bg);
-      padding: 15px;
-      border-radius: 15px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-weight: 600;
-      color: var(--text-color);
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    .keys-list { display: grid; grid-template-columns: 1fr; gap: 10px; width: 100%; margin: 10px 0 20px; padding: 0 0.5rem; }
+    .key-item { background: var(--card-bg); padding: 15px; border-radius: 15px; display: flex; flex-direction: column; align-items: center;
+      cursor: pointer; transition: all 0.2s; font-weight: 600; color: var(--text-color); box-shadow: 0 4px 10px rgba(0,0,0,0.3);
       border: 1px solid rgba(255,255,255,0.05);
     }
-    .key-item:hover {
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
-      border-color: var(--primary-color);
-    }
+    .key-item:hover { box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6); border-color: var(--primary-color); }
 
-    .status-badge {
-      margin-top: 8px;
-      padding: 0.4rem 0.9rem;
-      border-radius: 12px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: white;
-      text-transform: uppercase;
-    }
+    .status-badge { margin-top: 8px; padding: 0.4rem 0.9rem; border-radius: 12px; font-size: 0.78rem; font-weight: 600; color: white; text-transform: uppercase; }
     .status-active    { background: var(--secondary-color); }
     .status-partner   { background: var(--primary-color); }
     .status-ended     { background: #ff9500; }
     .status-deleted   { background: var(--accent-red); }
 
-    /* === МОДАЛЬНЫЕ ОКНА — ВЫШЕ ВСЕГО === */
-    .modal {
-      display: none;
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.7);
-      backdrop-filter: blur(5px);
-      align-items: flex-end;
-      justify-content: center;
-      z-index: 1200; /* ВЫШЕ ШАПКИ */
-      padding: 1rem;
-      overflow-y: auto;
+    .load-more {
+      width: 100%; padding: 1rem; background: var(--card-bg); color: var(--text-color); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px; font-size: 1rem; cursor: pointer; margin-top: 1rem; display: none;
     }
-    .modal.active {
-      display: flex;
+    .load-more:hover { background: rgba(255,255,255,0.1); }
+
+    .modal { display: none; position: fixed; inset: 0; background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(5px); align-items: flex-end;
+      justify-content: center; z-index: 1200; padding: 1rem; overflow-y: auto;
     }
+    .modal.active { display: flex; }
 
     .modal-content {
-      background: var(--card-bg);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 20px;
-      width: 90%;
-      max-width: 380px;
-      max-height: 88vh;
-      overflow-y: auto;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      animation: slideUp 0.4s ease;
-      position: relative;
-      z-index: 1201;
+      background: var(--card-bg); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 20px; width: 90%; max-width: 380px;
+      max-height: 88vh; overflow-y: auto; box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); animation: slideUp 0.4s ease; position: relative; z-index: 1201;
     }
-    @keyframes slideUp {
-      from { transform: translateY(100%); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
-    }
+    @keyframes slideUp { from { transform: translateY(100%); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-    .modal-header {
-      padding: 1.3rem 1.4rem;
-      color: var(--text-color);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 1px solid rgba(255,255,255,0.1);
-    }
+    .modal-header { padding: 1.3rem 1.4rem; color: var(--text-color); display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255,255,255,0.1); }
     .modal-header h2 { font-size: 1.25rem; font-weight: 700; }
-    .modal-close {
-      background: transparent;
-      border: none;
-      color: var(--text-color);
-      font-size: 1.8rem;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-    }
+    .modal-close { background: transparent; border: none; color: var(--text-color); font-size: 1.8rem; width: 38px; height: 38px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; }
     .modal-close:hover { color: var(--primary-color); }
 
-    .modal-body {
-      padding: 1.4rem;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-    }
-    .field {
-      margin-bottom: 1.3rem;
-      width: 100%;
-      max-width: 360px;
-    }
-    .field label {
-      display: block;
-      font-size: 0.92rem;
-      font-weight: 600;
-      color: #b0b8c2;
-      margin-bottom: 0.6rem;
-      text-align: center;
-    }
-    .field select,
-    .field input {
-      width: 100%;
-      padding: 1rem;
-      border: 1px solid rgba(255,255,255,0.05);
-      border-radius: 10px;
-      font-size: 1.1rem;
-      background: var(--card-bg);
-      color: var(--text-color);
-      text-align: center;
-    }
-    .field select {
-      appearance: none;
-      background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='10' viewBox='0 0 14 10'%3E%3Cpath fill='%23b0b8c2' d='M0 3l7 7 7-7z'/%3E%3C/svg%3E");
-      background-repeat: no-repeat;
-      background-position: center right 16px;
-    }
-    .field input[readonly] {
-      background: rgba(0,0,0,0.2);
-      color: #b0b8c2;
-    }
-
-    .btn-link {
-      padding: 1rem;
-      background: var(--primary-color);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      cursor: pointer;
-      width: 100%;
-      max-width: 360px;
-      margin-top: 10px;
-    }
+    .modal-body { padding: 1.4rem; display: flex; flex-direction: column; align-items: center; }
+    .field { margin-bottom: 1.3rem; width: 100%; max-width: 360px; }
+    .field label { display: block; font-size: 0.92rem; font-weight: 600; color: #b0b8c2; margin-bottom: 0.6rem; text-align: center; }
+    .field select, .field input { width: 100%; padding: 1rem; border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; font-size: 1.1rem; background: var(--card-bg); color: var(--text-color); text-align: center; }
+    .field select { appearance: none; background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='10' viewBox='0 0 14 10'%3E%3Cpath fill='%23b0b8c2' d='M0 3l7 7 7-7z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: center right 16px; }
+    .field input[readonly] { background: rgba(0,0,0,0.2); color: #b0b8c2; }
+    .btn-link { padding: 1rem; background: var(--primary-color); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; width: 100%; max-width: 360px; margin-top: 10px; }
     .btn-link:hover { background: #0056b3; }
 
-    .loading, .no-results, .error {
-      text-align: center;
-      padding: 3rem 1rem;
-      color: #b0b8c2;
-      font-size: 1.05rem;
-    }
+    .loading, .no-results, .error { text-align: center; padding: 3rem 1rem; color: #b0b8c2; font-size: 1.05rem; }
     .error { color: var(--accent-red); }
 
     #loginScreen {
-      position: fixed;
-      inset: 0;
-      background: var(--bg-dark);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 2000;
-      padding: 2rem;
-      transition: opacity 0.4s ease;
+      position: fixed; inset: 0; background: var(--bg-dark); display: flex; flex-direction: column; align-items: center; justify-content: center;
+      z-index: 2000; padding: 2rem; transition: opacity 0.4s ease;
     }
-    #loginScreen h2 {
-      font-size: 1.5rem;
-      margin-bottom: 1.5rem;
-      color: var(--text-color);
-    }
-    #passwordInput {
-      width: 100%;
-      max-width: 300px;
-      padding: 1rem;
-      font-size: 1.2rem;
-      text-align: center;
-      border: 1px solid rgba(255,255,255,0.05);
-      border-radius: 10px;
-      background: var(--card-bg);
-      color: var(--text-color);
-      margin-bottom: 1rem;
-      transition: border-color 0.3s;
-    }
-    #passwordInput.error {
-      border-color: var(--accent-red) !important;
-      animation: shake 0.3s;
-    }
-    @keyframes shake {
-      0%, 100% { transform: translateX(0); }
-      25% { transform: translateX(-5px); }
-      75% { transform: translateX(5px); }
-    }
-    #loginBtn {
-      padding: 1rem 2rem;
-      background: var(--primary-color);
-      color: white;
-      border: none;
-      border-radius: 10px;
-      font-size: 1.1rem;
-      font-weight: 600;
-      cursor: pointer;
-      width: 100%;
-      max-width: 300px;
-    }
+    #loginScreen h2 { font-size: 1.5rem; margin-bottom: 1.5rem; color: var(--text-color); }
+    #passwordInput { width: 100%; max-width: 300px; padding: 1rem; font-size: 1.2rem; text-align: center; border: 1px solid rgba(255,255,255,0.05); border-radius: 10px; background: var(--card-bg); color: var(--text-color); margin-bottom: 1rem; transition: border-color 0.3s; }
+    #passwordInput.error { border-color: var(--accent-red) !important; animation: shake 0.3s; }
+    @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+    #loginBtn { padding: 1rem 2rem; background: var(--primary-color); color: white; border: none; border-radius: 10px; font-size: 1.1rem; font-weight: 600; cursor: pointer; width: 100%; max-width: 300px; }
     #loginBtn:hover { background: #0056b3; }
 
-    @media (min-width: 600px) {
-      .modal { align-items: center; }
-      .modal-content { border-radius: 20px; }
-    }
+    .page { display: none; width: 100%; }
+    .page.active { display: block; }
+
+    .form-container { width: 100%; max-width: 400px; margin-top: 1rem; }
+    .back-link { margin-top: 1.5rem; text-align: center; }
+    .back-link a { color: var(--primary-color); text-decoration: none; font-size: 0.95rem; }
+
+    @media (min-width: 600px) { .modal { align-items: center; } .modal-content { border-radius: 20px; } }
   </style>
 </head>
 <body>
 
-  <!-- Экран входа -->
   <div id="loginScreen">
     <h2>Введите пароль</h2>
     <input type="password" id="passwordInput" placeholder="•••••" maxlength="5">
     <button id="loginBtn">Войти</button>
   </div>
 
-  <!-- Основной интерфейс -->
-  <header><h1>Админ-панель</h1></header>
+  <header><h1 id="headerTitle">Админ-панель</h1></header>
 
-  <div class="container">
-    <div class="controls">
-      <button id="refreshBtn" class="btn btn-refresh">
-        <span class="material-icons">refresh</span> Обновить
-      </button>
-      <button id="addBtn" class="btn btn-add">
-        <span class="material-icons">add</span> Добавить
-      </button>
-    </div>
+  <!-- Главная -->
+  <div id="main" class="page active">
+    <div class="container">
+      <div class="controls">
+        <button id="refreshBtn" class="btn btn-refresh">
+          <span class="material-icons">refresh</span> Обновить
+        </button>
+        <a href="#add" class="btn">
+          <span class="material-icons">add</span> Добавить
+        </a>
+      </div>
 
-    <div class="search-box">
-      <span class="material-icons">search</span>
-      <input type="text" placeholder="Поиск по ключу, username, ID..." id="searchInput">
-    </div>
+      <div class="search-box">
+        <span class="material-icons">search</span>
+        <input type="text" placeholder="Поиск по ключу, username, ID..." id="searchInput">
+      </div>
 
-    <div id="keysContainer" class="keys-list">
-      <div class="loading">Загрузка данных...</div>
+      <div id="keysContainer" class="keys-list">
+        <div class="loading">Загрузка первых 50...</div>
+      </div>
+
+      <button id="loadMoreBtn" class="load-more">Показать ещё</button>
     </div>
   </div>
 
-  <!-- Модальные окна -->
-  <div id="userModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Информация</h2>
-        <button class="modal-close">×</button>
-      </div>
-      <div class="modal-body" id="modalBody"></div>
-    </div>
-  </div>
-
-  <div id="addModal" class="modal">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h2>Добавить пользователя</h2>
-        <button class="modal-close" data-target="addModal">×</button>
-      </div>
-      <div class="modal-body" id="addModalBody">
+  <!-- Добавление -->
+  <div id="add" class="page">
+    <div class="container">
+      <div class="form-container">
         <div class="field"><label>Username</label><input type="text" id="addUsername" placeholder="@username"></div>
         <div class="field"><label>ID</label><input type="text" id="addId" placeholder="123456"></div>
         <div class="field"><label>Ключ</label><input type="text" id="addKey" placeholder="abc123xyz"></div>
@@ -426,72 +177,79 @@
             <option value="Премиум">Премиум</option>
           </select>
         </div>
-        <button id="saveNewBtn" class="btn-link">Сохранить</button>
+        <button id="saveNewBtn" class="btn">Сохранить</button>
+        <div class="back-link"><a href="#main">Назад</a></div>
       </div>
+    </div>
+  </div>
+
+  <!-- Модалка редактирования -->
+  <div id="userModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>Информация</h2>
+        <button class="modal-close">x</button>
+      </div>
+      <div class="modal-body" id="modalBody"></div>
     </div>
   </div>
 
   <script>
     const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzUUuOArL_1_RhKfZUYeF-LRKqE7WFUH_VPIpZhjWrXwj9sHvYhNgUn9ksBjy1LuCiB/exec';
     const PASSWORD = '12345';
+    const PAGE_SIZE = 50;
 
     const loginScreen = document.getElementById('loginScreen');
     const passwordInput = document.getElementById('passwordInput');
     const loginBtn = document.getElementById('loginBtn');
     const refreshBtn = document.getElementById('refreshBtn');
-    const addBtn = document.getElementById('addBtn');
     const searchInput = document.getElementById('searchInput');
     const keysContainer = document.getElementById('keysContainer');
+    const loadMoreBtn = document.getElementById('loadMoreBtn');
     const userModal = document.getElementById('userModal');
-    const addModal = document.getElementById('addModal');
     const modalCloseButtons = document.querySelectorAll('.modal-close');
+    const headerTitle = document.getElementById('headerTitle');
+    const saveNewBtn = document.getElementById('saveNewBtn');
 
     let allData = [];
+    let displayedCount = 0;
+    let filteredData = [];
 
-    // Вход
+    function showPage() {
+      const hash = location.hash || '#main';
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.querySelector(hash)?.classList.add('active');
+      headerTitle.textContent = hash === '#main' ? 'Админ-панель' : 'Добавить пользователя';
+      if (hash === '#main') loadData();
+    }
+    window.addEventListener('hashchange', showPage);
+
     loginBtn.addEventListener('click', () => {
       if (passwordInput.value === PASSWORD) {
         loginScreen.style.opacity = '0';
-        setTimeout(() => {
-          loginScreen.style.display = 'none';
-          loadData();
-        }, 400);
+        setTimeout(() => { loginScreen.style.display = 'none'; showPage(); }, 400);
       } else {
-        passwordInput.classList.add('error');
-        passwordInput.value = '';
+        passwordInput.classList.add('error'); passwordInput.value = '';
         setTimeout(() => passwordInput.classList.remove('error'), 600);
       }
     });
+    passwordInput.addEventListener('keyup', e => { if (e.key === 'Enter') loginBtn.click(); });
 
-    passwordInput.addEventListener('keyup', e => {
-      if (e.key === 'Enter') loginBtn.click();
-    });
+    refreshBtn.onclick = () => { displayedCount = 0; loadData(true); };
 
-    refreshBtn.onclick = () => loadData();
-    addBtn.onclick = () => addModal.classList.add('active');
+    async function loadData(force = false) {
+      if (location.hash !== '#main') return;
+      if (!force && allData.length > 0) { renderPage(); return; }
 
-    modalCloseButtons.forEach(btn => {
-      btn.onclick = () => {
-        const target = btn.dataset.target || 'userModal';
-        document.getElementById(target).classList.remove('active');
-      };
-    });
-    [userModal, addModal].forEach(m => {
-      m.onclick = e => { if (e.target === m) m.classList.remove('active'); };
-    });
-
-    async function loadData() {
       try {
-        keysContainer.innerHTML = '<div class="loading">Загрузка...</div>';
-        const resp = await fetch(`${SCRIPT_URL}?action=getAll`, { signal: AbortSignal.timeout(10000) });
+        keysContainer.innerHTML = '<div class="loading">Загрузка первых 50...</div>';
+        const resp = await fetch(`${SCRIPT_URL}?action=getAll`, { signal: AbortSignal.timeout(15000) });
         if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
         const text = await resp.text();
         if (text.includes('<html')) throw new Error('Ошибка доступа');
         const data = JSON.parse(text);
-        if (!data.length) {
-          keysContainer.innerHTML = '<div class="no-results">Нет данных</div>';
-          return;
-        }
+        if (!data.length) { keysContainer.innerHTML = '<div class="no-results">Нет данных</div>'; return; }
+
         allData = data.map(r => ({
           status: (r[0] || '').toString().trim(),
           server: (r[1] || '').toString().trim(),
@@ -501,24 +259,36 @@
           key: (r[5] || '').toString().trim(),
           link: (r[6] || '').toString().trim()
         })).filter(u => u.key);
-        renderKeys(allData);
+
+        displayedCount = 0;
+        filteredData = allData;
+        renderPage();
       } catch (e) {
         keysContainer.innerHTML = `<div class="error">Ошибка: ${e.message}</div>`;
       }
     }
 
-    function renderKeys(list) {
-      if (!list.length) {
-        keysContainer.innerHTML = '<div class="no-results">Ничего не найдено</div>';
-        return;
-      }
-      keysContainer.innerHTML = list.map((u, i) => `
-        <div class="key-item" data-index="${i}">
+    function renderPage() {
+      if (displayedCount === 0) keysContainer.innerHTML = '';
+
+      const start = displayedCount;
+      const end = Math.min(start + PAGE_SIZE, filteredData.length);
+      const slice = filteredData.slice(start, end);
+
+      const html = slice.map((u, i) => `
+        <div class="key-item" data-index="${start + i}">
           <div style="word-break:break-all;">${escape(u.key)}</div>
           <div class="status-badge ${getStatusClass(u.status)}">${escape(u.status)}</div>
         </div>
       `).join('');
+
+      keysContainer.insertAdjacentHTML('beforeend', html);
+      displayedCount = end;
+
+      loadMoreBtn.style.display = end < filteredData.length ? 'block' : 'none';
     }
+
+    loadMoreBtn.onclick = () => renderPage();
 
     function getStatusClass(s) {
       const map = { 'Активный':'status-active','Партнер':'status-partner','Закончился':'status-ended','удален':'status-deleted' };
@@ -528,32 +298,27 @@
     keysContainer.addEventListener('click', e => {
       const item = e.target.closest('.key-item');
       if (!item) return;
-      showEditModal(allData[+item.dataset.index], +item.dataset.index);
+      const idx = +item.dataset.index;
+      showEditModal(filteredData[idx], idx);
     });
 
     function showEditModal(user, idx) {
       document.getElementById('modalBody').innerHTML = `
-        <div class="field"><label>Статус</label>
-          <select id="s1">
-            <option value="Активный"   ${user.status==='Активный'?'selected':''}>Активный</option>
-            <option value="Партнер"    ${user.status==='Партнер'?'selected':''}>Партнер</option>
-            <option value="Закончился" ${user.status==='Закончился'?'selected':''}>Закончился</option>
-            <option value="удален"     ${user.status==='удален'?'selected':''}>удален</option>
-          </select>
-        </div>
-        <div class="field"><label>Сервер</label>
-          <select id="s2">
-            <option value="Нидерланды №1" ${user.server==='Нидерланды №1'?'selected':''}>Нидерланды №1</option>
-            <option value="Нидерланды №2" ${user.server==='Нидерланды №2'?'selected':''}>Нидерланды №2</option>
-          </select>
-        </div>
-        <div class="field"><label>Тариф</label>
-          <select id="s3">
-            <option value="Личный"   ${user.tariff==='Личный'?'selected':''}>Личный</option>
-            <option value="Семейный" ${user.tariff==='Семейный'?'selected':''}>Семейный</option>
-            <option value="Премиум"  ${user.tariff==='Премиум'?'selected':''}>Премиум</option>
-          </select>
-        </div>
+        <div class="field"><label>Статус</label><select id="s1">
+          <option value="Активный"   ${user.status==='Активный'?'selected':''}>Активный</option>
+          <option value="Партнер"    ${user.status==='Партнер'?'selected':''}>Партнер</option>
+          <option value="Закончился" ${user.status==='Закончился'?'selected':''}>Закончился</option>
+          <option value="удален"     ${user.status==='удален'?'selected':''}>удален</option>
+        </select></div>
+        <div class="field"><label>Сервер</label><select id="s2">
+          <option value="Нидерланды №1" ${user.server==='Нидерланды №1'?'selected':''}>Нидерланды №1</option>
+          <option value="Нидерланды №2" ${user.server==='Нидерланды №2'?'selected':''}>Нидерланды №2</option>
+        </select></div>
+        <div class="field"><label>Тариф</label><select id="s3">
+          <option value="Личный"   ${user.tariff==='Личный'?'selected':''}>Личный</option>
+          <option value="Семейный" ${user.tariff==='Семейный'?'selected':''}>Семейный</option>
+          <option value="Премиум"  ${user.tariff==='Премиум'?'selected':''}>Премиум</option>
+        </select></div>
         <div class="field"><label>Username</label><input type="text" value="${escape(user.username)}" readonly></div>
         <div class="field"><label>ID</label><input type="text" value="${escape(user.id)}" readonly></div>
         <div class="field"><label>Ключ</label><input type="text" value="${escape(user.key)}" readonly></div>
@@ -570,24 +335,16 @@
     }
 
     async function saveEdit(idx) {
-      const p = {
-        row: idx + 2,
-        status: document.getElementById('s1').value,
-        server: document.getElementById('s2').value,
-        tariff: document.getElementById('s3').value
-      };
+      const p = { row: idx + 2, status: document.getElementById('s1').value, server: document.getElementById('s2').value, tariff: document.getElementById('s3').value };
       try {
-        await fetch(`${SCRIPT_URL}?action=update`, {
-          method: 'POST',
-          body: JSON.stringify(p),
-          headers: {'Content-Type':'text/plain'}
-        });
+        await fetch(`${SCRIPT_URL}?action=update`, { method: 'POST', body: JSON.stringify(p), headers: {'Content-Type':'text/plain'} });
         allData[idx].status = p.status;
-        renderKeys(allData);
+        filteredData = allData;
+        renderPage();
       } catch (e) { alert('Ошибка'); }
     }
 
-    document.getElementById('saveNewBtn').onclick = async () => {
+    saveNewBtn.onclick = async () => {
       const newUser = {
         status: document.getElementById('addStatus').value,
         server: document.getElementById('addServer').value,
@@ -611,8 +368,10 @@
         });
         const result = await resp.text();
         if (result.includes('OK')) {
-          addModal.classList.remove('active');
-          loadData();
+          alert('Успешно добавлено!');
+          location.hash = '#main';
+          displayedCount = 0;
+          loadData(true);
         } else {
           alert('Ошибка: ' + result);
         }
@@ -623,16 +382,19 @@
 
     searchInput.addEventListener('input', () => {
       const term = searchInput.value.trim().toLowerCase();
-      if (!term) return renderKeys(allData);
-      const filtered = allData.filter(u =>
+      filteredData = term ? allData.filter(u =>
         u.key.toLowerCase().includes(term) ||
         u.username.toLowerCase().includes(term) ||
         u.id.toLowerCase().includes(term)
-      );
-      renderKeys(filtered);
+      ) : allData;
+      displayedCount = 0;
+      keysContainer.innerHTML = '';
+      renderPage();
     });
 
     function escape(s){return s?s.toString().replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]):'';}
+
+    showPage();
   </script>
 </body>
 </html>
