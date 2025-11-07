@@ -751,8 +751,12 @@ p {
     justify-content: flex-start;
     margin: 20px auto;
     max-width: 500px;
-    padding: 0 15px;
+    padding: 15px;
     gap: 12px;
+    background: var(--card-bg);
+    border-radius: 15px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.05);
 }
 .user-avatar {
     width: 40px;
@@ -1052,7 +1056,7 @@ p {
                         <li>Скачайте и установите приложение.</li>
                         <li>Откройте приложение.</li>
                         <li>В правом верхнем углу нажмите на "+".</li>
-                        <li>Теперь нажмите "Импорт из буфера обмена".</li>
+                        <li>Теперь нажмите "Импорт из буфера обмена,.</li>
                         <li>Подключитесь к VPN.</li>
                     </ol>
                     <p>Готово! VPN настроен и готов к работе!</p>
@@ -1201,7 +1205,7 @@ function showPage(id){
 
     // Определяем направление анимации (вперед или назад)
     if (currentPageId) {
-        // Если новая страница является родителям текущей, значит, идем "назад"
+        // Если новая страница является родителем текущей, значит, идем "назад"
         if (getParentId(currentPageId) === id) {
             isBack = true;
         } 
@@ -1337,7 +1341,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const fullName = user.first_name + (user.last_name ? ' ' + user.last_name : '');
         greetingDiv.textContent = 'Добро пожаловать, ' + fullName;
-        idDiv.textContent = 'Ваш ID: ' + user.id;
+        idDiv.textContent = 'ID: ' + user.id;
     }
     // =================================================================
 });
@@ -1537,4 +1541,3 @@ function goToLinkAndClose(url) {
 </script>
 </body>
 </html>
-
