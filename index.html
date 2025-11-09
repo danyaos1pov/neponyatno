@@ -814,6 +814,39 @@ p {
     color: #6c757d;
     text-align: center;
 }
+/* === ЗАБЛОКИРОВАННЫЕ КНОПКИ === */
+.menu-card.blocked,
+.button.blocked,
+.faq-header.blocked,
+.tariff-days-option.blocked,
+.toggle-button.blocked {
+    opacity: 0.5 !important;
+    pointer-events: none !important;
+    cursor: not-allowed !important;
+    position: relative;
+}
+
+.menu-card.blocked::after,
+.button.blocked::after,
+.faq-header.blocked::after,
+.tariff-days-option.blocked::after,
+.toggle-button.blocked::after {
+    content: "Заблокировано";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(220, 53, 69, 0.95);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-size: 0.8em;
+    font-weight: 700;
+    white-space: nowrap;
+    z-index: 10;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+    border: 2px solid white;
+}
 </style>
 </head>
 <body>
@@ -1532,45 +1565,92 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('buy')) switchBuyTariff('personal');
     if (document.getElementById('renew')) switchRenewTariff('personal'); 
     
-    // === ДОБАВЛЕННЫЙ КОД: Отображение данных пользователя из Telegram + СТАТУС ===
-if (typeof Telegram !== 'undefined' && Telegram.WebApp && Telegram.WebApp.initDataUnsafe && Telegram.WebApp.initDataUnsafe.user) {
-    const user = Telegram.WebApp.initDataUnsafe.user;
-    
-    const avatarImg = document.getElementById('user-avatar');
-    const greetingDiv = document.getElementById('user-greeting');
-    const idDiv = document.getElementById('user-id');
-    const statusBadge = document.getElementById('user-status-badge');
-    
-    if (user.photo_url) {
-        avatarImg.src = user.photo_url;
-    } else {
-        avatarImg.src = 'https://sun9-8.userapi.com/s/v1/ig2/YBkIITuiQ13e1vw3WhNGJekU_fMB3jXEeTjqLb-EAnydjnDmqCVu7sATDepkrUUo6UXWQ4x74BtgfBrgdhWUZZlN.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640&from=bu&cs=640x0';
+        // === ДОБАВЛЕННЫЙ КОД: Отображение данных пользователя + БЛОКИРОВКА ===
+    if (typeof Telegram !== 'undefined' && Telegram.WebApp && Telegram.WebApp.initDataUnsafe && Telegram.WebApp.initDataUnsafe.user) {
+        const user = Telegram.WebApp.initDataUnsafe.user;
+        
+        const avatarImg = document.getElementById('user-avatar');
+        const greetingDiv = document.getElementById('user-greeting');
+        const idDiv = document.getElementById('user-id');
+        const statusBadge = document.getElementById('user-status-badge');
+        
+        if (user.photo_url) {
+            avatarImg.src = user.photo_url;
+        } else {
+            avatarImg.src = 'https://sun9-8.userapi.com/s/v1/ig2/YBkIITuiQ13e1vw3WhNGJekU_fMB3jXEeTjqLb-EAnydjnDmqCVu7sATDepkrUUo6UXWQ4x74BtgfBrgdhWUZZlN.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640&from=bu&cs=640x0';
+        }
+        
+        const fullName = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+        greetingDiv.textContent = 'Добро пожаловать, ' + fullName;
+        idDiv.textContent = 'ID: ' + user.id;
+
+        // === ЛОГИКА СТАТУСА ===
+        const blockedIds = ['2222222', '7165545340'];
+        const deletedIds = ['33333333', '7567673623'];
+        const userIdStr = String(user.id);
+
+        let statusText = 'Активный';
+        let statusClass = 'active';
+        let isBlocked = false;
+
+        if (blockedIds.includes(userIdStr)) {
+            statusText = 'Заблокирован';
+            statusClass = 'blocked';
+            isBlocked = true;
+        } else if (deletedIds.includes(userIdStr)) {
+            statusText = 'Удален';
+            statusClass = 'deleted';
+            isBlocked = true;
+        }
+
+        statusBadge.textContent = statusText;
+        statusBadge.className = 'user-status-badge ' + statusClass;
+
+        // === БЛОКИРОВКА ВСЕХ КНОПОК, ЕСЛИ ПОЛЬЗОВАТЕЛЬ ЗАБЛОКИРОВАН ===
+        if (isBlocked) {
+            // Все интерактивные элементы
+            const blockSelectors = [
+                '.menu-card',
+                '.button',
+                '.faq-header',
+                '.tariff-days-option',
+                '.toggle-button',
+                '.subscription-status-card'
+            ];
+
+            blockSelectors.forEach(selector => {
+                document.querySelectorAll(selector).forEach(el => {
+                    el.classList.add('blocked');
+                    // Отключаем onclick
+                    el.onclick = null;
+                });
+            });
+
+            // Отключаем переключатели тарифов
+            document.querySelectorAll('.toggle-button').forEach(btn => {
+                btn.onclick = null;
+            });
+
+            // Отключаем выбор дней
+            document.querySelectorAll('.tariff-days-option').forEach(opt => {
+                opt.onclick = null;
+            });
+
+            // Отключаем кнопки "Купить" и "Продлить"
+            document.querySelectorAll('#buy-button-personal, #buy-button-family, #buy-button-premium, ' +
+                                       '#renew-button-personal, #renew-button-family, #renew-button-premium').forEach(btn => {
+                btn.onclick = null;
+                btn.href = '#';
+            });
+
+            // Показываем модальное окно с уведомлением
+            showModalNotification(
+                "Доступ ограничен",
+                `Ваш аккаунт ${statusText.toLowerCase()}. Все функции временно недоступны.`
+            );
+        }
     }
-    
-    const fullName = user.first_name + (user.last_name ? ' ' + user.last_name : '');
-    greetingDiv.textContent = 'Добро пожаловать, ' + fullName;
-    idDiv.textContent = 'ID: ' + user.id;
-
-    // === ЛОГИКА ОПРЕДЕЛЕНИЯ СТАТУСА ===
-    const blockedIds = ['2222222', '7165545340'];
-    const deletedIds = ['33333333', '7567673623'];
-    const userIdStr = String(user.id);
-
-    let statusText = 'Активный';
-    let statusClass = 'active';
-
-    if (blockedIds.includes(userIdStr)) {
-        statusText = 'Заблокирован';
-        statusClass = 'blocked';
-    } else if (deletedIds.includes(userIdStr)) {
-        statusText = 'Удален';
-        statusClass = 'deleted';
-    }
-
-    statusBadge.textContent = statusText;
-    statusBadge.className = 'user-status-badge ' + statusClass;
-}
-// =================================================================
+    // =================================================================
 });
 
 // === ФУНКЦИИ ДЛЯ ПОКУПКИ (КУПИТЬ) ===
