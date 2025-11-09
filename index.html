@@ -814,16 +814,27 @@ p {
     color: #6c757d;
     text-align: center;
 }
-/* === ЗАБЛОКИРОВАННЫЕ КНОПКИ === */
+/* === ЗАБЛОКИРОВАННЫЕ КНОПКИ — ТОЛЬКО ЗАТЕМНЕНИЕ === */
 .menu-card.blocked,
 .button.blocked,
 .faq-header.blocked,
 .tariff-days-option.blocked,
-.toggle-button.blocked {
+.toggle-button.blocked,
+.subscription-status-card.blocked {
     opacity: 0.5 !important;
     pointer-events: none !important;
     cursor: not-allowed !important;
     position: relative;
+}
+
+/* УБИРАЕМ НАДПИСЬ "Заблокировано" */
+.menu-card.blocked::after,
+.button.blocked::after,
+.faq-header.blocked::after,
+.tariff-days-option.blocked::after,
+.toggle-button.blocked::after,
+.subscription-status-card.blocked::after {
+    content: none !important;
 }
 
 .menu-card.blocked::after,
