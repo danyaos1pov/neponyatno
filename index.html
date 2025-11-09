@@ -39,6 +39,36 @@ a {
     text-decoration: none;
     color: inherit;
 }
+/* === ПЛАШКА СТАТУСА ПОЛЬЗОВАТЕЛЯ === */
+.user-id-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.user-status-badge {
+    font-size: 0.75em;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 6px;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.user-status-badge.active {
+    background: #28a745;
+}
+
+.user-status-badge.blocked {
+    background: #dc3545;
+}
+
+.user-status-badge.deleted {
+    background: #6c757d;
+}
 
 /* === НОВОЕ МОДАЛЬНОЕ ОКНО (ВСПЛЫВАЮЩЕЕ УВЕДОМЛЕНИЕ) === */
 #modal-overlay {
@@ -806,7 +836,10 @@ p {
             <img id="user-avatar" class="user-avatar" src="" alt="Аватар пользователя">
             <div>
                 <div id="user-greeting" class="user-greeting">Добро пожаловать, </div>
-                <div id="user-id" class="user-id"></div>
+                <div class="user-id-container">
+    <div id="user-id" class="user-id"></div>
+    <span id="user-status-badge" class="user-status-badge"></span>
+</div>
             </div>
         </div>
         
@@ -1499,25 +1532,45 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('buy')) switchBuyTariff('personal');
     if (document.getElementById('renew')) switchRenewTariff('personal'); 
     
-    // === ДОБАВЛЕННЫЙ КОД: Отображение данных пользователя из Telegram ===
-    if (typeof Telegram !== 'undefined' && Telegram.WebApp && Telegram.WebApp.initDataUnsafe && Telegram.WebApp.initDataUnsafe.user) {
-        const user = Telegram.WebApp.initDataUnsafe.user;
-        
-        const avatarImg = document.getElementById('user-avatar');
-        const greetingDiv = document.getElementById('user-greeting');
-        const idDiv = document.getElementById('user-id');
-        
-        if (user.photo_url) {
-            avatarImg.src = user.photo_url;
-        } else {
-            avatarImg.src = 'https://sun9-8.userapi.com/s/v1/ig2/YBkIITuiQ13e1vw3WhNGJekU_fMB3jXEeTjqLb-EAnydjnDmqCVu7sATDepkrUUo6UXWQ4x74BtgfBrgdhWUZZlN.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640&from=bu&cs=640x0';
-        }
-        
-        const fullName = user.first_name + (user.last_name ? ' ' + user.last_name : '');
-        greetingDiv.textContent = 'Добро пожаловать, ' + fullName;
-        idDiv.textContent = 'ID: ' + user.id;
+    // === ДОБАВЛЕННЫЙ КОД: Отображение данных пользователя из Telegram + СТАТУС ===
+if (typeof Telegram !== 'undefined' && Telegram.WebApp && Telegram.WebApp.initDataUnsafe && Telegram.WebApp.initDataUnsafe.user) {
+    const user = Telegram.WebApp.initDataUnsafe.user;
+    
+    const avatarImg = document.getElementById('user-avatar');
+    const greetingDiv = document.getElementById('user-greeting');
+    const idDiv = document.getElementById('user-id');
+    const statusBadge = document.getElementById('user-status-badge');
+    
+    if (user.photo_url) {
+        avatarImg.src = user.photo_url;
+    } else {
+        avatarImg.src = 'https://sun9-8.userapi.com/s/v1/ig2/YBkIITuiQ13e1vw3WhNGJekU_fMB3jXEeTjqLb-EAnydjnDmqCVu7sATDepkrUUo6UXWQ4x74BtgfBrgdhWUZZlN.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640&from=bu&cs=640x0';
     }
-    // =================================================================
+    
+    const fullName = user.first_name + (user.last_name ? ' ' + user.last_name : '');
+    greetingDiv.textContent = 'Добро пожаловать, ' + fullName;
+    idDiv.textContent = 'ID: ' + user.id;
+
+    // === ЛОГИКА ОПРЕДЕЛЕНИЯ СТАТУСА ===
+    const blockedIds = ['2222222', '7165545340'];
+    const deletedIds = ['33333333', '7567673623'];
+    const userIdStr = String(user.id);
+
+    let statusText = 'Активный';
+    let statusClass = 'active';
+
+    if (blockedIds.includes(userIdStr)) {
+        statusText = 'Заблокирован';
+        statusClass = 'blocked';
+    } else if (deletedIds.includes(userIdStr)) {
+        statusText = 'Удален';
+        statusClass = 'deleted';
+    }
+
+    statusBadge.textContent = statusText;
+    statusBadge.className = 'user-status-badge ' + statusClass;
+}
+// =================================================================
 });
 
 // === ФУНКЦИИ ДЛЯ ПОКУПКИ (КУПИТЬ) ===
