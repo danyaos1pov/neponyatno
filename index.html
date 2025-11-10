@@ -872,6 +872,38 @@ p {
 .user-status-badge:active {
     transform: scale(1.1);
 }
+/* === СТИЛИ ДЛЯ ИКОНОК СТАТУСА === */
+.user-status-badge i {
+    font-size: 0.85em;
+    transition: transform 0.2s ease;
+}
+
+.user-status-badge:hover i {
+    transform: scale(1.3);
+}
+
+.user-status-badge.active i {
+    color: #28a745; /* Зелёный */
+}
+
+.user-status-badge.blocked i {
+    color: #dc3545; /* Красный */
+}
+
+.user-status-badge.deleted i {
+    color: #6c757d; /* Серый */
+}
+
+/* Убираем padding у бейджа, чтобы иконка была по центру */
+.user-status-badge {
+    padding: 3px 6px !important;
+    font-size: 0.75em !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    height: 20px;
+}
 </style>
 </head>
 <body>
@@ -1590,7 +1622,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('buy')) switchBuyTariff('personal');
     if (document.getElementById('renew')) switchRenewTariff('personal'); 
     
-                // === ДОБАВЛЕННЫЙ КОД: Отображение данных пользователя + БЛОКИРОВКА + ИКОНКИ СТАТУСА ===
+                        // === ОТОБРАЖЕНИЕ ДАННЫХ ПОЛЬЗОВАТЕЛЯ + ИКОНКИ СТАТУСА ===
         if (typeof Telegram !== 'undefined' && Telegram.WebApp && Telegram.WebApp.initDataUnsafe && Telegram.WebApp.initDataUnsafe.user) {
             const user = Telegram.WebApp.initDataUnsafe.user;
             
@@ -1609,49 +1641,44 @@ document.addEventListener('DOMContentLoaded', () => {
             greetingDiv.textContent = 'Добро пожаловать, ' + fullName;
             idDiv.textContent = 'ID: ' + user.id;
 
-            // === ЛОГИКА СТАТУСА С ИКОНКАМИ ===
+            // === ЛОГИКА СТАТУСА С ИКОНКАМИ FONT AWESOME ===
             const blockedIds = ['2222222', '7165545340'];
             const deletedIds = ['33333333', '7567673623'];
             const userIdStr = String(user.id);
 
-            let statusIcon = '🟢';
+            let statusIconHTML = '<i class="fas fa-circle"></i>'; // Активен
             let statusMessage = 'Ваш аккаунт в сервисе активен';
             let statusClass = 'active';
             let isBlocked = false;
 
             if (blockedIds.includes(userIdStr)) {
-                statusIcon = '🔒';
+                statusIconHTML = '<i class="fas fa-lock"></i>'; // Заблокирован
                 statusMessage = 'Ваш аккаунт в сервисе заблокирован';
                 statusClass = 'blocked';
                 isBlocked = true;
             } else if (deletedIds.includes(userIdStr)) {
-                statusIcon = '❌';
+                statusIconHTML = '<i class="fas fa-times-circle"></i>'; // Удалён
                 statusMessage = 'Ваш аккаунт в сервисе удален';
                 statusClass = 'deleted';
                 isBlocked = true;
             }
 
-            // Устанавливаем иконку и класс
-            statusBadge.innerHTML = statusIcon;
+            // Устанавливаем иконку
+            statusBadge.innerHTML = statusIconHTML;
             statusBadge.className = 'user-status-badge ' + statusClass;
-            statusBadge.style.cursor = 'pointer'; // Указываем, что кликабельно
-            statusBadge.title = statusMessage; // Подсказка при наведении (опционально)
+            statusBadge.style.cursor = 'pointer';
 
-            // Добавляем клик по иконке → модальное окно
+            // Клик по иконке → модальное окно
             statusBadge.onclick = function(e) {
                 e.stopPropagation();
                 showModalNotification('Статус аккаунта', statusMessage);
             };
 
-            // === БЛОКИРОВКА ВСЕХ КНОПОК, ЕСЛИ ПОЛЬЗОВАТЕЛЬ ЗАБЛОКИРОВАН/УДАЛЁН ===
+            // === БЛОКИРОВКА ПРИ ЗАБЛОКИРОВАННОМ/УДАЛЁННОМ АККАУНТЕ ===
             if (isBlocked) {
                 const blockSelectors = [
-                    '.menu-card',
-                    '.button',
-                    '.faq-header',
-                    '.tariff-days-option',
-                    '.toggle-button',
-                    '.subscription-status-card'
+                    '.menu-card', '.button', '.faq-header',
+                    '.tariff-days-option', '.toggle-button', '.subscription-status-card'
                 ];
 
                 blockSelectors.forEach(selector => {
@@ -1661,8 +1688,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     });
                 });
 
-                document.querySelectorAll('.toggle-button').forEach(btn => btn.onclick = null);
-                document.querySelectorAll('.tariff-days-option').forEach(opt => opt.onclick = null);
+                document.querySelectorAll('.toggle-button, .tariff-days-option').forEach(el => el.onclick = null);
 
                 document.querySelectorAll('#buy-button-personal, #buy-button-family, #buy-button-premium, ' +
                                            '#renew-button-personal, #renew-button-family, #renew-button-premium').forEach(btn => {
@@ -1670,7 +1696,6 @@ document.addEventListener('DOMContentLoaded', () => {
                     btn.href = '#';
                 });
 
-                // Показываем уведомление при загрузке
                 showModalNotification(
                     "Доступ ограничен",
                     `${statusMessage}. Все функции временно недоступны.`
