@@ -8,7 +8,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --primary-color: #2481cc; /* Telegram Blue */
+            --primary-color: #2481cc;
             --bg-dark: #0d1117;
             --card-bg: #161b22;
             --text-color: #e6edf3;
@@ -48,13 +48,18 @@
 
         .info-row {
             display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 12px; font-size: 1.05em;
+            margin-bottom: 10px; font-size: 1.05em;
         }
         .info-label { font-weight: 600; color: #b0b8c2; }
         .info-value { font-weight: 600; color: var(--text-color); }
 
+        /* === СТАТУС ПОДПИСКИ — МЕНЬШЕ === */
         .status-chip {
-            display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 16px; font-size: 0.8em; font-weight: 600; text-transform: uppercase;
+            display: inline-flex; align-items: center; gap: 5px;
+            padding: 4px 9px; border-radius: 14px;
+            font-size: 0.75em; /* ← меньше */
+            font-weight: 600; text-transform: uppercase;
+            letter-spacing: 0.3px;
         }
         .status-active { background: var(--chip-bg-active); color: #28a745; border: 1px solid #28a745; }
         .status-expired { background: var(--chip-bg-expired); color: #dc3545; border: 1px solid #dc3545; }
@@ -62,7 +67,7 @@
 
         /* === КЛЮЧ === */
         .key-input-container {
-            position: relative; margin: 16px 0 0;
+            position: relative; margin: 14px 0 0;
             background: rgba(255,255,255,0.04); border-radius: 12px; padding: 12px;
             display: flex; align-items: center;
         }
@@ -80,36 +85,29 @@
         }
         #copy-key-button:hover { background: #1d6fa5; transform: translateY(-50%) scale(1.1); }
 
-        /* === КНОПКИ В СТИЛЕ TELEGRAM === */
+        /* === КНОПКИ TELEGRAM === */
         .action-button-block {
-            margin-top: 16px;
+            margin-top: 14px;
         }
         .tg-button {
-            display: block;
-            width: 100%;
-            padding: 13px 0;
-            background: var(--primary-color);
-            color: white;
-            font-weight: 500;
-            font-size: 1.05em;
-            text-align: center;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.2s;
+            display: block; width: 100%; padding: 13px 0; background: var(--primary-color);
+            color: white; font-weight: 500; font-size: 1.05em; text-align: center;
+            border-radius: 8px; cursor: pointer; transition: background 0.2s;
         }
-        .tg-button:hover,
-        .tg-button:active {
-            background: #1d6fa5;
-        }
+        .tg-button:hover, .tg-button:active { background: #1d6fa5; }
 
-        /* === PULL TO REFRESH === */
+        /* === PULL TO REFRESH — С ПЛАШКОЙ "Обновляем" === */
         #pull-refresh {
             position: absolute; top: -60px; left: 0; width: 100%; height: 60px;
             display: flex; justify-content: center; align-items: center;
-            color: #666; font-size: 0.9em; transition: top 0.3s;
-            z-index: 100;
+            background: rgba(36, 129, 204, 0.1);
+            color: #2481cc; font-size: 0.95em; font-weight: 500;
+            transition: top 0.3s ease;
+            z-index: 100; backdrop-filter: blur(4px);
+            border-bottom: 1px solid rgba(36, 129, 204, 0.3);
         }
-        #pull-refresh i { margin-right: 8px; }
+        #pull-refresh i { margin-right: 8px; animation: spin 1s linear infinite; opacity: 0; }
+        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
         .app-version { margin-top: 30px; font-size: 0.8em; color: #6c757d; text-align: center; }
     </style>
@@ -236,7 +234,6 @@
                     const actionBlock = document.getElementById('action-button-block');
                     actionBlock.innerHTML = '';
 
-                    // === ПОДПИСКА НЕТ ===
                     if (data.not_found || !data.key_1) {
                         keyInput.value = 'У вас нет подписки';
                         keyInput.style.color = '#dc3545';
@@ -251,7 +248,6 @@
                         return;
                     }
 
-                    // === ПОДПИСКА ЕСТЬ ===
                     keyInput.value = data.key_1;
                     tariffEl.textContent = data.tariff || 'Неизвестно';
 
@@ -271,7 +267,6 @@
                     renewBtn.textContent = 'Продлить';
                     actionBlock.appendChild(renewBtn);
 
-                    // Ключ №2
                     if (data.key_2) {
                         const extra = document.createElement('div');
                         extra.innerHTML = `
@@ -289,38 +284,63 @@
                 });
         }
 
-        // === PULL TO REFRESH ===
+        // === PULL TO REFRESH — С ПЛАШКОЙ "Обновляем" ===
         let startY = 0;
         let pullDistance = 0;
         const pullThreshold = 100;
         const refreshEl = document.getElementById('pull-refresh');
+        const icon = refreshEl.querySelector('i');
 
         document.addEventListener('touchstart', e => {
-            if (window.scrollY === 0) startY = e.touches[0].clientY;
+            if (window.scrollY === 0) {
+                startY = e.touches[0].clientY;
+                refreshEl.style.transition = 'none';
+            }
         });
 
         document.addEventListener('touchmove', e => {
             if (startY && window.scrollY === 0) {
                 const currentY = e.touches[0].clientY;
                 pullDistance = currentY - startY;
+
                 if (pullDistance > 0) {
                     e.preventDefault();
-                    refreshEl.style.top = Math.min(pullDistance / 3, 60) + 'px';
-                    refreshEl.innerHTML = pullDistance > pullThreshold
-                        ? '<i class="fas fa-sync-alt fa-spin"></i> Отпустите для обновления'
-                        : '<i class="fas fa-sync-alt"></i> Тяните для обновления';
+                    const progress = Math.min(pullDistance, 150);
+                    refreshEl.style.top = (progress - 60) + 'px';
+
+                    if (pullDistance > pullThreshold) {
+                        refreshEl.innerHTML = '<i class="fas fa-sync-alt"></i> Отпустите для обновления';
+                        icon.style.opacity = '1';
+                        icon.style.animation = 'spin 1s linear infinite';
+                    } else {
+                        refreshEl.innerHTML = '<i class="fas fa-sync-alt"></i> Тяните для обновления';
+                        icon.style.opacity = '0.6';
+                        icon.style.animation = 'none';
+                    }
                 }
             }
         });
 
         document.addEventListener('touchend', () => {
             if (pullDistance > pullThreshold) {
-                refreshEl.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Обновление...';
-                setTimeout(() => location.reload(), 500);
+                // Показываем "Обновляем"
+                refreshEl.innerHTML = '<i class="fas fa-sync-alt"></i> Обновляем';
+                icon.style.opacity = '1';
+                icon.style.animation = 'spin 1s linear infinite';
+                refreshEl.style.top = '0px';
+                refreshEl.style.transition = 'top 0.3s ease';
+
+                // Перезагружаем
+                setTimeout(() => {
+                    location.reload();
+                }, 600);
             } else {
+                // Плавно убираем
                 refreshEl.style.top = '-60px';
+                refreshEl.style.transition = 'top 0.3s ease';
             }
-            startY = 0; pullDistance = 0;
+            startY = 0;
+            pullDistance = 0;
         });
 
         // === ИНИЦИАЛИЗАЦИЯ ===
