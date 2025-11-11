@@ -35,13 +35,13 @@
         h1 { font-size: 2.2em; margin: 10px 0 20px; color: var(--primary-color); }
         h1 span { color: var(--text-color); }
 
-        /* === ГЛАВНЫЙ БЛОК === */
+        /* === ГЛАВНЫЙ БЛОК — УВЕЛИЧЕН ПО ВЫСОТЕ === */
         .subscription-block {
             max-width: 500px;
             margin: 20px auto;
             background: var(--card-bg);
             border-radius: 18px;
-            padding: 18px;
+            padding: 20px 18px 24px;
             box-shadow: 0 6px 16px rgba(0,0,0,0.3);
             border: 1px solid rgba(255,255,255,0.05);
         }
@@ -53,7 +53,7 @@
         .info-label { font-weight: 600; color: #b0b8c2; }
         .info-value { font-weight: 600; color: var(--text-color); }
 
-        /* === СТАТУС — МАЛЕНЬКИЙ === */
+        /* === СТАТУС — КОМПАКТНЫЙ === */
         .status-chip {
             display: inline-flex; align-items: center; gap: 5px;
             padding: 4px 9px; border-radius: 14px;
@@ -72,21 +72,22 @@
         }
         #vpn-key-input {
             background: transparent; border: none; color: var(--text-color);
-            font-family: monospace; font-size: 0.95em; width: 100%; padding-right: 45px;
+            font-family: monospace; font-size: 0.95em; width: 100%; padding-right: 42px;
             pointer-events: none; word-break: break-all; line-height: 1.4;
         }
         #copy-key-button {
             position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
             background: var(--primary-color); color: white; border: none;
-            width: 34px; height: 34px; border-radius: 50%; display: flex;
+            width: 30px; height: 30px; /* ← МЕНЬШЕ */
+            border-radius: 50%; display: flex;
             align-items: center; justify-content: center; cursor: pointer;
-            font-size: 0.95em; transition: all 0.2s;
+            font-size: 0.9em; transition: all 0.2s;
         }
         #copy-key-button:hover { background: #1d6fa5; transform: translateY(-50%) scale(1.1); }
 
         /* === КНОПКИ === */
         .action-buttons-row {
-            display: flex; gap: 8px; margin-top: 14px;
+            display: flex; gap: 8px; margin-top: 16px;
         }
         .tg-button {
             flex: 1; padding: 13px 0; background: var(--primary-color);
@@ -94,6 +95,10 @@
             border-radius: 8px; cursor: pointer; transition: background 0.2s;
         }
         .tg-button:hover, .tg-button:active { background: #1d6fa5; }
+
+        .tg-button.full {
+            flex: none; width: 100%; margin: 0;
+        }
 
         .install-button {
             margin-top: 12px; background: #2d2d2d; color: #aaa;
@@ -143,11 +148,8 @@
                 </button>
             </div>
 
-            <!-- Кнопки -->
+            <!-- Кнопки (динамически) -->
             <div id="action-buttons-container"></div>
-
-            <!-- Установить приложение -->
-            <div id="install-button-container" style="margin-top: 12px;"></div>
         </div>
 
         <!-- Кнопка обновления -->
@@ -232,10 +234,8 @@
                     const keyInput = document.getElementById('vpn-key-input');
                     const tariffEl = document.getElementById('tariff-name');
                     const statusEl = document.getElementById('status-display');
-                    const buttonsContainer = document.getElementById('action-buttons-container');
-                    const installContainer = document.getElementById('install-button-container');
-                    buttonsContainer.innerHTML = '';
-                    installContainer.innerHTML = '';
+                    const container = document.getElementById('action-buttons-container');
+                    container.innerHTML = '';
 
                     // === ПОДПИСКА НЕТ ===
                     if (data.not_found || !data.key_1) {
@@ -244,21 +244,18 @@
                         tariffEl.textContent = '—';
                         statusEl.innerHTML = `<span class="status-chip status-none">Нет</span>`;
 
+                        // Кнопка "Купить" — полная ширина
                         const buyBtn = document.createElement('a');
-                        buyBtn.className = 'tg-button';
+                        buyBtn.className = 'tg-button full';
                         buyBtn.onclick = () => showPage('buy');
                         buyBtn.textContent = 'Купить';
-                        buttonsContainer.appendChild(buyBtn);
+                        container.appendChild(buyBtn);
 
-                        const changeBtn = document.createElement('a');
-                        changeBtn.className = 'tg-button';
-                        changeBtn.textContent = 'Сменить тариф';
-                        buttonsContainer.appendChild(changeBtn);
-
+                        // Кнопка "Установить приложение" — полная ширина
                         const installBtn = document.createElement('a');
-                        installBtn.className = 'tg-button install-button';
+                        installBtn.className = 'tg-button full install-button';
                         installBtn.textContent = 'Установить приложение';
-                        installContainer.appendChild(installBtn);
+                        container.appendChild(installBtn);
                         return;
                     }
 
@@ -276,22 +273,30 @@
                     }
                     statusEl.innerHTML = statusHtml;
 
+                    // Две кнопки в строку
+                    const row = document.createElement('div');
+                    row.className = 'action-buttons-row';
+
                     const changeBtn = document.createElement('a');
                     changeBtn.className = 'tg-button';
                     changeBtn.textContent = 'Сменить тариф';
-                    buttonsContainer.appendChild(changeBtn);
+                    row.appendChild(changeBtn);
 
                     const renewBtn = document.createElement('a');
                     renewBtn.className = 'tg-button';
                     renewBtn.onclick = () => showPage('renew');
                     renewBtn.textContent = 'Продлить';
-                    buttonsContainer.appendChild(renewBtn);
+                    row.appendChild(renewBtn);
 
+                    container.appendChild(row);
+
+                    // Кнопка "Установить приложение" — полная ширина
                     const installBtn = document.createElement('a');
-                    installBtn.className = 'tg-button install-button';
+                    installBtn.className = 'tg-button full install-button';
                     installBtn.textContent = 'Установить приложение';
-                    installContainer.appendChild(installBtn);
+                    container.appendChild(installBtn);
 
+                    // Ключ №2
                     if (data.key_2) {
                         const extra = document.createElement('div');
                         extra.innerHTML = `
@@ -300,7 +305,7 @@
                                 <button onclick="copyText('${data.key_2}')"><i class="fas fa-copy"></i></button>
                             </div>
                         `;
-                        installContainer.before(extra);
+                        container.appendChild(extra);
                     }
                 })
                 .catch(err => {
