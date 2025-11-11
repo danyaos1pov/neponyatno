@@ -18,26 +18,12 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-        body { background: var(--bg-dark); color: var(--text-color); min-height: 100vh; padding-bottom: 50px; text-align: center; }
+        body { background: var(--bg-dark); color: var(--text-color); min-height: 100vh; padding-bottom: 50px; text-align: center; overflow-x: hidden; }
         a { text-decoration: none; color: inherit; }
 
-        /* === SPLASH === */
-        #splash-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: var(--bg-dark); display: flex; flex-direction: column;
-            justify-content: center; align-items: center; z-index: 1000; opacity: 1;
-            transition: opacity 0.7s ease-out;
-        }
-        .pulse-container { position: relative; width: 120px; height: 120px; margin: 30px auto 10px; }
-        .pulse-container img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; z-index: 10; border: 4px solid var(--primary-color); object-fit: cover; }
-        .pulse-circle { position: absolute; top: 50%; left: 50%; width: 120px; height: 120px; border-radius: 50%; border: 2px solid rgba(0,123,255,0.5); transform: translate(-50%,-50%) scale(0); animation: pulse 2.5s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94); }
-        .pulse-circle:nth-child(2) { animation-delay: 0.5s; }
-        .pulse-circle:nth-child(3) { animation-delay: 1s; }
-        @keyframes pulse { 0% { transform: translate(-50%,-50%) scale(0.8); opacity: 1; } 100% { transform: translate(-50%,-50%) scale(1.5); opacity: 0; } }
-
         /* === СТРАНИЦЫ === */
-        .page { position: absolute; top: 0; left: 50%; width: 100%; max-width: 600px; padding: 20px 15px; transform: translateX(-50%); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.4, 1), opacity 0.4s; display: none; opacity: 0; z-index: 10; }
-        .page.active { display: block; opacity: 1; z-index: 15; transform: translateX(-50%) scale(1); }
+        .page { position: absolute; top: 0; left: 50%; width: 100%; max-width: 600px; padding: 20px 15px; transform: translateX(-50%); display: none; opacity: 0; z-index: 10; }
+        .page.active { display: block; opacity: 1; z-index: 15; }
 
         /* === ПРОФИЛЬ === */
         .user-profile { display: flex; align-items: center; justify-content: flex-start; margin: 20px auto; max-width: 500px; padding: 15px; gap: 12px; background: var(--card-bg); border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
@@ -49,18 +35,14 @@
         h1 { font-size: 2.2em; margin: 10px 0 20px; color: var(--primary-color); }
         h1 span { color: var(--text-color); }
 
-        /* === ПОДПИСКА + СТАТУС В ОДНОЙ СТРОКЕ === */
-        .subscription-row {
-            display: flex; align-items: center; justify-content: space-between;
-            max-width: 500px; margin: 15px auto 8px; padding: 0 15px;
-            font-size: 1.1em; font-weight: 600; color: var(--text-color);
-            height: 36px; /* одинаковая высота */
+        /* === ТАРИФ + СТАТУС === */
+        .info-row {
+            max-width: 500px; margin: 15px auto; padding: 0 15px; text-align: left;
+            font-size: 1.05em; line-height: 1.6;
         }
+        .info-label { font-weight: 600; color: var(--text-color); }
         .status-chip {
-            display: inline-flex; align-items: center; gap: 6px;
-            padding: 6px 12px; border-radius: 20px; font-size: 0.8em;
-            font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
-            white-space: nowrap;
+            display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 16px; font-size: 0.8em; font-weight: 600; text-transform: uppercase; margin-left: 8px;
         }
         .status-active { background: var(--chip-bg-active); color: #28a745; border: 1px solid #28a745; }
         .status-expired { background: var(--chip-bg-expired); color: #dc3545; border: 1px solid #dc3545; }
@@ -100,20 +82,23 @@
         }
         .button:hover { background: #0056b3; }
 
+        /* === PULL TO REFRESH === */
+        #pull-refresh {
+            position: absolute; top: -60px; left: 0; width: 100%; height: 60px;
+            display: flex; justify-content: center; align-items: center;
+            color: #666; font-size: 0.9em; transition: top 0.3s;
+            z-index: 100;
+        }
+        #pull-refresh i { margin-right: 8px; }
+
         .app-version { margin-top: 30px; font-size: 0.8em; color: #6c757d; text-align: center; }
     </style>
 </head>
 <body>
 
-    <!-- === SPLASH === -->
-    <div id="splash-screen">
-        <div class="pulse-container">
-            <div class="pulse-circle"></div>
-            <div class="pulse-circle"></div>
-            <div class="pulse-circle"></div>
-            <img class="logo" src="https://sun9-8.userapi.com/s/v1/ig2/YBkIITuiQ13e1vw3WhNGJekU_fMB3jXEeTjqLb-EAnydjnDmqCVu7sATDepkrUUo6UXWQ4x74BtgfBrgdhWUZZlN.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640&from=bu&cs=640x0" alt="ON1X">
-        </div>
-        <p style="font-size: 1.2em; font-weight: 600; color: var(--text-color); margin-top: 30px;">Открываем приложение</p>
+    <!-- === PULL TO REFRESH === -->
+    <div id="pull-refresh">
+        <i class="fas fa-sync-alt"></i> Тяните для обновления
     </div>
 
     <!-- === ГЛАВНАЯ === -->
@@ -128,10 +113,12 @@
 
         <h1><span>ON1X</span> VPN</h1>
 
-        <!-- Подписка + статус в одной строке -->
-        <div class="subscription-row">
-            <span>Ваша подписка</span>
-            <div id="status-chip"></div>
+        <!-- Тариф + Статус -->
+        <div class="info-row">
+            <span class="info-label">Тариф:</span> <span id="tariff-name">Загрузка...</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Статус подписки:</span> <span id="status-display"></span>
         </div>
 
         <!-- Ключ №1 -->
@@ -142,10 +129,8 @@
             </button>
         </div>
 
-        <!-- Кнопки (будут динамически) -->
-        <div id="action-buttons-container" class="action-buttons-row">
-            <!-- Кнопки добавятся через JS -->
-        </div>
+        <!-- Кнопки -->
+        <div id="action-buttons-container" class="action-buttons-row"></div>
 
         <div class="app-version">Версия: 1.0.0</div>
     </div>
@@ -200,17 +185,133 @@
         // === API ===
         const API_URL = 'https://script.google.com/macros/s/AKfycbwSLCd3EPm2hA4UUHJqVw8N9gf_QJHz8d11JLjyFWKyKaz8F5mpjb4E15Kt3ErLq3T2/exec';
 
+        // === ОСНОВНАЯ ФУНКЦИЯ ЗАГРУЗКИ ===
+        function loadUserData() {
+            if (!Telegram?.WebApp?.initDataUnsafe?.user) {
+                document.getElementById('vpn-key-input').value = 'Запустите в Telegram';
+                return;
+            }
+
+            const u = Telegram.WebApp.initDataUnsafe.user;
+            const userId = u.id;
+
+            document.getElementById('user-avatar').src = u.photo_url || 'https://sun9-8.userapi.com/s/v1/ig2/YBkIITuiQ13e1vw3WhNGJekU_fMB3jXEeTjqLb-EAnydjnDmqCVu7sATDepkrUUo6UXWQ4x74BtgfBrgdhWUZZlN.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640&from=bu&cs=640x0';
+            document.getElementById('user-greeting').textContent = `Добро пожаловать, ${u.first_name}${u.last_name ? ' ' + u.last_name : ''}`;
+            document.getElementById('user-id').textContent = `ID: ${userId}`;
+
+            const url = `${API_URL}?id=${userId}`;
+            console.log('Запрос:', url);
+
+            fetch(url)
+                .then(r => r.ok ? r.json() : Promise.reject(`HTTP ${r.status}`))
+                .then(data => {
+                    console.log('Ответ:', data);
+                    const keyInput = document.getElementById('vpn-key-input');
+                    const tariffEl = document.getElementById('tariff-name');
+                    const statusEl = document.getElementById('status-display');
+                    const buttonsContainer = document.getElementById('action-buttons-container');
+                    buttonsContainer.innerHTML = '';
+
+                    // === ПОДПИСКА НЕТ ===
+                    if (data.not_found || !data.key_1) {
+                        keyInput.value = 'У вас нет подписки';
+                        keyInput.style.color = '#dc3545';
+                        tariffEl.textContent = '—';
+                        statusEl.innerHTML = `<span class="status-chip status-none">Нет</span>`;
+
+                        const buyBtn = document.createElement('a');
+                        buyBtn.href = '#'; buyBtn.className = 'button';
+                        buyBtn.onclick = () => showPage('buy');
+                        buyBtn.textContent = 'Купить';
+                        buttonsContainer.appendChild(buyBtn);
+                        return;
+                    }
+
+                    // === ПОДПИСКА ЕСТЬ ===
+                    keyInput.value = data.key_1;
+                    tariffEl.textContent = data.tariff || 'Неизвестно';
+
+                    let statusHtml = '';
+                    if (data.key_status === 'active') {
+                        statusHtml = `<span class="status-chip status-active">Активна</span>`;
+                    } else if (data.key_status === 'expired') {
+                        statusHtml = `<span class="status-chip status-expired">Истекла</span>`;
+                    } else {
+                        statusHtml = `<span class="status-chip status-none">Неизвестно</span>`;
+                    }
+                    statusEl.innerHTML = statusHtml;
+
+                    const renewBtn = document.createElement('a');
+                    renewBtn.href = '#'; renewBtn.className = 'button';
+                    renewBtn.onclick = () => showPage('renew');
+                    renewBtn.textContent = 'Продлить';
+                    buttonsContainer.appendChild(renewBtn);
+
+                    // Ключ №2
+                    if (data.key_2) {
+                        const extra = document.createElement('div');
+                        extra.innerHTML = `
+                            <div class="key-input-container" style="margin-top: 12px; opacity: 0.9;">
+                                <input type="text" value="${data.key_2}" readonly style="font-size: 0.9em;">
+                                <button onclick="copyText('${data.key_2}')"><i class="fas fa-copy"></i></button>
+                            </div>
+                        `;
+                        document.querySelector('.action-buttons-row').before(extra);
+                    }
+                })
+                .catch(err => {
+                    console.error('Ошибка:', err);
+                    document.getElementById('vpn-key-input').value = 'Ошибка сети';
+                });
+        }
+
+        // === PULL TO REFRESH ===
+        let startY = 0;
+        let pullDistance = 0;
+        const pullThreshold = 100;
+        const refreshEl = document.getElementById('pull-refresh');
+
+        document.addEventListener('touchstart', e => {
+            if (window.scrollY === 0) {
+                startY = e.touches[0].clientY;
+            }
+        });
+
+        document.addEventListener('touchmove', e => {
+            if (startY && window.scrollY === 0) {
+                const currentY = e.touches[0].clientY;
+                pullDistance = currentY - startY;
+
+                if (pullDistance > 0) {
+                    e.preventDefault();
+                    refreshEl.style.top = Math.min(pullDistance / 3, 60) + 'px';
+                    if (pullDistance > pullThreshold) {
+                        refreshEl.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Отпустите для обновления';
+                    } else {
+                        refreshEl.innerHTML = '<i class="fas fa-sync-alt"></i> Тяните для обновления';
+                    }
+                }
+            }
+        });
+
+        document.addEventListener('touchend', () => {
+            if (pullDistance > pullThreshold) {
+                refreshEl.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Обновление...';
+                setTimeout(() => {
+                    location.reload();
+                }, 500);
+            } else {
+                refreshEl.style.top = '-60px';
+            }
+            startY = 0;
+            pullDistance = 0;
+        });
+
         // === ИНИЦИАЛИЗАЦИЯ ===
         document.addEventListener('DOMContentLoaded', () => {
-            const splash = document.getElementById('splash-screen');
-            setTimeout(() => {
-                splash.style.opacity = '0';
-                setTimeout(() => {
-                    splash.style.display = 'none';
-                    document.getElementById('home').style.display = 'block';
-                    setTimeout(() => document.getElementById('home').classList.add('active'), 10);
-                }, 700);
-            }, 1500);
+            // Без анимации — сразу показываем
+            document.getElementById('home').style.display = 'block';
+            setTimeout(() => document.getElementById('home').classList.add('active'), 10);
 
             if (Telegram?.WebApp) {
                 Telegram.WebApp.ready();
@@ -219,83 +320,7 @@
                 }
             }
 
-            if (Telegram?.WebApp?.initDataUnsafe?.user) {
-                const u = Telegram.WebApp.initDataUnsafe.user;
-                const userId = u.id;
-
-                document.getElementById('user-avatar').src = u.photo_url || 'https://sun9-8.userapi.com/s/v1/ig2/YBkIITuiQ13e1vw3WhNGJekU_fMB3jXEeTjqLb-EAnydjnDmqCVu7sATDepkrUUo6UXWQ4x74BtgfBrgdhWUZZlN.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640&from=bu&cs=640x0';
-                document.getElementById('user-greeting').textContent = `Добро пожаловать, ${u.first_name}${u.last_name ? ' ' + u.last_name : ''}`;
-                document.getElementById('user-id').textContent = `ID: ${userId}`;
-
-                if (userId) {
-                    const url = `${API_URL}?id=${userId}`;
-                    console.log('Запрос:', url);
-
-                    fetch(url)
-                        .then(r => r.ok ? r.json() : Promise.reject(`HTTP ${r.status}`))
-                        .then(data => {
-                            console.log('Ответ:', data);
-                            const keyInput = document.getElementById('vpn-key-input');
-                            const statusChip = document.getElementById('status-chip');
-                            const buttonsContainer = document.getElementById('action-buttons-container');
-                            buttonsContainer.innerHTML = ''; // Очищаем
-
-                            // === ПОДПИСКА НЕТ ===
-                            if (data.not_found || !data.key_1) {
-                                keyInput.value = 'У вас нет подписки';
-                                keyInput.style.color = '#dc3545';
-                                statusChip.innerHTML = `<div class="status-chip status-none"><i class="fas fa-times-circle"></i> Нет</div>`;
-
-                                // Только "Купить"
-                                const buyBtn = document.createElement('a');
-                                buyBtn.href = '#'; buyBtn.className = 'button';
-                                buyBtn.onclick = () => showPage('buy');
-                                buyBtn.textContent = 'Купить';
-                                buttonsContainer.appendChild(buyBtn);
-                                return;
-                            }
-
-                            // === ПОДПИСКА ЕСТЬ ===
-                            keyInput.value = data.key_1;
-
-                            // Статус
-                            let statusHtml = '';
-                            if (data.key_status === 'active') {
-                                statusHtml = `<div class="status-chip status-active"><i class="fas fa-check-circle"></i> Активна</div>`;
-                            } else if (data.key_status === 'expired') {
-                                statusHtml = `<div class="status-chip status-expired"><i class="fas fa-clock"></i> Истекла</div>`;
-                            } else {
-                                statusHtml = `<div class="status-chip status-none"><i class="fas fa-question-circle"></i> Неизвестно</div>`;
-                            }
-                            statusChip.innerHTML = statusHtml;
-
-                            // Кнопка "Продлить"
-                            const renewBtn = document.createElement('a');
-                            renewBtn.href = '#'; renewBtn.className = 'button';
-                            renewBtn.onclick = () => showPage('renew');
-                            renewBtn.textContent = 'Продлить';
-                            buttonsContainer.appendChild(renewBtn);
-
-                            // Ключ №2
-                            if (data.key_2) {
-                                const extra = document.createElement('div');
-                                extra.innerHTML = `
-                                    <div class="key-input-container" style="margin-top: 12px; opacity: 0.9;">
-                                        <input type="text" value="${data.key_2}" readonly style="font-size: 0.9em;">
-                                        <button onclick="copyText('${data.key_2}')"><i class="fas fa-copy"></i></button>
-                                    </div>
-                                `;
-                                document.querySelector('.action-buttons-row').before(extra);
-                            }
-                        })
-                        .catch(err => {
-                            console.error('Ошибка:', err);
-                            document.getElementById('vpn-key-input').value = 'Ошибка сети';
-                        });
-                }
-            } else {
-                document.getElementById('vpn-key-input').value = 'Запустите в Telegram';
-            }
+            loadUserData();
         });
     </script>
 </body>
