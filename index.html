@@ -137,6 +137,22 @@
         .profile-menu-btn i { font-size: 1.2em; color: #2481cc; width: 24px; text-align: center; }
         .profile-menu-btn:hover { background: rgba(255,255,255,0.05); }
 
+        /* === СТРАНИЦА "ПРИГЛАСИТЬ ДРУЗЕЙ" === */
+        .referral-info {
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 18px;
+            margin: 20px 0;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.05);
+            font-size: 0.95em;
+            line-height: 1.5;
+            color: #b0b8c2;
+        }
+        .referral-info strong {
+            color: var(--text-color);
+        }
+
         .app-version { margin-top: 30px; font-size: 0.8em; color: #6c757d; text-align: center; }
 
         /* === НИЖНЕЕ МЕНЮ — УМЕНЬШЕНО === */
@@ -211,11 +227,11 @@
             </div>
 
             <div class="profile-menu">
-                <div class="profile-menu-btn">
-                    <i class="fas fa-download"></i> Установить приложение
+                <div class="profile-menu-btn" onclick="showPage('referral-page')">
+                    <i class="fas fa-user-plus"></i> Пригласить друзей
                 </div>
                 <div class="profile-menu-btn">
-                    <i class="fas fa-user-plus"></i> Пригласить друзей
+                    <i class="fas fa-download"></i> Установить приложение
                 </div>
                 <div class="profile-menu-btn">
                     <i class="fas fa-question-circle"></i> FAQ
@@ -232,7 +248,26 @@
         </div>
     </div>
 
-    <!-- === НИЖНЕЕ МЕНЮ — УМЕНЬШЕНО === -->
+    <!-- === СТРАНИЦА "ПРИГЛАСИТЬ ДРУЗЕЙ" === -->
+    <div id="referral-page" class="page">
+        <div class="main-content">
+            <div class="header">
+                <h1><span>ON1X</span> VPN</h1>
+                <div class="tagline">Приглашайте друзей</div>
+            </div>
+
+            <div class="referral-info">
+                Делитесь своей <strong>реферальной ссылкой</strong> с друзьями, родными или просто знакомыми людьми и получайте на свой баланс <strong>15%</strong> от всех покупок и продлений в нашем сервисе.<br><br>
+                Заработанные средства вы можете вывести на банковскую карту или использовать их на покупку/продление подписки в нашем сервисе.
+            </div>
+
+            <div id="referral-container"></div>
+
+            <div class="app-version">Версия: 1.0.0</div>
+        </div>
+    </div>
+
+    <!-- === НИЖНЕЕ МЕНЮ === -->
     <div class="bottom-nav">
         <div class="nav-item active" data-page="subscription-page">
             <i class="fas fa-key"></i> Подписка
@@ -244,14 +279,15 @@
 
     <script>
         function copyText(text, btn) {
-            navigator.clipboard.writeText(text);
-            const icon = btn.querySelector('i');
-            icon.classList.replace('fa-copy', 'fa-check');
-            btn.style.background = '#28a745';
-            setTimeout(() => {
-                icon.classList.replace('fa-check', 'fa-copy');
-                btn.style.background = 'var(--primary-color)';
-            }, 1000);
+            navigator.clipboard.writeText(text).then(() => {
+                const icon = btn.querySelector('i');
+                icon.classList.replace('fa-copy', 'fa-check');
+                btn.style.background = '#28a745';
+                setTimeout(() => {
+                    icon.classList.replace('fa-check', 'fa-copy');
+                    btn.style.background = 'var(--primary-color)';
+                }, 1000);
+            });
         }
 
         function showPage(pageId) {
@@ -266,7 +302,12 @@
             });
 
             if (Telegram?.WebApp?.BackButton) {
-                Telegram.WebApp.BackButton.hide();
+                if (pageId === 'subscription-page') {
+                    Telegram.WebApp.BackButton.hide();
+                } else {
+                    Telegram.WebApp.BackButton.show();
+                    Telegram.WebApp.BackButton.onClick(() => showPage('profile-page'));
+                }
             }
         }
 
@@ -330,6 +371,7 @@
             const avatarUrl = u.photo_url || 'https://sun9-8.userapi.com/s/v1/ig2/YBkIITuiQ13e1vw3WhNGJekU_fMB3jXEeTjqLb-EAnydjnDmqCVu7sATDepkrUUo6UXWQ4x74BtgfBrgdhWUZZlN.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640&from=bu&cs=640x0';
             const greeting = `Добро пожаловать, ${u.first_name}${u.last_name ? ' ' + u.last_name : ''}`;
 
+            // Профиль + Подписка
             document.getElementById('user-avatar-sub').src = avatarUrl;
             document.getElementById('user-greeting-sub').textContent = greeting;
             document.getElementById('user-id-sub').textContent = `ID: ${userId}`;
@@ -353,31 +395,54 @@
 
                     let subscriptions = [];
                     let totalBalance = 0;
+                    let referralLink = '';
 
                     if (rawData.not_found) {
                         subscriptions = [{ key_1: null, not_found: true }];
                     } else if (Array.isArray(rawData)) {
                         subscriptions = rawData.length > 0 ? rawData : [{ key_1: null }];
                         totalBalance = rawData.reduce((sum, sub) => sum + (Number(sub.balance) || 0), 0);
+                        referralLink = rawData[0]?.referral_link || '';
                     } else if (rawData && rawData.key_1) {
                         subscriptions = [rawData];
                         totalBalance = Number(rawData.balance) || 0;
+                        referralLink = rawData.referral_link || '';
                     } else {
                         subscriptions = [{ key_1: null }];
                     }
 
+                    // Подписки
                     subscriptions.forEach(data => {
                         const block = createSubscriptionBlock(data);
                         container.appendChild(block);
                     });
 
+                    // Баланс
                     document.getElementById('balance-value').textContent = `${totalBalance} RUB`;
+
+                    // Реферальная ссылка
+                    const refContainer = document.getElementById('referral-container');
+                    if (referralLink) {
+                        refContainer.innerHTML = `
+                            <div class="key-input-container">
+                                <input type="text" class="key-input" value="${referralLink}" readonly>
+                                <button class="copy-key-button" onclick="copyText('${referralLink}', this)"><i class="fas fa-copy"></i></button>
+                            </div>
+                        `;
+                    } else {
+                        refContainer.innerHTML = `
+                            <div style="text-align: center; color: #dc3545; padding: 16px; font-size: 0.9em;">
+                                Реферальная ссылка не найдена
+                            </div>
+                        `;
+                    }
                 })
                 .catch(err => {
                     console.error('Ошибка:', err);
                     const container = document.getElementById('subscriptions-container');
                     container.innerHTML = '<div style="color: #dc3545; padding: 20px;">Ошибка сети. <a href="#" onclick="location.reload()" style="color: #2481cc;">Обновить</a></div>';
                     document.getElementById('balance-value').textContent = '—';
+                    document.getElementById('referral-container').innerHTML = '<div style="color: #dc3545; padding: 16px;">Ошибка загрузки</div>';
                 });
         }
 
