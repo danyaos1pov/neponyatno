@@ -23,7 +23,7 @@
 
         /* === СТРАНИЦЫ === */
         .page { position: absolute; top: 0; left: 50%; width: 100%; max-width: 600px; padding: 20px 15px; transform: translateX(-50%); display: none; opacity: 0; z-index: 10; }
-        .page.active { display: block; opacity: 1; z-index: 15; }
+        .page.active { display: block; opacity: 1;  z-index: 15; }
 
         /* === ПРОФИЛЬ === */
         .user-profile { display: flex; align-items: center; justify-content: flex-start; margin: 20px auto; max-width: 500px; padding: 15px; gap: 12px; background: var(--card-bg); border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
@@ -192,8 +192,8 @@
             }
         }
 
-        // === API ===
-        const API_URL = 'https://script.google.com/macros/s/AKfycbwSLCd3EPm2hA4UUHJqVw8N9gf_QJHz8d11JLjyFWKyKaz8F5mpjb4E15Kt3ErLq3T2/exec';
+        // === НОВАЯ ССЫЛКА API ===
+        const API_URL = 'https://script.google.com/macros/s/AKfycbxSmUasXhD9sp6T0QUEgKq_on2rRhDDDtzT5aKGn8J-s73Wm-bLvryq0Q8XgzlBLObE/exec';
 
         // === ЗАГРУЗКА ДАННЫХ ===
         function loadUserData() {
@@ -215,7 +215,7 @@
             fetch(url)
                 .then(r => r.ok ? r.json() : Promise.reject(`HTTP ${r.status}`))
                 .then(data => {
-                    console.log('Ответ:', data);
+                    console.log('Ответ API:', data);
                     const keyInput = document.getElementById('vpn-key-input');
                     const tariffEl = document.getElementById('tariff-name');
                     const statusEl = document.getElementById('status-display');
