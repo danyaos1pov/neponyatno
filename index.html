@@ -83,9 +83,19 @@
         .copy-key-button { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: var(--primary-color); color: white; border: none; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9em; transition: all 0.2s; }
         .copy-key-button:hover { background: #1d6fa5; transform: translateY(-50%) scale(1.1); }
 
-        /* === КЛЮЧ 2 — БЕЗ КНОПКИ === */
-        .key-input-container.key2 { padding-right: 12px; }
-        .key-input.key2 { padding-right: 0; }
+        /* === КОММЕНТАРИЙ (key_2) — АВТО-ШИРИНА, БЕЗ КНОПКИ === */
+        .comment-container {
+            margin: 12px 0 0;
+            background: rgba(255,255,255,0.04);
+            border-radius: 12px;
+            padding: 10px 12px;
+            opacity: 0.9;
+            font-size: 0.9em;
+            color: #b0b8c2;
+            line-height: 1.4;
+            word-wrap: break-word;
+            white-space: pre-wrap;
+        }
 
         /* === КНОПКИ === */
         .action-buttons-row { display: flex; gap: 8px; margin-top: 16px; }
@@ -183,15 +193,12 @@
                 ${buttonsHtml}
             `;
 
-            // === КЛЮЧ 2 — БЕЗ КНОПКИ КОПИРОВАНИЯ ===
+            // === КОММЕНТАРИЙ (key_2) — АВТО-ШИРИНА, БЕЗ КНОПКИ ===
             if (data.key_2) {
-                const extra = document.createElement('div');
-                extra.innerHTML = `
-                    <div class="key-input-container key2" style="margin-top: 12px; opacity: 0.9;">
-                        <input type="text" class="key-input key2" value="${data.key_2}" readonly style="font-size: 0.9em;">
-                    </div>
-                `;
-                block.appendChild(extra);
+                const commentDiv = document.createElement('div');
+                commentDiv.className = 'comment-container';
+                commentDiv.textContent = data.key_2;
+                block.appendChild(commentDiv);
             }
 
             return block;
