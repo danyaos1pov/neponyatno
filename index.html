@@ -83,6 +83,10 @@
         .copy-key-button { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: var(--primary-color); color: white; border: none; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9em; transition: all 0.2s; }
         .copy-key-button:hover { background: #1d6fa5; transform: translateY(-50%) scale(1.1); }
 
+        /* === КЛЮЧ 2 — БЕЗ КНОПКИ === */
+        .key-input-container.key2 { padding-right: 12px; }
+        .key-input.key2 { padding-right: 0; }
+
         /* === КНОПКИ === */
         .action-buttons-row { display: flex; gap: 8px; margin-top: 16px; }
         .tg-button { display: block; width: 100%; padding: 13px 0; background: var(--primary-color); color: white; font-weight: 500; font-size: 1em; text-align: center; border-radius: 8px; cursor: pointer; transition: background 0.2s; }
@@ -114,7 +118,7 @@
         <div id="subscriptions-container" class="subscriptions-container"></div>
 
         <div class="refresh-button" onclick="location.reload()">
-            <i class="fas fa-sync-alt"></i> Обновить приложение
+            Обновить приложение
         </div>
 
         <div class="app-version">Версия: 1.0.0</div>
@@ -179,9 +183,14 @@
                 ${buttonsHtml}
             `;
 
+            // === КЛЮЧ 2 — БЕЗ КНОПКИ КОПИРОВАНИЯ ===
             if (data.key_2) {
                 const extra = document.createElement('div');
-                extra.innerHTML = `<div class="key-input-container" style="margin-top: 12px; opacity: 0.9;"><input type="text" class="key-input" value="${data.key_2}" readonly style="font-size: 0.9em;"><button class="copy-key-button" onclick="copyText('${data.key_2}', this)"><i class="fas fa-copy"></i></button></div>`;
+                extra.innerHTML = `
+                    <div class="key-input-container key2" style="margin-top: 12px; opacity: 0.9;">
+                        <input type="text" class="key-input key2" value="${data.key_2}" readonly style="font-size: 0.9em;">
+                    </div>
+                `;
                 block.appendChild(extra);
             }
 
