@@ -21,95 +21,42 @@
         body { background: var(--bg-dark); color: var(--text-color); min-height: 100vh; padding-bottom: 50px; text-align: center; overflow-x: hidden; }
         a { text-decoration: none; color: inherit; }
 
-        /* === СТРАНИЦЫ === */
         .page { position: absolute; top: 0; left: 50%; width: 100%; max-width: 600px; padding: 20px 15px; transform: translateX(-50%); display: none; opacity: 0; z-index: 10; }
         .page.active { display: block; opacity: 1; z-index: 15; }
 
-        /* === ЗАГОЛОВОК В САМОМ ВЕРХУ === */
-        .header {
-            margin: 20px auto 10px;
-            text-align: center;
-        }
-        .header h1 {
-            font-size: 2.5em; color: var(--primary-color); margin: 0;
-        }
+        .header { margin: 20px auto 10px; text-align: center; }
+        .header h1 { font-size: 2.5em; color: var(--primary-color); margin: 0; }
         .header h1 span { color: var(--text-color); }
-        .header .tagline {
-            font-size: 1.1em; color: #b0b8c2; margin-top: 6px; font-weight: 500;
-        }
+        .header .tagline { font-size: 1.1em; color: #b0b8c2; margin-top: 6px; font-weight: 500; }
 
-        /* === ПРОФИЛЬ === */
-        .user-profile {
-            display: flex; align-items: center; justify-content: flex-start;
-            margin: 10px auto 20px; max-width: 500px; padding: 15px;
-            gap: 12px; background: var(--card-bg); border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05);
-        }
+        .user-profile { display: flex; align-items: center; justify-content: flex-start; margin: 10px auto 20px; max-width: 500px; padding: 15px; gap: 12px; background: var(--card-bg); border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
         .user-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
         .user-greeting { font-size: 1.1em; font-weight: 600; color: var(--text-color); text-align: left; margin-bottom: 3px; }
         .user-id { font-size: 0.85em; color: #b0b8c2; text-align: left; }
 
-        /* === ПОДПИСКИ (ДИНАМИЧЕСКИЕ) === */
-        .subscriptions-container {
-            display: flex; flex-direction: column; gap: 16px;
-        }
-        .subscription-block {
-            background: var(--card-bg); border-radius: 18px; padding: 20px 18px 20px;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05);
-        }
+        .subscriptions-container { display: flex; flex-direction: column; gap: 16px; }
+        .subscription-block { background: var(--card-bg); border-radius: 18px; padding: 20px 18px 20px; box-shadow: 0 6px 16px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
 
-        .info-row {
-            display: flex; justify-content: space-between; align-items: center;
-            margin-bottom: 10px; font-size: 1.05em;
-        }
+        .info-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 1.05em; }
         .info-label { font-weight: 600; color: #b0b8c2; }
         .info-value { font-weight: 600; color: var(--text-color); }
 
-        .status-chip {
-            display: inline-flex; align-items: center; gap: 5px;
-            padding: 4px 9px; border-radius: 14px;
-            font-size: 0.75em; font-weight: 600; text-transform: uppercase;
-            letter-spacing: 0.3px;
-        }
+        .status-chip { display: inline-flex; align-items: center; gap: 5px; padding: 4px 9px; border-radius: 14px; font-size: 0.75em; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; }
         .status-active { background: var(--chip-bg-active); color: #28a745; border: 1px solid #28a745; }
         .status-expired { background: var(--chip-bg-expired); color: #dc3545; border: 1px solid #dc3545; }
         .status-none { background: var(--chip-bg-none); color: #b0b8c2; border: 1px solid #444; }
 
-        .key-input-container {
-            position: relative; margin: 14px 0 0;
-            background: rgba(255,255,255,0.04); border-radius: 12px; padding: 12px;
-            display: flex; align-items: center;
-        }
-        .key-input {
-            background: transparent; border: none; color: var(--text-color);
-            font-family: monospace; font-size: 0.95em; width: 100%; padding-right: 42px;
-            pointer-events: none; word-break: break-all; line-height: 1.4;
-        }
-        .copy-key-button {
-            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
-            background: var(--primary-color); color: white; border: none;
-            width: 30px; height: 30px; border-radius: 50%; display: flex;
-            align-items: center; justify-content: center; cursor: pointer;
-            font-size: 0.9em; transition: all 0.2s;
-        }
+        .key-input-container { position: relative; margin: 14px 0 0; background: rgba(255,255,255,0.04); border-radius: 12px; padding: 12px; display: flex; align-items: center; }
+        .key-input { background: transparent; border: none; color: var(--text-color); font-family: monospace; font-size: 0.95em; width: 100%; padding-right: 42px; pointer-events: none; word-break: break-all; line-height: 1.4; }
+        .copy-key-button { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: var(--primary-color); color: white; border: none; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9em; transition: all 0.2s; }
         .copy-key-button:hover { background: #1d6fa5; transform: translateY(-50%) scale(1.1); }
 
-        .action-buttons-row {
-            display: flex; gap: 8px; margin-top: 16px;
-        }
-        .tg-button {
-            display: block; width: 100%; padding: 13px 0;
-            background: var(--primary-color); color: white; font-weight: 500;
-            font-size: 1em; text-align: center; border-radius: 8px;
-            cursor: pointer; transition: background 0.2s;
-        }
+        .action-buttons-row { display: flex; gap: 8px; margin-top: 16px; }
+        .tg-button { display: block; width: 100%; padding: 13px 0; background: var(--primary-color); color: white; font-weight: 500; font-size: 1em; text-align: center; border-radius: 8px; cursor: pointer; transition: background 0.2s; }
         .tg-button:hover, .tg-button:active { background: #1d6fa5; }
         .tg-button.full { margin-top: 16px !important; width: 100% !important; display: block !important; }
 
-        .refresh-button {
-            margin-top: 30px; font-size: 0.9em; color: #2481cc;
-            cursor: pointer; display: inline-flex; align-items: center; gap: 6px;
-        }
+        .refresh-button { margin-top: 30px; font-size: 0.9em; color: #2481cc; cursor: pointer; display: inline-flex; align-items: center; gap: 6px; }
         .refresh-button i { font-size: 1.1em; }
 
         .app-version { margin-top: 30px; font-size: 0.8em; color: #6c757d; text-align: center; }
@@ -117,15 +64,12 @@
 </head>
 <body>
 
-    <!-- === ГЛАВНАЯ === -->
     <div id="home" class="page">
-        <!-- ЗАГОЛОВОК В САМОМ ВЕРХУ -->
         <div class="header">
             <h1><span>ON1X</span> VPN</h1>
             <div class="tagline">Свобода. Безопасность. Надежность.</div>
         </div>
 
-        <!-- ПРОФИЛЬ -->
         <div class="user-profile">
             <img id="user-avatar" class="user-avatar" src="" alt="Аватар">
             <div>
@@ -134,10 +78,8 @@
             </div>
         </div>
 
-        <!-- ДИНАМИЧЕСКИЕ ПОДПИСКИ -->
         <div id="subscriptions-container" class="subscriptions-container"></div>
 
-        <!-- КНОПКА ОБНОВЛЕНИЯ -->
         <div class="refresh-button" onclick="location.reload()">
             <i class="fas fa-sync-alt"></i> Обновить приложение
         </div>
@@ -149,7 +91,6 @@
     <div id="renew" class="page"></div>
 
     <script>
-        // === КОПИРОВАНИЕ ===
         function copyText(text, btn) {
             navigator.clipboard.writeText(text);
             const icon = btn.querySelector('i');
@@ -161,11 +102,8 @@
             }, 1000);
         }
 
-        // === НАВИГАЦИЯ ===
         function showPage(id) {
-            document.querySelectorAll('.page').forEach(p => {
-                p.classList.remove('active'); p.style.display = 'none';
-            });
+            document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
             const page = document.getElementById(id);
             page.style.display = 'block';
             setTimeout(() => page.classList.add('active'), 10);
@@ -179,92 +117,47 @@
             }
         }
 
-        // === API ===
         const API_URL = 'https://script.google.com/macros/s/AKfycbxSmUasXhD9sp6T0QUEgKq_on2rRhDDDtzT5aKGn8J-s73Wm-bLvryq0Q8XgzlBLObE/exec';
 
-        // === СОЗДАНИЕ БЛОКА ПОДПИСКИ ===
-        function createSubscriptionBlock(data, isFirst = false) {
+        function createSubscriptionBlock(data) {
             const block = document.createElement('div');
             block.className = 'subscription-block';
 
-            let statusHtml = '';
-            if (data.key_status === 'active') {
-                statusHtml = `<span class="status-chip status-active">Активна</span>`;
-            } else if (data.key_status === 'expired') {
-                statusHtml = `<span class="status-chip status-expired">Истекла</span>`;
-            } else {
-                statusHtml = `<span class="status-chip status-none">Неизвестно</span>`;
-            }
+            const isNoSub = !data.key_1 || data.not_found;
 
-            let keyHtml = '';
-            if (data.key_1) {
-                keyHtml = `
-                    <div class="key-input-container">
-                        <input type="text" class="key-input" value="${data.key_1}" readonly>
-                        <button class="copy-key-button" onclick="copyText('${data.key_1}', this)">
-                            <i class="fas fa-copy"></i>
-                        </button>
-                    </div>
-                `;
-            } else {
-                keyHtml = `
-                    <div class="key-input-container">
-                        <input type="text" class="key-input" value="У вас нет подписки" readonly style="color: #dc3545;">
-                        <button class="copy-key-button" style="opacity: 0.5; cursor: not-allowed;" disabled>
-                            <i class="fas fa-copy"></i>
-                        </button>
-                    </div>
-                `;
-            }
+            const statusHtml = isNoSub
+                ? `<span class="status-chip status-none">Нет</span>`
+                : (data.key_status === 'active'
+                    ? `<span class="status-chip status-active">Активна</span>`
+                    : `<span class="status-chip status-expired">Истекла</span>`);
 
-            let buttonsHtml = '';
-            if (!data.key_1) {
-                buttonsHtml = `
-                    <a class="tg-button full" onclick="showPage('buy')">Купить</a>
-                `;
-            } else {
-                buttonsHtml = `
-                    <div class="action-buttons-row">
-                        <a class="tg-button">Сменить тариф</a>
-                        <a class="tg-button" onclick="showPage('renew')">Продлить</a>
-                    </div>
-                `;
-            }
+            const keyHtml = isNoSub
+                ? `<div class="key-input-container"><input type="text" class="key-input" value="У вас нет подписки" readonly style="color: #dc3545;"><button class="copy-key-button" disabled><i class="fas fa-copy"></i></button></div>`
+                : `<div class="key-input-container"><input type="text" class="key-input" value="${data.key_1}" readonly><button class="copy-key-button" onclick="copyText('${data.key_1}', this)"><i class="fas fa-copy"></i></button></div>`;
+
+            const buttonsHtml = isNoSub
+                ? `<a class="tg-button full" onclick="showPage('buy')">Купить</a>`
+                : `<div class="action-buttons-row"><a class="tg-button">Сменить тариф</a><a class="tg-button" onclick="showPage('renew')">Продлить</a></div>`;
 
             block.innerHTML = `
-                <div class="info-row">
-                    <span class="info-label">Тариф:</span>
-                    <span class="info-value">${data.tariff || '—'}</span>
-                </div>
-                <div class="info-row">
-                    <span class="info-label">Статус подписки:</span>
-                    <span>${statusHtml}</span>
-                </div>
+                <div class="info-row"><span class="info-label">Тариф:</span><span class="info-value">${isNoSub ? '—' : (data.tariff || 'Неизвестно')}</span></div>
+                <div class="info-row"><span class="info-label">Статус подписки:</span><span>${statusHtml}</span></div>
                 ${keyHtml}
                 ${buttonsHtml}
             `;
 
-            // Ключ №2
             if (data.key_2) {
                 const extra = document.createElement('div');
-                extra.innerHTML = `
-                    <div class="key-input-container" style="margin-top: 12px; opacity: 0.9;">
-                        <input type="text" class="key-input" value="${data.key_2}" readonly style="font-size: 0.9em;">
-                        <button class="copy-key-button" onclick="copyText('${data.key_2}', this)">
-                            <i class="fas fa-copy"></i>
-                        </button>
-                    </div>
-                `;
+                extra.innerHTML = `<div class="key-input-container" style="margin-top: 12px; opacity: 0.9;"><input type="text" class="key-input" value="${data.key_2}" readonly style="font-size: 0.9em;"><button class="copy-key-button" onclick="copyText('${data.key_2}', this)"><i class="fas fa-copy"></i></button></div>`;
                 block.appendChild(extra);
             }
 
             return block;
         }
 
-        // === ЗАГРУЗКА ДАННЫХ ===
         function loadUserData() {
             if (!Telegram?.WebApp?.initDataUnsafe?.user) {
-                document.getElementById('vpn-key-input')?.parentElement?.remove();
+                document.getElementById('subscriptions-container').innerHTML = '<div style="color: #dc3545; padding: 20px;">Запустите в Telegram</div>';
                 return;
             }
 
@@ -279,46 +172,46 @@
             console.log('Запрос:', url);
 
             fetch(url)
-                .then(r => r.ok ? r.json() : Promise.reject(`HTTP ${r.status}`))
+                .then(r => {
+                    if (!r.ok) throw new Error(`HTTP ${r.status}`);
+                    return r.json();
+                })
                 .then(rawData => {
                     console.log('Ответ API:', rawData);
                     const container = document.getElementById('subscriptions-container');
                     container.innerHTML = '';
 
-                    // Если ответ — массив (несколько подписок)
-                    if (Array.isArray(rawData)) {
-                        if (rawData.length === 0) {
-                            const noSub = createSubscriptionBlock({ key_1: null });
-                            container.appendChild(noSub);
-                        } else {
-                            rawData.forEach((data, i) => {
-                                const block = createSubscriptionBlock(data, i === 0);
-                                container.appendChild(block);
-                            });
-                        }
+                    let subscriptions = [];
+
+                    if (rawData.not_found) {
+                        subscriptions = [{ key_1: null, not_found: true }];
+                    } else if (Array.isArray(rawData)) {
+                        subscriptions = rawData.length > 0 ? rawData : [{ key_1: null }];
+                    } else if (rawData && rawData.key_1) {
+                        subscriptions = [rawData];
                     } else {
-                        // Один объект — как раньше
-                        const block = createSubscriptionBlock(rawData);
-                        container.appendChild(block);
+                        subscriptions = [{ key_1: null }];
                     }
+
+                    subscriptions.forEach(data => {
+                        const block = createSubscriptionBlock(data);
+                        container.appendChild(block);
+                    });
                 })
                 .catch(err => {
                     console.error('Ошибка:', err);
                     const container = document.getElementById('subscriptions-container');
-                    container.innerHTML = '<div style="color: #dc3545; padding: 20px;">Ошибка загрузки</div>';
+                    container.innerHTML = '<div style="color: #dc3545; padding: 20px;">Ошибка сети. <a href="#" onclick="location.reload()" style="color: #2481cc;">Обновить</a></div>';
                 });
         }
 
-        // === ИНИЦИАЛИЗАЦИЯ ===
         document.addEventListener('DOMContentLoaded', () => {
             document.getElementById('home').style.display = 'block';
             setTimeout(() => document.getElementById('home').classList.add('active'), 10);
 
             if (Telegram?.WebApp) {
                 Telegram.WebApp.ready();
-                if (Telegram.WebApp.disableVerticalSwipes) {
-                    Telegram.WebApp.disableVerticalSwipes();
-                }
+                if (Telegram.WebApp.disableVerticalSwipes) Telegram.WebApp.disableVerticalSwipes();
             }
 
             loadUserData();
