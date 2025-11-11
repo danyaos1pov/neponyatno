@@ -15,6 +15,9 @@
             --text-color: #e6edf3;
             --accent-red: #dc3545;
             --gold-color: #ffd700;
+            --chip-bg-active: #1e3a2b;
+            --chip-bg-expired: #3a1e1e;
+            --chip-bg-none: #2d2d2d;
         }
 
         * {
@@ -34,7 +37,7 @@
 
         a { text-decoration: none; color: inherit; }
 
-        /* === SPLASH SCREEN === */
+        /* === SPLASH === */
         #splash-screen {
             position: fixed; top: 0; left: 0;
             width: 100%; height: 100%;
@@ -44,9 +47,6 @@
             z-index: 1000; opacity: 1;
             transition: opacity 0.7s ease-out;
         }
-
-        @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-        .spin { animation: spin 1s linear infinite; }
 
         .pulse-container {
             position: relative;
@@ -86,7 +86,6 @@
             transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.4, 1), opacity 0.4s;
             display: none; opacity: 0; z-index: 10;
         }
-        @media (max-width: 600px) { #home { padding-top: 15px; } }
         .page.active { display: block; opacity: 1; z-index: 15; transform: translateX(-50%) scale(1); }
 
         /* === ПРОФИЛЬ === */
@@ -104,9 +103,51 @@
         h1 { font-size: 2.2em; margin: 10px 0 20px; color: var(--primary-color); }
         h1 span { color: var(--text-color); }
 
+        /* === ПОДПИСКА === */
+        .subscription-label {
+            font-size: 1.1em;
+            font-weight: 600;
+            color: var(--text-color);
+            margin: 15px auto 8px;
+            text-align: left;
+            max-width: 500px;
+            padding-left: 15px;
+        }
+
+        /* === СТАТУС ЧИП === */
+        .status-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin: 8px auto 15px;
+            max-width: 500px;
+        }
+        .status-active {
+            background: var(--chip-bg-active);
+            color: #28a745;
+            border: 1px solid #28a745;
+        }
+        .status-expired {
+            background: var(--chip-bg-expired);
+            color: #dc3545;
+            border: 1px solid #dc3545;
+        }
+        .status-none {
+            background: var(--chip-bg-none);
+            color: #b0b8c2;
+            border: 1px solid #444;
+        }
+
         /* === ПОЛЕ КЛЮЧА === */
         .key-input-container {
-            position: relative; margin: 20px auto; max-width: 500px;
+            position: relative; margin: 0 auto 20px;
+            max-width: 500px;
             background: var(--card-bg); border-radius: 15px; padding: 15px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05);
             display: flex; align-items: center;
@@ -136,9 +177,9 @@
             color: white; border: none; box-shadow: 0 2px 5px rgba(0,0,0,0.4);
             font-weight: 700; cursor: pointer; transition: all 0.2s; text-align: center;
         }
-        .button:hover, .button:active { background: #0056b3; }
+        .button:hover { background: #0056b3; }
 
-        /* === МОДАЛЬНОЕ ОКНО === */
+        /* === МОДАЛЬНОЕ === */
         #modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.7); backdrop-filter: blur(5px);
@@ -186,6 +227,12 @@
         </div>
 
         <h1><span>ON1X</span> VPN</h1>
+
+        <!-- Подписка -->
+        <div class="subscription-label">Ваша подписка</div>
+
+        <!-- Статус -->
+        <div id="status-container" style="text-align: center;"></div>
 
         <!-- Ключ №1 -->
         <div class="key-input-container">
@@ -242,15 +289,17 @@
 
         document.getElementById('copy-key-button').onclick = () => {
             const key = document.getElementById('vpn-key-input').value;
-            copyText(key);
-            const btn = document.getElementById('copy-key-button');
-            const icon = btn.querySelector('i');
-            icon.classList.replace('fa-copy', 'fa-check');
-            btn.style.background = '#28a745';
-            setTimeout(() => {
-                icon.classList.replace('fa-check', 'fa-copy');
-                btn.style.background = 'var(--primary-color)';
-            }, 1000);
+            if (key && !key.includes('нет') && !key.includes('Загрузка')) {
+                copyText(key);
+                const btn = document.getElementById('copy-key-button');
+                const icon = btn.querySelector('i');
+                icon.classList.replace('fa-copy', 'fa-check');
+                btn.style.background = '#28a745';
+                setTimeout(() => {
+                    icon.classList.replace('fa-check', 'fa-copy');
+                    btn.style.background = 'var(--primary-color)';
+                }, 1000);
+            }
         };
 
         // === НАВИГАЦИЯ ===
@@ -273,7 +322,7 @@
             }
         }
 
-        // === API URL ===
+        // === API ===
         const API_URL = 'https://script.google.com/macros/s/AKfycbwSLCd3EPm2hA4UUHJqVw8N9gf_QJHz8d11JLjyFWKyKaz8F5mpjb4E15Kt3ErLq3T2/exec';
 
         // === ИНИЦИАЛИЗАЦИЯ ===
@@ -305,7 +354,7 @@
 
                 if (userId) {
                     const url = `${API_URL}?id=${userId}`;
-                    console.log('Запрос к API:', url);
+                    console.log('Запрос:', url);
 
                     fetch(url)
                         .then(r => {
@@ -313,24 +362,35 @@
                             return r.json();
                         })
                         .then(data => {
-                            console.log('Ответ API:', data);
-
+                            console.log('Ответ:', data);
                             const keyInput = document.getElementById('vpn-key-input');
+                            const statusContainer = document.getElementById('status-container');
+
+                            if (data.not_found || !data.key_1) {
+                                // Нет подписки
+                                keyInput.value = 'У вас нет подписки';
+                                keyInput.style.color = '#dc3545';
+                                statusContainer.innerHTML = `
+                                    <div class="status-chip status-none">
+                                        <i class="fas fa-times-circle"></i> Нет подписки
+                                    </div>
+                                `;
+                                return;
+                            }
+
+                            // Есть подписка
+                            keyInput.value = data.key_1;
 
                             // Статус
-                            let statusText = 'Неизвестно';
-                            let statusColor = '#ffc107';
-                            if (data.key_status === 'active') { statusText = 'Активен'; statusColor = '#28a745'; }
-                            else if (data.key_status === 'expired') { statusText = 'Истёк'; statusColor = '#dc3545'; }
-                            else if (data.key_status === 'none') { statusText = 'Нет ключа'; statusColor = '#dc3545'; }
-
-                            // Ключ №1
-                            if (data.key_1) {
-                                keyInput.value = data.key_1;
+                            let statusHtml = '';
+                            if (data.key_status === 'active') {
+                                statusHtml = `<div class="status-chip status-active"><i class="fas fa-check-circle"></i> Активна</div>`;
+                            } else if (data.key_status === 'expired') {
+                                statusHtml = `<div class="status-chip status-expired"><i class="fas fa-clock"></i> Истекла</div>`;
                             } else {
-                                keyInput.value = 'Ключ не назначен';
-                                keyInput.style.color = '#dc3545';
+                                statusHtml = `<div class="status-chip status-none"><i class="fas fa-question-circle"></i> Неизвестно</div>`;
                             }
+                            statusContainer.innerHTML = statusHtml;
 
                             // Ключ №2
                             if (data.key_2) {
@@ -343,36 +403,11 @@
                                 `;
                                 document.querySelector('.action-buttons-row').before(extra);
                             }
-
-                            // Статус + Баланс
-                            const info = document.createElement('div');
-                            info.innerHTML = `
-                                <p style="margin: 15px 0 8px; font-size: 0.95em;">
-                                    Статус: <span style="color: ${statusColor}; font-weight: 600;">${statusText}</span>
-                                </p>
-                                <p style="margin: 0 0 15px; font-weight: 600;">
-                                    Баланс: <span style="color: #28a745;">${data.balance || 0} ₽</span>
-                                </p>
-                            `;
-                            document.querySelector('.action-buttons-row').before(info);
-
-                            // Реф. ссылка
-                            if (data.referral_link) {
-                                const btn = document.createElement('a');
-                                btn.href = data.referral_link;
-                                btn.className = 'button';
-                                btn.innerHTML = 'Пригласить друга';
-                                btn.target = '_blank';
-                                btn.style.marginTop = '15px';
-                                document.querySelector('.action-buttons-row').after(btn);
-                            }
                         })
                         .catch(err => {
-                            console.error('Ошибка API:', err);
+                            console.error('Ошибка:', err);
                             document.getElementById('vpn-key-input').value = 'Ошибка сети';
                         });
-                } else {
-                    document.getElementById('vpn-key-input').value = 'ID не найден';
                 }
             } else {
                 document.getElementById('vpn-key-input').value = 'Запустите в Telegram';
