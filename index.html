@@ -35,52 +35,58 @@
         h1 { font-size: 2.2em; margin: 10px 0 20px; color: var(--primary-color); }
         h1 span { color: var(--text-color); }
 
-        /* === ТАРИФ + СТАТУС === */
-        .info-row {
-            max-width: 500px; margin: 15px auto; padding: 0 15px; text-align: left;
-            font-size: 1.05em; line-height: 1.6;
+        /* === ГЛАВНЫЙ БЛОК ПОДПИСКИ === */
+        .subscription-block {
+            max-width: 500px;
+            margin: 20px auto;
+            background: var(--card-bg);
+            border-radius: 18px;
+            padding: 18px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.05);
         }
-        .info-label { font-weight: 600; color: var(--text-color); }
+
+        .info-row {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-bottom: 12px; font-size: 1.05em;
+        }
+        .info-label { font-weight: 600; color: #b0b8c2; }
+        .info-value { font-weight: 600; color: var(--text-color); }
+
         .status-chip {
-            display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 16px; font-size: 0.8em; font-weight: 600; text-transform: uppercase; margin-left: 8px;
+            display: inline-flex; align-items: center; gap: 6px; padding: 5px 11px; border-radius: 16px; font-size: 0.8em; font-weight: 600; text-transform: uppercase;
         }
         .status-active { background: var(--chip-bg-active); color: #28a745; border: 1px solid #28a745; }
         .status-expired { background: var(--chip-bg-expired); color: #dc3545; border: 1px solid #dc3545; }
         .status-none { background: var(--chip-bg-none); color: #b0b8c2; border: 1px solid #444; }
 
-        /* === ПОЛЕ КЛЮЧА === */
+        /* === КЛЮЧ === */
         .key-input-container {
-            position: relative; margin: 0 auto 20px; max-width: 500px;
-            background: var(--card-bg); border-radius: 15px; padding: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05);
+            position: relative; margin: 16px 0 0;
+            background: rgba(255,255,255,0.04); border-radius: 12px; padding: 12px;
             display: flex; align-items: center;
         }
         #vpn-key-input {
             background: transparent; border: none; color: var(--text-color);
-            font-family: monospace; font-size: 0.95em; width: 100%; padding-right: 50px;
+            font-family: monospace; font-size: 0.95em; width: 100%; padding-right: 45px;
             pointer-events: none; word-break: break-all; line-height: 1.4;
         }
         #copy-key-button {
-            position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+            position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
             background: var(--primary-color); color: white; border: none;
-            width: 36px; height: 36px; border-radius: 50%; display: flex;
+            width: 34px; height: 34px; border-radius: 50%; display: flex;
             align-items: center; justify-content: center; cursor: pointer;
-            font-size: 1em; transition: all 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            font-size: 0.95em; transition: all 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.3);
         }
         #copy-key-button:hover { background: #0056b3; transform: translateY(-50%) scale(1.1); }
 
-        /* === КНОПКИ === */
-        .action-buttons-row {
-            display: flex; gap: 10px; max-width: 500px; margin: 10px auto 20px; justify-content: center;
+        /* === КНОПКА В БЛОКЕ === */
+        .action-button-block {
+            margin-top: 16px;
         }
-        .action-buttons-row .button { flex: 1; max-width: none; margin: 0; }
-        .button {
-            display: block; width: 100%; max-width: 300px; margin: 20px auto;
-            padding: 12px 0; border-radius: 8px; background: var(--primary-color);
-            color: white; border: none; box-shadow: 0 2px 5px rgba(0,0,0,0.4);
-            font-weight: 700; cursor: pointer; transition: all 0.2s; text-align: center;
+        .action-button-block .button {
+            width: 100%; padding: 13px 0; border-radius: 12px; font-weight: 700; font-size: 1.05em;
         }
-        .button:hover { background: #0056b3; }
 
         /* === PULL TO REFRESH === */
         #pull-refresh {
@@ -113,24 +119,28 @@
 
         <h1><span>ON1X</span> VPN</h1>
 
-        <!-- Тариф + Статус -->
-        <div class="info-row">
-            <span class="info-label">Тариф:</span> <span id="tariff-name">Загрузка...</span>
-        </div>
-        <div class="info-row">
-            <span class="info-label">Статус подписки:</span> <span id="status-display"></span>
-        </div>
+        <!-- === ГЛАВНЫЙ БЛОК === -->
+        <div class="subscription-block">
+            <div class="info-row">
+                <span class="info-label">Тариф:</span>
+                <span id="tariff-name" class="info-value">Загрузка...</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Статус подписки:</span>
+                <span id="status-display"></span>
+            </div>
 
-        <!-- Ключ №1 -->
-        <div class="key-input-container">
-            <input type="text" id="vpn-key-input" value="Загрузка..." readonly>
-            <button id="copy-key-button" title="Скопировать ключ">
-                <i class="fas fa-copy"></i>
-            </button>
-        </div>
+            <!-- Ключ -->
+            <div class="key-input-container">
+                <input type="text" id="vpn-key-input" value="Загрузка..." readonly>
+                <button id="copy-key-button" title="Скопировать ключ">
+                    <i class="fas fa-copy"></i>
+                </button>
+            </div>
 
-        <!-- Кнопки -->
-        <div id="action-buttons-container" class="action-buttons-row"></div>
+            <!-- Кнопка -->
+            <div id="action-button-block" class="action-button-block"></div>
+        </div>
 
         <div class="app-version">Версия: 1.0.0</div>
     </div>
@@ -142,7 +152,7 @@
         // === ЗАПРЕТ КОНТЕКСТА ===
         document.addEventListener('contextmenu', e => e.preventDefault());
 
-        // === КОПИРОВАНИЕ БЕЗ МОДАЛКИ ===
+        // === КОПИРОВАНИЕ ===
         function copyText(text) {
             navigator.clipboard.writeText(text);
             const btn = document.getElementById('copy-key-button');
@@ -185,7 +195,7 @@
         // === API ===
         const API_URL = 'https://script.google.com/macros/s/AKfycbwSLCd3EPm2hA4UUHJqVw8N9gf_QJHz8d11JLjyFWKyKaz8F5mpjb4E15Kt3ErLq3T2/exec';
 
-        // === ОСНОВНАЯ ФУНКЦИЯ ЗАГРУЗКИ ===
+        // === ЗАГРУЗКА ДАННЫХ ===
         function loadUserData() {
             if (!Telegram?.WebApp?.initDataUnsafe?.user) {
                 document.getElementById('vpn-key-input').value = 'Запустите в Telegram';
@@ -209,8 +219,8 @@
                     const keyInput = document.getElementById('vpn-key-input');
                     const tariffEl = document.getElementById('tariff-name');
                     const statusEl = document.getElementById('status-display');
-                    const buttonsContainer = document.getElementById('action-buttons-container');
-                    buttonsContainer.innerHTML = '';
+                    const actionBlock = document.getElementById('action-button-block');
+                    actionBlock.innerHTML = '';
 
                     // === ПОДПИСКА НЕТ ===
                     if (data.not_found || !data.key_1) {
@@ -223,7 +233,7 @@
                         buyBtn.href = '#'; buyBtn.className = 'button';
                         buyBtn.onclick = () => showPage('buy');
                         buyBtn.textContent = 'Купить';
-                        buttonsContainer.appendChild(buyBtn);
+                        actionBlock.appendChild(buyBtn);
                         return;
                     }
 
@@ -245,7 +255,7 @@
                     renewBtn.href = '#'; renewBtn.className = 'button';
                     renewBtn.onclick = () => showPage('renew');
                     renewBtn.textContent = 'Продлить';
-                    buttonsContainer.appendChild(renewBtn);
+                    actionBlock.appendChild(renewBtn);
 
                     // Ключ №2
                     if (data.key_2) {
@@ -256,7 +266,7 @@
                                 <button onclick="copyText('${data.key_2}')"><i class="fas fa-copy"></i></button>
                             </div>
                         `;
-                        document.querySelector('.action-buttons-row').before(extra);
+                        actionBlock.before(extra);
                     }
                 })
                 .catch(err => {
@@ -272,24 +282,19 @@
         const refreshEl = document.getElementById('pull-refresh');
 
         document.addEventListener('touchstart', e => {
-            if (window.scrollY === 0) {
-                startY = e.touches[0].clientY;
-            }
+            if (window.scrollY === 0) startY = e.touches[0].clientY;
         });
 
         document.addEventListener('touchmove', e => {
             if (startY && window.scrollY === 0) {
                 const currentY = e.touches[0].clientY;
                 pullDistance = currentY - startY;
-
                 if (pullDistance > 0) {
                     e.preventDefault();
                     refreshEl.style.top = Math.min(pullDistance / 3, 60) + 'px';
-                    if (pullDistance > pullThreshold) {
-                        refreshEl.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Отпустите для обновления';
-                    } else {
-                        refreshEl.innerHTML = '<i class="fas fa-sync-alt"></i> Тяните для обновления';
-                    }
+                    refreshEl.innerHTML = pullDistance > pullThreshold
+                        ? '<i class="fas fa-sync-alt fa-spin"></i> Отпустите для обновления'
+                        : '<i class="fas fa-sync-alt"></i> Тяните для обновления';
                 }
             }
         });
@@ -297,19 +302,15 @@
         document.addEventListener('touchend', () => {
             if (pullDistance > pullThreshold) {
                 refreshEl.innerHTML = '<i class="fas fa-sync-alt fa-spin"></i> Обновление...';
-                setTimeout(() => {
-                    location.reload();
-                }, 500);
+                setTimeout(() => location.reload(), 500);
             } else {
                 refreshEl.style.top = '-60px';
             }
-            startY = 0;
-            pullDistance = 0;
+            startY = 0; pullDistance = 0;
         });
 
         // === ИНИЦИАЛИЗАЦИЯ ===
         document.addEventListener('DOMContentLoaded', () => {
-            // Без анимации — сразу показываем
             document.getElementById('home').style.display = 'block';
             setTimeout(() => document.getElementById('home').classList.add('active'), 10);
 
