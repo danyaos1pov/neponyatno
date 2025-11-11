@@ -48,28 +48,40 @@ a {
     justify-content: flex-start;
 }
 
+/* === ОБНОВЛЁННАЯ ПЛАШКА СТАТУСА ПОЛЬЗОВАТЕЛЯ === */
 .user-status-badge {
-    font-size: 0.6em;           /* Было 0.75em → стало меньше */
+    font-size: 0.55em;           /* Ещё компактнее */
     font-weight: 700;
-    padding: 2px 8px;            /* Было 2px 8px → стало компактнее */
-    border-radius: 6px;          /* Чуть меньше скругление */
+    padding: 2px 6px;            /* Минимум отступов */
+    border-radius: 6px;          /* Мягкое скругление */
     color: white;
     text-transform: uppercase;
-    letter-spacing: 0.4px;
+    letter-spacing: 0.6px;
     line-height: 1;
     white-space: nowrap;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    min-width: 48px;             /* Фиксированная ширина для выравнивания */
+    text-align: center;
+    transition: all 0.2s ease;
 }
 
+/* Состояния */
 .user-status-badge.active {
-    background: #28a745;
+    background: linear-gradient(135deg, #28a745, #1e7e34);
 }
 
 .user-status-badge.blocked {
-    background: #dc3545;
+    background: linear-gradient(135deg, #dc3545, #c82333);
 }
 
 .user-status-badge.deleted {
-    background: #6c757d;
+    background: linear-gradient(135deg, #6c757d, #5a6268);
+}
+
+/* Лёгкий эффект при наведении (если не заблокировано) */
+.user-status-badge:hover:not(.blocked):not(.deleted) {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
 }
 
 /* === НОВОЕ МОДАЛЬНОЕ ОКНО (ВСПЛЫВАЮЩЕЕ УВЕДОМЛЕНИЕ) === */
@@ -1151,19 +1163,19 @@ p {
                     <h4 style="text-align: center; margin-top: 0; font-size: 1.1em; font-weight: 700;">Выберите срок подписки</h4>
                     
                     <div id="renew-days-family" data-tariff-name="family">
-                        <div class="tariff-days-option" data-days="30" data-link="https://t.me/on1xVPN_bot?start=c_2623788" onclick="selectRenewDay('family', this)">
+                        <div class="tariff-days-option" data-days="30" data-link="https://t.me/on1xVPN_bot?start=c_2623776" onclick="selectRenewDay('family', this)">
                             <span>30 дней</span>
                             <span class="option-price">200 руб</span>
                         </div>
-                        <div class="tariff-days-option" data-days="60" data-link="https://t.me/on1xVPN_bot?start=c_2623787" onclick="selectRenewDay('family', this)">
+                        <div class="tariff-days-option" data-days="60" data-link="https://t.me/on1xVPN_bot?start=c_2623775" onclick="selectRenewDay('family', this)">
                             <span>60 дней</span>
                             <span class="option-price">400 руб</span>
                         </div>
-                        <div class="tariff-days-option" data-days="90" data-link="https://t.me/on1xVPN_bot?start=c_2623765" onclick="selectRenewDay('family', this)">
+                        <div class="tariff-days-option" data-days="90" data-link="https://t.me/on1xVPN_bot?start=c_2623773" onclick="selectRenewDay('family', this)">
                             <span>90 дней</span>
                             <span class="option-price">600 руб</span>
                         </div>
-                        <div class="tariff-days-option" data-days="180" data-link="https://t.me/on1xVPN_bot?start=c_2623764" onclick="selectRenewDay('family', this)">
+                        <div class="tariff-days-option" data-days="180" data-link="https://t.me/on1xVPN_bot?start=c_2623772" onclick="selectRenewDay('family', this)">
                             <span>180 дней</span>
                             <span class="option-price">1200 руб</span>
                         </div>
@@ -1851,5 +1863,3 @@ function goToLinkAndClose(url) {
 </script>
 </body>
 </html>
-
-
