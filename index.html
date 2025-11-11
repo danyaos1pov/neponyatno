@@ -48,73 +48,6 @@ a {
     justify-content: flex-start;
 }
 
-/* === ОБНОВЛЁННАЯ ПЛАШКА СТАТУСА ПОЛЬЗОВАТЕЛЯ === */
-/* === НОВЫЕ МИНИМАЛИСТИЧНЫЕ ПЛАШКИ СТАТУСА === */
-.user-status-badge {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 4px;
-    font-size: 0.58em;
-    font-weight: 700;
-    padding: 1px 5px;
-    min-width: 38px;
-    height: 16px;
-    border-radius: 8px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: white;
-    line-height: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.25);
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
-
-/* Иконка-статус (точка) */
-.user-status-badge::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: currentColor;
-    flex-shrink: 0;
-}
-
-/* === Состояния === */
-.user-status-badge.active {
-    background: #1e7e34;
-    color: #b8e6b8;
-}
-.user-status-badge.active::before {
-    background: #4ade80;
-    box-shadow: 0 0 4px rgba(74,222,128,0.6);
-}
-
-.user-status-badge.blocked {
-    background: #991b1b;
-    color: #fca5a5;
-}
-.user-status-badge.blocked::before {
-    background: #f87171;
-    box-shadow: 0 0 4px rgba(248,113,113,0.6);
-}
-
-.user-status-badge.deleted {
-    background: #4b5563;
-    color: #d1d5db;
-}
-.user-status-badge.deleted::before {
-    background: #9ca3af;
-    box-shadow: 0 0 4px rgba(156,163,175,0.6);
-}
-
-/* Лёгкий "всплывающий" эффект при наведении */
-.user-status-badge:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.35);
-}
-
 /* === НОВОЕ МОДАЛЬНОЕ ОКНО (ВСПЛЫВАЮЩЕЕ УВЕДОМЛЕНИЕ) === */
 #modal-overlay {
     position: fixed;
@@ -903,6 +836,21 @@ p {
     box-shadow: 0 2px 8px rgba(0,0,0,0.4);
     border: 2px solid white;
 }
+/* === ИКОНКА СТАТУСА === */
+.user-status-icon {
+    width: 20px;
+    height: 20px;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: help;
+    transition: transform 0.2s ease;
+}
+.user-status-icon:hover { transform: scale(1.15); }
+.user-status-icon.active   { color: #28a745; }
+.user-status-icon.deleted  { color: #6c757d; }
+.user-status-icon.blocked  { color: #dc3545; }
 </style>
 </head>
 <body>
@@ -927,7 +875,7 @@ p {
                 <div id="user-greeting" class="user-greeting">Добро пожаловать, </div>
                 <div class="user-id-container">
     <div id="user-id" class="user-id"></div>
-    <span id="user-status-badge" class="user-status-badge"></span>
+    <div id="user-status-icon" class="user-status-icon" title=""></div>
 </div>
             </div>
         </div>
@@ -1628,7 +1576,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const avatarImg = document.getElementById('user-avatar');
         const greetingDiv = document.getElementById('user-greeting');
         const idDiv = document.getElementById('user-id');
-        const statusBadge = document.getElementById('user-status-badge');
         
         if (user.photo_url) {
             avatarImg.src = user.photo_url;
@@ -1645,22 +1592,28 @@ document.addEventListener('DOMContentLoaded', () => {
         const deletedIds = ['33333333', '7567673623'];
         const userIdStr = String(user.id);
 
-        let statusText = 'Активный';
-        let statusClass = 'active';
-        let isBlocked = false;
+                let iconClass = '';
+        let tooltipText = '';
+        let statusKey = '';
 
         if (blockedIds.includes(userIdStr)) {
-            statusText = 'Заблокирован';
-            statusClass = 'blocked';
-            isBlocked = true;
+            iconClass = 'fas fa-lock blocked';
+            tooltipText = 'Ваш аккаунт заблокирован администратором';
+            statusKey = 'blocked';
         } else if (deletedIds.includes(userIdStr)) {
-            statusText = 'Удален';
-            statusClass = 'deleted';
-            isBlocked = true;
+            iconClass = 'fas fa-trash-alt deleted';
+            tooltipText = 'Ваш аккаунт удалён';
+            statusKey = 'deleted';
+        } else {
+            iconClass = 'fas fa-check-circle active';
+            tooltipText = 'Ваш аккаунт активен';
+            statusKey = 'active';
         }
 
-        statusBadge.textContent = statusText;
-        statusBadge.className = 'user-status-badge ' + statusClass;
+        const statusIcon = document.getElementById('user-status-icon');
+        statusIcon.innerHTML = `<i class="${iconClass}"></i>`;
+        statusIcon.title = tooltipText;
+        statusIcon.className = `user-status-icon ${statusKey}`;
 
         // === БЛОКИРОВКА ВСЕХ КНОПОК, ЕСЛИ ПОЛЬЗОВАТЕЛЬ ЗАБЛОКИРОВАН ===
         if (isBlocked) {
