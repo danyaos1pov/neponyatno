@@ -39,14 +39,6 @@ a {
     text-decoration: none;
     color: inherit;
 }
-/* === ПЛАШКА СТАТУСА ПОЛЬЗОВАТЕЛЯ === */
-.user-id-container {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-}
 
 /* === НОВОЕ МОДАЛЬНОЕ ОКНО (ВСПЛЫВАЮЩЕЕ УВЕДОМЛЕНИЕ) === */
 #modal-overlay {
@@ -792,65 +784,6 @@ p {
     color: #6c757d;
     text-align: center;
 }
-/* === ЗАБЛОКИРОВАННЫЕ КНОПКИ — ТОЛЬКО ЗАТЕМНЕНИЕ === */
-.menu-card.blocked,
-.button.blocked,
-.faq-header.blocked,
-.tariff-days-option.blocked,
-.toggle-button.blocked,
-.subscription-status-card.blocked {
-    opacity: 0.5 !important;
-    pointer-events: none !important;
-    cursor: not-allowed !important;
-    position: relative;
-}
-
-/* УБИРАЕМ НАДПИСЬ "Заблокировано" */
-.menu-card.blocked::after,
-.button.blocked::after,
-.faq-header.blocked::after,
-.tariff-days-option.blocked::after,
-.toggle-button.blocked::after,
-.subscription-status-card.blocked::after {
-    content: none !important;
-}
-
-.menu-card.blocked::after,
-.button.blocked::after,
-.faq-header.blocked::after,
-.tariff-days-option.blocked::after,
-.toggle-button.blocked::after {
-    content: "Заблокировано";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: rgba(220, 53, 69, 0.95);
-    color: white;
-    padding: 6px 12px;
-    border-radius: 8px;
-    font-size: 0.8em;
-    font-weight: 700;
-    white-space: nowrap;
-    z-index: 10;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.4);
-    border: 2px solid white;
-}
-/* === ИКОНКА СТАТУСА === */
-.user-status-icon {
-    width: 20px;
-    height: 20px;
-    font-size: 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: help;
-    transition: transform 0.2s ease;
-}
-.user-status-icon:hover { transform: scale(1.15); }
-.user-status-icon.active   { color: #28a745; }
-.user-status-icon.deleted  { color: #6c757d; }
-.user-status-icon.blocked  { color: #dc3545; }
 </style>
 </head>
 <body>
@@ -873,10 +806,7 @@ p {
             <img id="user-avatar" class="user-avatar" src="" alt="Аватар пользователя">
             <div>
                 <div id="user-greeting" class="user-greeting">Добро пожаловать, </div>
-                <div class="user-id-container">
-    <div id="user-id" class="user-id"></div>
-    <div id="user-status-icon" class="user-status-icon" onclick="showStatusModal()"></div>
-</div>
+                <div id="user-id" class="user-id"></div>
             </div>
         </div>
         
@@ -991,7 +921,7 @@ p {
                     </div>
                     <p class="tariff-slogan slogan-family current-slogan">Идеально подходит для дома и семьи</p>
                     <div class="tariff-features-list-v2">
-                        <div><i class="fas fa-users"></i> 10 устройств</div>
+                        <div><i class="fas fa-users"></i> 6 устройств</div>
                         <div><i class="fas fa-infinity"></i> Безлимитный интернет</div>
                         <div><i class="fas fa-tachometer-alt"></i> Скорость до 10 Гбит/с</div>
                     </div>
@@ -1132,7 +1062,7 @@ p {
                     </div>
                     <p class="tariff-slogan slogan-family current-slogan">Идеально подходит для дома и семьи</p>
                     <div class="tariff-features-list-v2">
-                        <div><i class="fas fa-users"></i> 10 устройств</div>
+                        <div><i class="fas fa-users"></i> 6 устройств</div>
                         <div><i class="fas fa-infinity"></i> Безлимитный интернет</div>
                         <div><i class="fas fa-tachometer-alt"></i> Скорость до 10 Гбит/с</div>
                     </div>
@@ -1350,7 +1280,7 @@ p {
         <p>Если вы не нашли ответа на свой вопрос, вы всегда можете обратиться в нашу службу поддержки</p>
         
         <div class="faq-card"><div class="faq-header">Как подключиться? <i class="fas fa-chevron-right arrow"></i></div><div class="faq-body">Для того, чтобы подключиться, вам необходимо перейти в соответствующий раздел, затем выбрать тариф и необходимый срок подписки, а затем перейти к оплате. После оплаты вы автоматически получите ключ доступа.</div></div>
-        <div class="faq-card"><div class="faq-header">Лимит устройств <i class="fas fa-chevron-right arrow"></i></div><div class="faq-body">Каждый тариф ограничивается определенным количеством устройств на одном ключе:<br>Личный - 3 устройства<br>Семейный - 6 устройств<br>Премиум -</div></div>
+        <div class="faq-card"><div class="faq-header">Лимит устройств <i class="fas fa-chevron-right arrow"></i></div><div class="faq-body">Каждый тариф ограничивается определенным количеством устройств на одном ключе:<br>Личный - 3 устройства<br>Семейный - 6 устройств<br>Премиум - 15 устройств</div></div>
         <div class="faq-card"><div class="faq-header">Как поменять тариф? <i class="fas fa-chevron-right arrow"></i></div><div class="faq-body">Для того, чтобы поменять тариф, вам необходимо при продлении подписки выбрать необходимый тариф. Тариф сменится автоматически.</div></div>
         <div class="faq-card"><div class="faq-header">Как вывести деньги с кошелька? <i class="fas fa-chevron-right arrow"></i></div><div class="faq-body">Для того, чтобы вывести денежные средства на банковскую карту или криптокошелек, вам необходимо на главной странице перейти в раздел "Кошелек".</div></div>
         <div class="faq-card"><div class="faq-header">Как вернуть подписку? <i class="fas fa-chevron-right arrow"></i></div><div class="faq-body">Для того, чтобы оформить возврат подписки, вам необходимо перейти в раздел "Подписка ON1X VPN", а затем выбрать "Возврат подписки".</div></div>
@@ -1384,6 +1314,7 @@ p {
 
 <script>
 // === ФУНКЦИИ МОДАЛЬНОГО ОКНА ===
+// (Оставил для возможных будущих уведомлений, но без вызова)
 const modalOverlay = document.getElementById('modal-overlay');
 const modalPopup = document.getElementById('modal-popup');
 const modalTitle = document.getElementById('modal-title');
@@ -1569,7 +1500,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (document.getElementById('buy')) switchBuyTariff('personal');
     if (document.getElementById('renew')) switchRenewTariff('personal'); 
     
-        // === ДОБАВЛЕННЫЙ КОД: Отображение данных пользователя + БЛОКИРОВКА ===
+        // === ДОБАВЛЕННЫЙ КОД: Отображение данных пользователя (БЕЗ БЛОКИРОВКИ) ===
     if (typeof Telegram !== 'undefined' && Telegram.WebApp && Telegram.WebApp.initDataUnsafe && Telegram.WebApp.initDataUnsafe.user) {
         const user = Telegram.WebApp.initDataUnsafe.user;
         
@@ -1586,76 +1517,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const fullName = user.first_name + (user.last_name ? ' ' + user.last_name : '');
         greetingDiv.textContent = 'Добро пожаловать, ' + fullName;
         idDiv.textContent = 'ID: ' + user.id;
-
-        // === ЛОГИКА СТАТУСА ===
-        const blockedIds = ['2222222', '7165545340'];
-        const deletedIds = ['33333333', '7567673623'];
-        const userIdStr = String(user.id);
-
-                        let iconClass = '';
-        let statusKey = '';
-
-        if (blockedIds.includes(userIdStr)) {
-            iconClass = 'fas fa-lock blocked';
-            currentStatusMessage = 'Ваш аккаунт заблокирован администратором';
-            statusKey = 'blocked';
-        } else if (deletedIds.includes(userIdStr)) {
-            iconClass = 'fas fa-trash-alt deleted';
-            currentStatusMessage = 'Ваш аккаунт удалён';
-            statusKey = 'deleted';
-        } else {
-            iconClass = 'fas fa-check-circle active';
-            currentStatusMessage = 'Ваш аккаунт активен';
-            statusKey = 'active';
-        }
-
-        const statusIcon = document.getElementById('user-status-icon');
-        statusIcon.innerHTML = `<i class="${iconClass}"></i>`;
-        statusIcon.className = `user-status-icon ${statusKey}`;
-
-        // === БЛОКИРОВКА ВСЕХ КНОПОК, ЕСЛИ ПОЛЬЗОВАТЕЛЬ ЗАБЛОКИРОВАН ===
-        if (isBlocked) {
-            // Все интерактивные элементы
-            const blockSelectors = [
-                '.menu-card',
-                '.button',
-                '.faq-header',
-                '.tariff-days-option',
-                '.toggle-button',
-                '.subscription-status-card'
-            ];
-
-            blockSelectors.forEach(selector => {
-                document.querySelectorAll(selector).forEach(el => {
-                    el.classList.add('blocked');
-                    // Отключаем onclick
-                    el.onclick = null;
-                });
-            });
-
-            // Отключаем переключатели тарифов
-            document.querySelectorAll('.toggle-button').forEach(btn => {
-                btn.onclick = null;
-            });
-
-            // Отключаем выбор дней
-            document.querySelectorAll('.tariff-days-option').forEach(opt => {
-                opt.onclick = null;
-            });
-
-            // Отключаем кнопки "Купить" и "Продлить"
-            document.querySelectorAll('#buy-button-personal, #buy-button-family, #buy-button-premium, ' +
-                                       '#renew-button-personal, #renew-button-family, #renew-button-premium').forEach(btn => {
-                btn.onclick = null;
-                btn.href = '#';
-            });
-
-            // Показываем модальное окно с уведомлением
-            showModalNotification(
-                "Доступ ограничен",
-                `Ваш аккаунт ${statusText.toLowerCase()}. Все функции временно недоступны.`
-            );
-        }
     }
     // =================================================================
 });
@@ -1840,11 +1701,6 @@ function goToLinkAndClose(url) {
             Telegram.WebApp.close();
         }
     }, 300);
-}
-let currentStatusMessage = 'Ваш аккаунт активен'; // по умолчанию
-
-function showStatusModal() {
-    showModalNotification('Статус аккаунта', currentStatusMessage);
 }
 
 </script>
