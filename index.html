@@ -8,7 +8,7 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --primary-color: #007bff;
+            --primary-color: #2481cc; /* Telegram Blue */
             --bg-dark: #0d1117;
             --card-bg: #161b22;
             --text-color: #e6edf3;
@@ -23,7 +23,7 @@
 
         /* === СТРАНИЦЫ === */
         .page { position: absolute; top: 0; left: 50%; width: 100%; max-width: 600px; padding: 20px 15px; transform: translateX(-50%); display: none; opacity: 0; z-index: 10; }
-        .page.active { display: block; opacity: 1;  z-index: 15; }
+        .page.active { display: block; opacity: 1; z-index: 15; }
 
         /* === ПРОФИЛЬ === */
         .user-profile { display: flex; align-items: center; justify-content: flex-start; margin: 20px auto; max-width: 500px; padding: 15px; gap: 12px; background: var(--card-bg); border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
@@ -35,7 +35,7 @@
         h1 { font-size: 2.2em; margin: 10px 0 20px; color: var(--primary-color); }
         h1 span { color: var(--text-color); }
 
-        /* === ГЛАВНЫЙ БЛОК ПОДПИСКИ === */
+        /* === ГЛАВНЫЙ БЛОК === */
         .subscription-block {
             max-width: 500px;
             margin: 20px auto;
@@ -76,16 +76,30 @@
             background: var(--primary-color); color: white; border: none;
             width: 34px; height: 34px; border-radius: 50%; display: flex;
             align-items: center; justify-content: center; cursor: pointer;
-            font-size: 0.95em; transition: all 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            font-size: 0.95em; transition: all 0.2s;
         }
-        #copy-key-button:hover { background: #0056b3; transform: translateY(-50%) scale(1.1); }
+        #copy-key-button:hover { background: #1d6fa5; transform: translateY(-50%) scale(1.1); }
 
-        /* === КНОПКА В БЛОКЕ === */
+        /* === КНОПКИ В СТИЛЕ TELEGRAM === */
         .action-button-block {
             margin-top: 16px;
         }
-        .action-button-block .button {
-            width: 100%; padding: 13px 0; border-radius: 12px; font-weight: 700; font-size: 1.05em;
+        .tg-button {
+            display: block;
+            width: 100%;
+            padding: 13px 0;
+            background: var(--primary-color);
+            color: white;
+            font-weight: 500;
+            font-size: 1.05em;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .tg-button:hover,
+        .tg-button:active {
+            background: #1d6fa5;
         }
 
         /* === PULL TO REFRESH === */
@@ -192,7 +206,7 @@
             }
         }
 
-        // === НОВАЯ ССЫЛКА API ===
+        // === API ===
         const API_URL = 'https://script.google.com/macros/s/AKfycbxSmUasXhD9sp6T0QUEgKq_on2rRhDDDtzT5aKGn8J-s73Wm-bLvryq0Q8XgzlBLObE/exec';
 
         // === ЗАГРУЗКА ДАННЫХ ===
@@ -230,7 +244,7 @@
                         statusEl.innerHTML = `<span class="status-chip status-none">Нет</span>`;
 
                         const buyBtn = document.createElement('a');
-                        buyBtn.href = '#'; buyBtn.className = 'button';
+                        buyBtn.className = 'tg-button';
                         buyBtn.onclick = () => showPage('buy');
                         buyBtn.textContent = 'Купить';
                         actionBlock.appendChild(buyBtn);
@@ -252,7 +266,7 @@
                     statusEl.innerHTML = statusHtml;
 
                     const renewBtn = document.createElement('a');
-                    renewBtn.href = '#'; renewBtn.className = 'button';
+                    renewBtn.className = 'tg-button';
                     renewBtn.onclick = () => showPage('renew');
                     renewBtn.textContent = 'Продлить';
                     actionBlock.appendChild(renewBtn);
