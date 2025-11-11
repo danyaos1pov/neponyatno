@@ -20,7 +20,7 @@
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-        body { background: var(--bg-dark); color: var(--text-color); min-height: 100vh; overflow-x: hidden; padding-bottom: 80px; position: relative; }
+        body { background: var(--bg-dark); color: var(--text-color); min-height: 100vh; overflow-x: hidden; padding-bottom: 70px; position: relative; }
         a { text-decoration: none; color: inherit; }
 
         .page { display: none; opacity: 0; transition: opacity 0.2s; }
@@ -139,20 +139,21 @@
 
         .app-version { margin-top: 30px; font-size: 0.8em; color: #6c757d; text-align: center; }
 
-        /* === НИЖНЕЕ МЕНЮ — ЗАКРЕПЛЕНО === */
+        /* === НИЖНЕЕ МЕНЮ — УМЕНЬШЕНО === */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; right: 0;
             background: var(--nav-bg); border-top: 1px solid var(--nav-border);
-            display: flex; padding: 8px 15px; gap: 8px; z-index: 100;
+            display: flex; padding: 6px 12px; gap: 6px; z-index: 100;
             backdrop-filter: blur(10px);
+            height: 64px;
         }
         .nav-item {
-            flex: 1; padding: 10px 0; background: transparent; color: #6c757d;
-            font-size: 0.85em; font-weight: 500; text-align: center;
-            border-radius: 10px; cursor: pointer; transition: all 0.2s;
-            display: flex; flex-direction: column; align-items: center; gap: 4px;
+            flex: 1; padding: 6px 0; background: transparent; color: #6c757d;
+            font-size: 0.75em; font-weight: 500; text-align: center;
+            border-radius: 8px; cursor: pointer; transition: all 0.2s;
+            display: flex; flex-direction: column; align-items: center; gap: 3px;
         }
-        .nav-item i { font-size: 1.3em; }
+        .nav-item i { font-size: 1.1em; }
         .nav-item.active {
             color: var(--primary-color); background: rgba(36,129,204,0.15);
         }
@@ -201,7 +202,7 @@
 
             <div class="balance-card">
                 <div class="balance-label">Ваш баланс</div>
-                <div id="balance-value" class="balance-value">0 ₽</div>
+                <div id="balance-value" class="balance-value">0 RUB</div>
             </div>
 
             <div class="balance-actions">
@@ -231,7 +232,7 @@
         </div>
     </div>
 
-    <!-- === НИЖНЕЕ МЕНЮ === -->
+    <!-- === НИЖНЕЕ МЕНЮ — УМЕНЬШЕНО === -->
     <div class="bottom-nav">
         <div class="nav-item active" data-page="subscription-page">
             <i class="fas fa-key"></i> Подписка
@@ -370,7 +371,7 @@
                         container.appendChild(block);
                     });
 
-                    document.getElementById('balance-value').textContent = `${totalBalance} ₽`;
+                    document.getElementById('balance-value').textContent = `${totalBalance} RUB`;
                 })
                 .catch(err => {
                     console.error('Ошибка:', err);
