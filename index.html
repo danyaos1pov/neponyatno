@@ -101,7 +101,7 @@
         .tg-button:hover, .tg-button:active { background: #1d6fa5; }
         .tg-button.full { margin-top: 16px !important; width: 100% !important; display: flex !important; }
 
-        /* === ПРОФИЛЬ — БАЛАНС И КНОПКИ === */
+        /* === ПРОФИЛЬ — БАЛАНС С КНОПКАМИ ВНУТРИ === */
         .balance-card {
             background: var(--card-bg);
             border-radius: 18px;
@@ -112,10 +112,10 @@
             text-align: center;
         }
         .balance-label { font-size: 0.9em; color: #b0b8c2; margin-bottom: 6px; }
-        .balance-value { font-size: 1.8em; font-weight: 700; color: var(--text-color); }
+        .balance-value { font-size: 1.8em; font-weight: 700; color: var(--text-color); margin-bottom: 16px; }
 
         .balance-actions {
-            display: flex; gap: 10px; margin-top: 16px;
+            display: flex; gap: 10px;
         }
         .balance-btn {
             flex: 1; padding: 12px 0; background: var(--primary-color); color: white;
@@ -224,14 +224,14 @@
                 </div>
             </div>
 
+            <!-- БАЛАНС С КНОПКАМИ ВНУТРИ -->
             <div class="balance-card">
                 <div class="balance-label">Ваш баланс</div>
                 <div id="balance-value" class="balance-value">0 RUB</div>
-            </div>
-
-            <div class="balance-actions">
-                               <div class="balance-btn"><i class="fas fa-arrow-up"></i> Вывести</div>
-                <div class="balance-btn"><i class="fas fa-plus"></i> Пополнить</div>
+                <div class="balance-actions">
+                    <div class="balance-btn"><i class="fas fa-arrow-up"></i> Вывести</div>
+                    <div class="balance-btn"><i class="fas fa-plus"></i> Пополнить</div>
+                </div>
             </div>
 
             <div class="profile-menu">
@@ -242,7 +242,9 @@
                     <i class="fas fa-download"></i> Установить приложение
                 </div>
                 <div class="profile-menu-btn">
-                    <i class="fas fa-question-circle"></i> FAQ
+                    <i class
+
+="fas fa-question-circle"></i> FAQ
                 </div>
                 <div class="profile-menu-btn">
                     <i class="fas fa-server"></i> Статус систем
@@ -305,7 +307,6 @@
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
 
-            // Обновляем активный пункт в нижнем меню
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
                 if (item.getAttribute('data-page') === pageId) {
@@ -313,7 +314,6 @@
                 }
             });
 
-            // Управление кнопкой "Назад" в Telegram
             if (Telegram?.WebApp?.BackButton) {
                 if (pageId === 'subscription-page' || pageId === 'profile-page') {
                     Telegram.WebApp.BackButton.hide();
@@ -323,11 +323,9 @@
                     }
                 } else {
                     Telegram.WebApp.BackButton.show();
-                    // Удаляем предыдущий обработчик, если есть
                     if (backButtonHandler) {
                         Telegram.WebApp.BackButton.offClick(backButtonHandler);
                     }
-                    // Устанавливаем возврат на "Профиль"
                     backButtonHandler = () => showPage('profile-page');
                     Telegram.WebApp.BackButton.onClick(backButtonHandler);
                 }
@@ -394,7 +392,6 @@
             const avatarUrl = u.photo_url || 'https://sun9-8.userapi.com/s/v1/ig2/YBkIITuiQ13e1vw3WhNGJekU_fMB3jXEeTjqLb-EAnydjnDmqCVu7sATDepkrUUo6UXWQ4x74BtgfBrgdhWUZZlN.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640&from=bu&cs=640x0';
             const greeting = `Добро пожаловать, ${u.first_name}${u.last_name ? ' ' + u.last_name : ''}`;
 
-            // Профиль + Подписка
             document.getElementById('user-avatar-sub').src = avatarUrl;
             document.getElementById('user-greeting-sub').textContent = greeting;
             document.getElementById('user-id-sub').textContent = `ID: ${userId}`;
@@ -434,16 +431,13 @@
                         subscriptions = [{ key_1: null }];
                     }
 
-                    // Подписки
                     subscriptions.forEach(data => {
                         const block = createSubscriptionBlock(data);
                         container.appendChild(block);
                     });
 
-                    // Баланс
                     document.getElementById('balance-value').textContent = `${totalBalance} RUB`;
 
-                    // Реферальная ссылка
                     const refContainer = document.getElementById('referral-container');
                     if (referralLink) {
                         refContainer.innerHTML = `
