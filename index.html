@@ -875,7 +875,7 @@ p {
                 <div id="user-greeting" class="user-greeting">Добро пожаловать, </div>
                 <div class="user-id-container">
     <div id="user-id" class="user-id"></div>
-    <div id="user-status-icon" class="user-status-icon" title=""></div>
+    <div id="user-status-icon" class="user-status-icon" onclick="showStatusModal()"></div>
 </div>
             </div>
         </div>
@@ -1592,27 +1592,25 @@ document.addEventListener('DOMContentLoaded', () => {
         const deletedIds = ['33333333', '7567673623'];
         const userIdStr = String(user.id);
 
-                let iconClass = '';
-        let tooltipText = '';
+                        let iconClass = '';
         let statusKey = '';
 
         if (blockedIds.includes(userIdStr)) {
             iconClass = 'fas fa-lock blocked';
-            tooltipText = 'Ваш аккаунт заблокирован администратором';
+            currentStatusMessage = 'Ваш аккаунт заблокирован администратором';
             statusKey = 'blocked';
         } else if (deletedIds.includes(userIdStr)) {
             iconClass = 'fas fa-trash-alt deleted';
-            tooltipText = 'Ваш аккаунт удалён';
+            currentStatusMessage = 'Ваш аккаунт удалён';
             statusKey = 'deleted';
         } else {
             iconClass = 'fas fa-check-circle active';
-            tooltipText = 'Ваш аккаунт активен';
+            currentStatusMessage = 'Ваш аккаунт активен';
             statusKey = 'active';
         }
 
         const statusIcon = document.getElementById('user-status-icon');
         statusIcon.innerHTML = `<i class="${iconClass}"></i>`;
-        statusIcon.title = tooltipText;
         statusIcon.className = `user-status-icon ${statusKey}`;
 
         // === БЛОКИРОВКА ВСЕХ КНОПОК, ЕСЛИ ПОЛЬЗОВАТЕЛЬ ЗАБЛОКИРОВАН ===
@@ -1842,6 +1840,11 @@ function goToLinkAndClose(url) {
             Telegram.WebApp.close();
         }
     }, 300);
+}
+let currentStatusMessage = 'Ваш аккаунт активен'; // по умолчанию
+
+function showStatusModal() {
+    showModalNotification('Статус аккаунта', currentStatusMessage);
 }
 
 </script>
