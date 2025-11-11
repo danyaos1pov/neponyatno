@@ -53,7 +53,7 @@
         .info-label { font-weight: 600; color: #b0b8c2; }
         .info-value { font-weight: 600; color: var(--text-color); }
 
-        /* === СТАТУС — КОМПАКТНЫЙ === */
+        /* === СТАТУС === */
         .status-chip {
             display: inline-flex; align-items: center; gap: 5px;
             padding: 4px 9px; border-radius: 14px;
@@ -90,14 +90,25 @@
             display: flex; gap: 8px; margin-top: 16px;
         }
         .tg-button {
-            flex: 1; padding: 13px 0; background: var(--primary-color);
-            color: white; font-weight: 500; font-size: 1em; text-align: center;
-            border-radius: 8px; cursor: pointer; transition: background 0.2s;
+            display: block;
+            width: 100%;
+            padding: 13px 0;
+            background: var(--primary-color);
+            color: white;
+            font-weight: 500;
+            font-size: 1em;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
         }
         .tg-button:hover, .tg-button:active { background: #1d6fa5; }
 
+        /* ПОЛНАЯ ШИРИНА — ИСПРАВЛЕНО */
         .tg-button.full {
-            flex: none; width: 100%; margin: 0;
+            margin-top: 16px !important;
+            width: 100% !important;
+            display: block !important;
         }
 
         .refresh-button {
@@ -276,7 +287,6 @@
 
                     container.appendChild(row);
 
-                    // Ключ №2
                     if (data.key_2) {
                         const extra = document.createElement('div');
                         extra.innerHTML = `
