@@ -153,6 +153,13 @@
             color: var(--text-color);
         }
 
+        .referral-label {
+            font-size: 0.95em;
+            color: #b0b8c2;
+            margin: 20px 0 8px;
+            font-weight: 600;
+        }
+
         .app-version { margin-top: 30px; font-size: 0.8em; color: #6c757d; text-align: center; }
 
         /* === НИЖНЕЕ МЕНЮ — УМЕНЬШЕНО === */
@@ -261,6 +268,7 @@
                 Заработанные средства вы можете вывести на банковскую карту или использовать их на покупку/продление подписки в нашем сервисе.
             </div>
 
+            <div class="referral-label">Твоя реферальная ссылка</div>
             <div id="referral-container"></div>
 
             <div class="app-version">Версия: 1.0.0</div>
@@ -290,10 +298,13 @@
             });
         }
 
+        let backButtonHandler = null;
+
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
 
+            // Обновляем активный пункт в нижнем меню
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
                 if (item.getAttribute('data-page') === pageId) {
@@ -301,12 +312,23 @@
                 }
             });
 
+            // Управление кнопкой "Назад" в Telegram
             if (Telegram?.WebApp?.BackButton) {
-                if (pageId === 'subscription-page') {
+                if (pageId === 'subscription-page' || pageId === 'profile-page') {
                     Telegram.WebApp.BackButton.hide();
+                    if (backButtonHandler) {
+                        Telegram.WebApp.BackButton.offClick(backButtonHandler);
+                        backButtonHandler = null;
+                    }
                 } else {
                     Telegram.WebApp.BackButton.show();
-                    Telegram.WebApp.BackButton.onClick(() => showPage('profile-page'));
+                    // Удаляем предыдущий обработчик, если есть
+                    if (backButtonHandler) {
+                        Telegram.WebApp.BackButton.offClick(backButtonHandler);
+                    }
+                    // Устанавливаем возврат на "Профиль"
+                    backButtonHandler = () => showPage('profile-page');
+                    Telegram.WebApp.BackButton.onClick(backButtonHandler);
                 }
             }
         }
@@ -432,7 +454,7 @@
                     } else {
                         refContainer.innerHTML = `
                             <div style="text-align: center; color: #dc3545; padding: 16px; font-size: 0.9em;">
-                                Реферальная ссылка не найдена. Пожалуйста, загляните чуть позже
+                                Реферальная ссылка не найдена
                             </div>
                         `;
                     }
@@ -457,4 +479,3 @@
     </script>
 </body>
 </html>
-
