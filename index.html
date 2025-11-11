@@ -101,7 +101,6 @@
         .tg-button:hover, .tg-button:active { background: #1d6fa5; }
         .tg-button.full { margin-top: 16px !important; width: 100% !important; display: flex !important; }
 
-        /* === ПРОФИЛЬ — БАЛАНС С КНОПКАМИ ВНУТРИ === */
         .balance-card {
             background: var(--card-bg);
             border-radius: 18px;
@@ -137,7 +136,6 @@
         .profile-menu-btn i { font-size: 1.2em; color: #2481cc; width: 24px; text-align: center; }
         .profile-menu-btn:hover { background: rgba(255,255,255,0.05); }
 
-        /* === СТРАНИЦА "ПРИГЛАСИТЬ ДРУЗЕЙ" === */
         .referral-info {
             background: var(--card-bg);
             border-radius: 18px;
@@ -149,9 +147,7 @@
             line-height: 1.5;
             color: #b0b8c2;
         }
-        .referral-info strong {
-            color: var(--text-color);
-        }
+        .referral-info strong { color: var(--text-color); }
 
         .referral-label {
             font-size: 0.95em;
@@ -163,7 +159,6 @@
 
         .app-version { margin-top: 30px; font-size: 0.8em; color: #6c757d; text-align: center; }
 
-        /* === НИЖНЕЕ МЕНЮ — УМЕНЬШЕНО === */
         .bottom-nav {
             position: fixed; bottom: 0; left: 0; right: 0;
             background: var(--nav-bg); border-top: 1px solid var(--nav-border);
@@ -224,7 +219,6 @@
                 </div>
             </div>
 
-            <!-- БАЛАНС С КНОПКАМИ ВНУТРИ -->
             <div class="balance-card">
                 <div class="balance-label">Ваш баланс</div>
                 <div id="balance-value" class="balance-value">0 RUB</div>
@@ -242,9 +236,7 @@
                     <i class="fas fa-download"></i> Установить приложение
                 </div>
                 <div class="profile-menu-btn">
-                    <i class
-
-="fas fa-question-circle"></i> FAQ
+                    <i class="fas fa-question-circle"></i> FAQ
                 </div>
                 <div class="profile-menu-btn">
                     <i class="fas fa-server"></i> Статус систем
@@ -345,7 +337,7 @@
             const block = document.createElement('div');
             block.className = 'subscription-block';
 
-            const isNoSub = !data.key_1 || data.not_found;
+            const isNoSub = !data.key_1 || data.not_found || data.key_1 === "У вас нет подписки";
 
             const statusHtml = isNoSub
                 ? `<span class="status-chip status-none">Нет</span>`
@@ -371,7 +363,7 @@
                 ${buttonsHtml}
             `;
 
-            if (data.key_2) {
+            if (data.key_2 && !isNoSub) {
                 const commentDiv = document.createElement('div');
                 commentDiv.className = 'comment-container';
                 commentDiv.textContent = data.key_2;
