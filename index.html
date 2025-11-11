@@ -9,92 +9,38 @@
     <style>
         :root {
             --primary-color: #007bff;
-            --secondary-color: #28a745;
             --bg-dark: #0d1117;
             --card-bg: #161b22;
             --text-color: #e6edf3;
-            --accent-red: #dc3545;
-            --gold-color: #ffd700;
             --chip-bg-active: #1e3a2b;
             --chip-bg-expired: #3a1e1e;
             --chip-bg-none: #2d2d2d;
         }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-        }
-
-        body {
-            background: var(--bg-dark);
-            color: var(--text-color);
-            min-height: 100vh;
-            padding-bottom: 50px;
-            text-align: center;
-        }
-
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        body { background: var(--bg-dark); color: var(--text-color); min-height: 100vh; padding-bottom: 50px; text-align: center; }
         a { text-decoration: none; color: inherit; }
 
         /* === SPLASH === */
         #splash-screen {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%;
-            background: var(--bg-dark);
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            z-index: 1000; opacity: 1;
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--bg-dark); display: flex; flex-direction: column;
+            justify-content: center; align-items: center; z-index: 1000; opacity: 1;
             transition: opacity 0.7s ease-out;
         }
-
-        .pulse-container {
-            position: relative;
-            width: 120px; height: 120px;
-            margin: 30px auto 10px;
-        }
-
-        .pulse-container img {
-            position: absolute; top: 0; left: 0;
-            width: 100%; height: 100%;
-            border-radius: 50%; z-index: 10;
-            border: 4px solid var(--primary-color);
-            object-fit: cover;
-        }
-
-        .pulse-circle {
-            position: absolute; top: 50%; left: 50%;
-            width: 120px; height: 120px;
-            border-radius: 50%;
-            border: 2px solid rgba(0,123,255,0.5);
-            transform: translate(-50%,-50%) scale(0);
-            animation: pulse 2.5s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
+        .pulse-container { position: relative; width: 120px; height: 120px; margin: 30px auto 10px; }
+        .pulse-container img { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border-radius: 50%; z-index: 10; border: 4px solid var(--primary-color); object-fit: cover; }
+        .pulse-circle { position: absolute; top: 50%; left: 50%; width: 120px; height: 120px; border-radius: 50%; border: 2px solid rgba(0,123,255,0.5); transform: translate(-50%,-50%) scale(0); animation: pulse 2.5s infinite cubic-bezier(0.25, 0.46, 0.45, 0.94); }
         .pulse-circle:nth-child(2) { animation-delay: 0.5s; }
         .pulse-circle:nth-child(3) { animation-delay: 1s; }
-        @keyframes pulse {
-            0% { transform: translate(-50%,-50%) scale(0.8); opacity: 1; }
-            100% { transform: translate(-50%,-50%) scale(1.5); opacity: 0; }
-        }
+        @keyframes pulse { 0% { transform: translate(-50%,-50%) scale(0.8); opacity: 1; } 100% { transform: translate(-50%,-50%) scale(1.5); opacity: 0; } }
 
         /* === СТРАНИЦЫ === */
-        .page {
-            position: absolute; top: 0; left: 50%;
-            width: 100%; max-width: 600px;
-            padding: 20px 15px;
-            transform: translateX(-50%);
-            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.4, 1), opacity 0.4s;
-            display: none; opacity: 0; z-index: 10;
-        }
+        .page { position: absolute; top: 0; left: 50%; width: 100%; max-width: 600px; padding: 20px 15px; transform: translateX(-50%); transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.4, 1), opacity 0.4s; display: none; opacity: 0; z-index: 10; }
         .page.active { display: block; opacity: 1; z-index: 15; transform: translateX(-50%) scale(1); }
 
         /* === ПРОФИЛЬ === */
-        .user-profile {
-            display: flex; align-items: center; justify-content: flex-start;
-            margin: 20px auto; max-width: 500px; padding: 15px; gap: 12px;
-            background: var(--card-bg); border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05);
-        }
+        .user-profile { display: flex; align-items: center; justify-content: flex-start; margin: 20px auto; max-width: 500px; padding: 15px; gap: 12px; background: var(--card-bg); border-radius: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
         .user-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
         .user-greeting { font-size: 1.1em; font-weight: 600; color: var(--text-color); text-align: left; margin-bottom: 3px; }
         .user-id { font-size: 0.85em; color: #b0b8c2; text-align: left; }
@@ -103,51 +49,26 @@
         h1 { font-size: 2.2em; margin: 10px 0 20px; color: var(--primary-color); }
         h1 span { color: var(--text-color); }
 
-        /* === ПОДПИСКА === */
-        .subscription-label {
-            font-size: 1.1em;
-            font-weight: 600;
-            color: var(--text-color);
-            margin: 15px auto 8px;
-            text-align: left;
-            max-width: 500px;
-            padding-left: 15px;
+        /* === ПОДПИСКА + СТАТУС В ОДНОЙ СТРОКЕ === */
+        .subscription-row {
+            display: flex; align-items: center; justify-content: space-between;
+            max-width: 500px; margin: 15px auto 8px; padding: 0 15px;
+            font-size: 1.1em; font-weight: 600; color: var(--text-color);
+            height: 36px; /* одинаковая высота */
         }
-
-        /* === СТАТУС ЧИП === */
         .status-chip {
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin: 8px auto 15px;
-            max-width: 500px;
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 6px 12px; border-radius: 20px; font-size: 0.8em;
+            font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;
+            white-space: nowrap;
         }
-        .status-active {
-            background: var(--chip-bg-active);
-            color: #28a745;
-            border: 1px solid #28a745;
-        }
-        .status-expired {
-            background: var(--chip-bg-expired);
-            color: #dc3545;
-            border: 1px solid #dc3545;
-        }
-        .status-none {
-            background: var(--chip-bg-none);
-            color: #b0b8c2;
-            border: 1px solid #444;
-        }
+        .status-active { background: var(--chip-bg-active); color: #28a745; border: 1px solid #28a745; }
+        .status-expired { background: var(--chip-bg-expired); color: #dc3545; border: 1px solid #dc3545; }
+        .status-none { background: var(--chip-bg-none); color: #b0b8c2; border: 1px solid #444; }
 
         /* === ПОЛЕ КЛЮЧА === */
         .key-input-container {
-            position: relative; margin: 0 auto 20px;
-            max-width: 500px;
+            position: relative; margin: 0 auto 20px; max-width: 500px;
             background: var(--card-bg); border-radius: 15px; padding: 15px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05);
             display: flex; align-items: center;
@@ -179,27 +100,6 @@
         }
         .button:hover { background: #0056b3; }
 
-        /* === МОДАЛЬНОЕ === */
-        #modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); backdrop-filter: blur(5px);
-            display: none; justify-content: center; align-items: center;
-            z-index: 10002; opacity: 0; transition: opacity 0.3s ease;
-        }
-        #modal-overlay.visible { display: flex; opacity: 1; }
-        #modal-popup {
-            background: var(--card-bg); padding: 25px; border-radius: 20px;
-            border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            width: 90%; max-width: 380px; text-align: center; transform: scale(0.9);
-            transition: transform 0.3s cubic-bezier(0.3, 0.7, 0.4, 1.2);
-        }
-        #modal-overlay.visible #modal-popup { transform: scale(1); }
-        #modal-popup i { font-size: 48px; color: var(--primary-color); margin-bottom: 15px; }
-        #modal-title { font-size: 1.5em; font-weight: 700; margin-bottom: 10px; }
-        #modal-message { font-size: 1em; color: #b0b8c2; line-height: 1.6; margin-bottom: 25px; }
-        #modal-close-button { background: var(--primary-color); color: white; border: none; border-radius: 10px; padding: 12px 0; width: 100%; font-size: 1em; font-weight: 600; cursor: pointer; }
-        #modal-close-button:hover { background: #0056b3; }
-
         .app-version { margin-top: 30px; font-size: 0.8em; color: #6c757d; text-align: center; }
     </style>
 </head>
@@ -228,11 +128,11 @@
 
         <h1><span>ON1X</span> VPN</h1>
 
-        <!-- Подписка -->
-        <div class="subscription-label">Ваша подписка</div>
-
-        <!-- Статус -->
-        <div id="status-container" style="text-align: center;"></div>
+        <!-- Подписка + статус в одной строке -->
+        <div class="subscription-row">
+            <span>Ваша подписка</span>
+            <div id="status-chip"></div>
+        </div>
 
         <!-- Ключ №1 -->
         <div class="key-input-container">
@@ -242,10 +142,9 @@
             </button>
         </div>
 
-        <!-- Кнопки -->
-        <div class="action-buttons-row">
-            <a href="#" class="button" onclick="showPage('buy')">Купить</a>
-            <a href="#" class="button" onclick="showPage('renew')">Продлить</a>
+        <!-- Кнопки (будут динамически) -->
+        <div id="action-buttons-container" class="action-buttons-row">
+            <!-- Кнопки добавятся через JS -->
         </div>
 
         <div class="app-version">Версия: 1.0.0</div>
@@ -254,51 +153,27 @@
     <div id="buy" class="page"></div>
     <div id="renew" class="page"></div>
 
-    <!-- === МОДАЛЬНОЕ === -->
-    <div id="modal-overlay">
-        <div id="modal-popup">
-            <i class="fas fa-check-circle"></i>
-            <h3 id="modal-title">Ключ скопирован!</h3>
-            <p id="modal-message">Ссылка скопирована в буфер обмена.</p>
-            <button id="modal-close-button">Понятно</button>
-        </div>
-    </div>
-
     <script>
         // === ЗАПРЕТ КОНТЕКСТА ===
         document.addEventListener('contextmenu', e => e.preventDefault());
 
-        // === МОДАЛЬНОЕ ===
-        const modal = document.getElementById('modal-overlay');
-        const closeBtn = document.getElementById('modal-close-button');
-        closeBtn.onclick = () => modal.classList.remove('visible');
-        modal.onclick = (e) => { if (e.target === modal) modal.classList.remove('visible'); };
-
-        function showModal(title, msg) {
-            document.getElementById('modal-title').textContent = title;
-            document.getElementById('modal-message').textContent = msg;
-            modal.classList.add('visible');
-        }
-
-        // === КОПИРОВАНИЕ ===
+        // === КОПИРОВАНИЕ БЕЗ МОДАЛКИ ===
         function copyText(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                showModal('Скопировано!', 'В буфер обмена');
-            });
+            navigator.clipboard.writeText(text);
+            const btn = document.getElementById('copy-key-button');
+            const icon = btn.querySelector('i');
+            icon.classList.replace('fa-copy', 'fa-check');
+            btn.style.background = '#28a745';
+            setTimeout(() => {
+                icon.classList.replace('fa-check', 'fa-copy');
+                btn.style.background = 'var(--primary-color)';
+            }, 1000);
         }
 
         document.getElementById('copy-key-button').onclick = () => {
             const key = document.getElementById('vpn-key-input').value;
             if (key && !key.includes('нет') && !key.includes('Загрузка')) {
                 copyText(key);
-                const btn = document.getElementById('copy-key-button');
-                const icon = btn.querySelector('i');
-                icon.classList.replace('fa-copy', 'fa-check');
-                btn.style.background = '#28a745';
-                setTimeout(() => {
-                    icon.classList.replace('fa-check', 'fa-copy');
-                    btn.style.background = 'var(--primary-color)';
-                }, 1000);
             }
         };
 
@@ -357,28 +232,30 @@
                     console.log('Запрос:', url);
 
                     fetch(url)
-                        .then(r => {
-                            if (!r.ok) throw new Error(`HTTP ${r.status}`);
-                            return r.json();
-                        })
+                        .then(r => r.ok ? r.json() : Promise.reject(`HTTP ${r.status}`))
                         .then(data => {
                             console.log('Ответ:', data);
                             const keyInput = document.getElementById('vpn-key-input');
-                            const statusContainer = document.getElementById('status-container');
+                            const statusChip = document.getElementById('status-chip');
+                            const buttonsContainer = document.getElementById('action-buttons-container');
+                            buttonsContainer.innerHTML = ''; // Очищаем
 
+                            // === ПОДПИСКА НЕТ ===
                             if (data.not_found || !data.key_1) {
-                                // Нет подписки
                                 keyInput.value = 'У вас нет подписки';
                                 keyInput.style.color = '#dc3545';
-                                statusContainer.innerHTML = `
-                                    <div class="status-chip status-none">
-                                        <i class="fas fa-times-circle"></i> Нет подписки
-                                    </div>
-                                `;
+                                statusChip.innerHTML = `<div class="status-chip status-none"><i class="fas fa-times-circle"></i> Нет</div>`;
+
+                                // Только "Купить"
+                                const buyBtn = document.createElement('a');
+                                buyBtn.href = '#'; buyBtn.className = 'button';
+                                buyBtn.onclick = () => showPage('buy');
+                                buyBtn.textContent = 'Купить';
+                                buttonsContainer.appendChild(buyBtn);
                                 return;
                             }
 
-                            // Есть подписка
+                            // === ПОДПИСКА ЕСТЬ ===
                             keyInput.value = data.key_1;
 
                             // Статус
@@ -390,7 +267,14 @@
                             } else {
                                 statusHtml = `<div class="status-chip status-none"><i class="fas fa-question-circle"></i> Неизвестно</div>`;
                             }
-                            statusContainer.innerHTML = statusHtml;
+                            statusChip.innerHTML = statusHtml;
+
+                            // Кнопка "Продлить"
+                            const renewBtn = document.createElement('a');
+                            renewBtn.href = '#'; renewBtn.className = 'button';
+                            renewBtn.onclick = () => showPage('renew');
+                            renewBtn.textContent = 'Продлить';
+                            buttonsContainer.appendChild(renewBtn);
 
                             // Ключ №2
                             if (data.key_2) {
