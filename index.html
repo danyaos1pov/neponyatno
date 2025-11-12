@@ -21,14 +21,6 @@
             --nav-border: rgba(255,255,255,0.15);
             --nav-active: rgba(36,129,204,0.25);
             --hover-bg: rgba(255,255,255,0.05);
-            /* ДОБАВЛЕННЫЕ ПЕРЕМЕННЫЕ ИЗ 9.txt ДЛЯ АДАПТАЦИИ */
-            --secondary-color: #28a745; /* Зеленый для успеха/активности */
-            --accent-red: #dc3545;
-            --gold-color: #ffd700;
-            --personal-color: var(--text-color);
-            --family-color: var(--secondary-color);
-            --premium-color: var(--gold-color);
-            --toggle-active-bg: #37475a;
         }
 
         [data-theme="light"] {
@@ -45,14 +37,6 @@
             --nav-border: rgba(0, 0, 0, 0.1);
             --nav-active: rgba(0, 119, 204, 0.15);
             --hover-bg: rgba(0, 0, 0, 0.05);
-            /* ДОБАВЛЕННЫЕ ПЕРЕМЕННЫЕ ИЗ 9.txt ДЛЯ АДАПТАЦИИ */
-            --secondary-color: #28a745; /* Зеленый для успеха/активности */
-            --accent-red: #dc3545;
-            --gold-color: #ffd700;
-            --personal-color: var(--text-color);
-            --family-color: var(--secondary-color);
-            --premium-color: var(--gold-color);
-            --toggle-active-bg: #37475a;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
@@ -73,7 +57,6 @@
         .header h1 span { color: var(--text-color); }
         .header .tagline { font-size: 1.05em; color: var(--text-secondary); margin-top: 4px; font-weight: 500; }
 
-        /* ШЕСТЕРЁНКА НА ПОДПИСКЕ */
         .settings-icon {
             position: absolute; right: 0; top: 50%; transform: translateY(-50%);
             width: 36px; height: 36px; background: var(--card-bg); border: 1px solid var(--border-color);
@@ -162,7 +145,6 @@
         }
         .profile-menu-btn:hover { background: var(--hover-bg); }
 
-        /* БЛОК "УПРАВЛЕНИЕ ПОДПИСКОЙ" */
         .subscription-management {
             background: var(--card-bg);
             border-radius: 18px;
@@ -191,7 +173,6 @@
         .nav-item.active i { transform: scale(1.15); }
         .nav-item:hover:not(.active) { background: var(--hover-bg); }
 
-        /* НАСТРОЙКИ — ТЕКСТ И ПОЛЗУНОК В ОДНУ СТРОКУ */
         .settings-block { background: var(--card-bg); border-radius: 18px; padding: 20px; margin: 20px 0; box-shadow: 0 6px 16px rgba(0,0,0,0.15); border: 1px solid var(--border-color); }
         .setting-item {
             display: flex;
@@ -231,7 +212,6 @@
             color: var(--primary-color);
         }
 
-        /* FAQ АККОРДЕОН */
         .faq-accordion {
             background: var(--card-bg);
             border-radius: 18px;
@@ -289,207 +269,96 @@
             padding: 16px 18px;
         }
 
-        /* ДОБАВЛЕННЫЕ СТИЛИ ИЗ 9.txt ДЛЯ ПОКУПКИ И ПРОДЛЕНИЯ */
-        h2 { 
-            font-size: 1.8em; 
-            margin: 0 0 20px 0; 
-            border-bottom: 2px solid rgba(255,255,255,0.1); 
-            padding-bottom: 10px;
-        }
-        p { 
-            margin:10px 0; 
-            line-height:1.6; 
-            color: #b0b8c2;
-        }
-        .button { 
-            display:block; 
-            width:100%; 
-            max-width:300px;
-            margin:20px auto; 
-            padding:12px 0;
-            border-radius: 8px;
-            background: var(--primary-color);
-            color: white; 
-            border: none;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.4);
-            font-weight:700;
-            transition: all 0.2s ease; 
-            cursor: pointer;
-            text-align: center;
-        }
-        .button:hover,
-        .button:active { 
-            transform: none; 
-            background: #0056b3;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.4); 
-        }
-        .button.disabled {
-            background: #343a40 !important;
-            color: #b0b8c2 !important;
-            border-color: transparent !important;
-            cursor: not-allowed;
-            box-shadow: none !important;
-            transform: none !important;
-            opacity: 0.7;
-        }
-        .tariff-toggle-inside {
-            display: flex;
-            justify-content: center;
-            gap: 5px; 
-            margin: 0 auto 15px auto;
-            padding-bottom: 10px;
-            border-bottom: 1px solid rgba(255,255,255,0.1); 
-        }
-        .tariff-toggle-inside .toggle-button {
-            flex-grow: 1;
-            padding: 8px 5px;
-            border-radius: 8px; 
-            background: var(--bg-dark);
-            color: var(--text-color);
-            font-weight: 600;
-            cursor: pointer;
-            transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-            text-align: center;
-            border: 1px solid rgba(255,255,255,0.05);
-            font-size: 0.9em;
-        }
-        .tariff-toggle-inside .toggle-button.active {
-            background: var(--primary-color); 
-            color: white;
-            border-color: var(--primary-color);
-            box-shadow: 0 0 8px rgba(0,123,255,0.5);
-        }
-        .tariff-toggle-inside .toggle-button:hover:not(.active),
-        .tariff-toggle-inside .toggle-button:active:not(.active) {
-            background: rgba(255,255,255,0.05);
-        }
-        .tariff-content.disabled {
-            position: relative;
-            pointer-events: none;
-            opacity: 0.6;
-        }
-        .tariff-content.disabled::before {
-            content: "В РАЗРАБОТКЕ";
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%) rotate(-5deg);
-            background: rgba(220, 53, 69, 0.9);
-            color: white;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-size: 1.5em;
-            font-weight: 800;
-            z-index: 50;
-            letter-spacing: 1px;
-            border: 3px solid white;
-            text-shadow: 0 0 5px rgba(0, 0, 0, 0.8);
-        }
-        .tariff-toggle-inside .toggle-button.developing {
-            pointer-events: auto;
-            cursor: pointer;
-        }
-        .compact-tariff-card {
-            background: var(--card-bg); 
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            text-align: left;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.1);
-        }
-        .unified-tariff-card {
-            text-align: center;
-            padding-bottom: 5px;
-        }
-        .unified-tariff-card .tariff-name-title {
-            display: none !important;
-        }
-        .unified-tariff-card .tariff-slogan {
-            margin-top: 0;
-            margin-bottom: 15px;
-            font-size: 0.95em;
-            font-weight: 500;
-            min-height: 20px;
-            transition: color 0.3s;
-        }
-        .slogan-personal { color: var(--text-color) !important; } 
-        .slogan-family { color: var(--family-color) !important; font-weight: 600; } 
-        .slogan-premium { color: var(--premium-color) !important; font-weight: 600; } 
-        .tariff-features-list-v2 {
-            padding: 10px 0;
-            margin-bottom: 0;
-            border-top: 1px solid rgba(255,255,255,0.1); 
-            padding-top: 15px;
-            display: flex;
-            justify-content: space-around; 
-            align-items: flex-start;
-            text-align: center; 
-            gap: 10px;
-        }
-        .tariff-features-list-v2 > div {
-            display: block;
-            flex-basis: 30%; 
-            font-size: 0.85em; 
-            color: #b0b8c2;
-            line-height: 1.3;
-        }
-        .tariff-features-list-v2 i {
-            color: var(--primary-color);
-            font-size: 1.6em;
-            margin: 0 auto 5px auto;
-            min-width: 0; 
-            display: block;
-        }
-        .pricing-card-block {
+        /* ------------------- НОВАЯ СТРАНИЦА: КУПИТЬ ПОДПИСКУ ------------------- */
+        .tariff-selection {
             background: var(--card-bg);
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 20px;
-            text-align: left;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
-            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 18px;
+            padding: 16px;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+            border: 1px solid var(--border-color);
         }
-        .tariff-days-option {
+
+        .tariff-card {
+            min-width: 220px;
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .tariff-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .tariff-card.selected {
+            border-color: var(--primary-color);
+            background: var(--nav-active);
+        }
+
+        .tariff-name {
+            font-size: 1.1em;
+            font-weight: 700;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+
+        .tariff-features {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            font-size: 0.9em;
+            color: var(--text-secondary);
+        }
+
+        .tariff-features span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .tariff-features i {
+            color: var(--primary-color);
+            font-size: 1.1em;
+        }
+
+        .duration-selection {
+            margin-top: 16px;
+        }
+
+        .duration-option {
+            background: var(--card-bg);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 14px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 15px; 
-            margin-bottom: 8px;
-            background: rgba(0,0,0,0.2);
-            border-radius: 10px;
             cursor: pointer;
-            transition: background 0.2s, border-color 0.2s;
-            border: 1px solid transparent;
+            transition: all 0.2s;
+            font-size: 1em;
+            font-weight: 500;
         }
-        .tariff-days-option:hover,
-        .tariff-days-option:active {
-            background: rgba(0,0,0,0.3);
-            border-color: rgba(0,123,255,0.3);
+
+        .duration-option:hover {
+            background: var(--hover-bg);
         }
-        .tariff-days-option.active {
-            background: var(--primary-color); 
-            box-shadow: 0 0 10px rgba(0,123,255,0.5);
+
+        .duration-option.selected {
             border-color: var(--primary-color);
+            background: var(--nav-active);
         }
-        .tariff-days-option.active span {
+
+        .duration-option .price {
+            color: var(--primary-color);
             font-weight: 700;
         }
-        .tariff-days-option span {
-            font-weight: 600;
-        }
-        .option-price {
-            font-weight: 700;
-            color: var(--text-color);
-        }
-        .tariff-buy-button-container {
-            text-align: center;
-            padding-top: 5px;
-        }
-        .tariff-buy-button-container .button {
-            max-width: 100%;
-            margin: 20px auto 0;
-        }
+        /* --------------------------------------------------------------------- */
     </style>
 </head>
 <body data-theme="dark">
@@ -500,7 +369,6 @@
             <div class="header">
                 <h1><span>ON1X</span> VPN</h1>
                 <div class="tagline">Свобода. Безопасность. Надежность.</div>
-                <!-- ШЕСТЕРЁНКА ВЕРНУЛАСЬ -->
                 <div class="settings-icon" onclick="showPage('settings-page')">
                     <i class="fas fa-cog"></i>
                 </div>
@@ -520,7 +388,6 @@
                 </div>
             </div>
 
-            <!-- БЛОК "УПРАВЛЕНИЕ ПОДПИСКОЙ" ВЕРНУЛСЯ -->
             <div class="subscription-management">
                 <h3>Управление подпиской</h3>
                 <div class="profile-menu">
@@ -695,177 +562,56 @@
         </div>
     </div>
 
-    <!-- ДОБАВЛЕННАЯ СТРАНИЦА ПОКУПКИ ИЗ 9.txt (АДАПТИРОВАНО) -->
+    <!-- СТРАНИЦА КУПИТЬ ПОДПИСКУ -->
     <div id="buy-page" class="page">
         <div class="main-content">
             <div class="header">
                 <h1><span>ON1X</span> VPN</h1>
-                <div class="tagline">Покупка подписки</div>
+                <div class="tagline">Купить подписку</div>
             </div>
 
-            <h2>Купить подписку</h2>
-            <p>Выберите тариф и срок</p>
-
-            <!-- ПЕРЕКЛЮЧАТЕЛЬ ТАРИФОВ -->
-            <div class="tariff-toggle-inside">
-                <div class="toggle-button active" data-tariff="personal" onclick="switchBuyTariff('personal')">Личный</div>
-                <div class="toggle-button" data-tariff="family" onclick="switchBuyTariff('family')">Семейный</div>
-                <div class="toggle-button developing" data-tariff="premium" onclick="switchBuyTariff('premium')">Премиум</div>
-            </div>
-
-            <!-- КОНТЕНТ ТАРИФОВ -->
-            <div id="buy-tariffs-container">
-                <!-- ЛИЧНЫЙ -->
-                <div class="tariff-content" data-tariff="personal" style="display: block;">
-                    <div class="compact-tariff-card unified-tariff-card">
-                        <p class="tariff-slogan slogan-personal">Для личного использования</p>
-                        <div class="tariff-features-list-v2">
-                            <div><i class="fas fa-user"></i><br>До 3 устройств</div>
-                            <div><i class="fas fa-globe"></i><br>Все страны</div>
-                            <div><i class="fas fa-lock"></i><br>Высокая безопасность</div>
+            <!-- БЛОК 1: ВЫБОР ТАРИФА -->
+            <div class="tariff-selection" style="margin: 20px 0;">
+                <div style="display: flex; gap: 12px; overflow-x: auto; padding: 8px 0;">
+                    <div class="tariff-card" data-tariff="personal" onclick="selectTariff(this, 'personal')">
+                        <div class="tariff-name">Личный</div>
+                        <div class="tariff-features">
+                            <span><i class="fas fa-mobile-alt"></i> 3 устр.</span>
+                            <span><i class="fas fa-tachometer-alt"></i> 10 Гбит/с</span>
+                            <span><i class="fas fa-infinity"></i> Безлимит</span>
                         </div>
                     </div>
-                    <div class="pricing-card-block" id="buy-days-personal">
-                        <div class="tariff-days-option" data-link="https://t.me/on1xVPN_bot?start=personal_30" onclick="selectBuyDay('personal', this)"><span>30 дней</span><span class="option-price">150 ₽</span></div>
-                        <div class="tariff-days-option" data-link="https://t.me/on1xVPN_bot?start=personal_90" onclick="selectBuyDay('personal', this)"><span>90 дней</span><span class="option-price">400 ₽</span></div>
-                        <div class="tariff-days-option" data-link="https://t.me/on1xVPN_bot?start=personal_180" onclick="selectBuyDay('personal', this)"><span>180 дней</span><span class="option-price">700 ₽</span></div>
-                        <div class="tariff-days-option" data-link="https://t.me/on1xVPN_bot?start=personal_365" onclick="selectBuyDay('personal', this)"><span>365 дней</span><span class="option-price">1200 ₽</span></div>
-                    </div>
-                    <div class="tariff-buy-button-container">
-                        <a id="buy-button-personal" class="button disabled">Выберите срок</a>
-                    </div>
-                </div>
-
-                <!-- СЕМЕЙНЫЙ -->
-                <div class="tariff-content" data-tariff="family" style="display: none;">
-                    <div class="compact-tariff-card unified-tariff-card">
-                        <p class="tariff-slogan slogan-family">Для семьи и друзей</p>
-                        <div class="tariff-features-list-v2">
-                            <div><i class="fas fa-users"></i><br>До 6 устройств</div>
-                            <div><i class="fas fa-globe"></i><br>Все страны</div>
-                            <div><i class="fas fa-lock"></i><br>Высокая безопасность</div>
+                    <div class="tariff-card" data-tariff="family" onclick="selectTariff(this, 'family')">
+                        <div class="tariff-name">Семейный</div>
+                        <div class="tariff-features">
+                            <span><i class="fas fa-users"></i> 6 устр.</span>
+                            <span><i class="fas fa-tachometer-alt"></i> 10 Гбит/с</span>
+                            <span><i class="fas fa-infinity"></i> Безлимит</span>
                         </div>
                     </div>
-                    <div class="pricing-card-block" id="buy-days-family">
-                        <div class="tariff-days-option" data-link="https://t.me/on1xVPN_bot?start=family_30" onclick="selectBuyDay('family', this)"><span>30 дней</span><span class="option-price">250 ₽</span></div>
-                        <div class="tariff-days-option" data-link="https://t.me/on1xVPN_bot?start=family_90" onclick="selectBuyDay('family', this)"><span>90 дней</span><span class="option-price">700 ₽</span></div>
-                        <div class="tariff-days-option" data-link="https://t.me/on1xVPN_bot?start=family_180" onclick="selectBuyDay('family', this)"><span>180 дней</span><span class="option-price">1200 ₽</span></div>
-                        <div class="tariff-days-option" data-link="https://t.me/on1xVPN_bot?start=family_365" onclick="selectBuyDay('family', this)"><span>365 дней</span><span class="option-price">2000 ₽</span></div>
-                    </div>
-                    <div class="tariff-buy-button-container">
-                        <a id="buy-button-family" class="button disabled">Выберите срок</a>
-                    </div>
-                </div>
-
-                <!-- ПРЕМИУМ -->
-                <div class="tariff-content disabled" data-tariff="premium" style="display: none;">
-                    <div class="compact-tariff-card unified-tariff-card">
-                        <p class="tariff-slogan slogan-premium">Для бизнеса и команд</p>
-                        <div class="tariff-features-list-v2">
-                            <div><i class="fas fa-briefcase"></i><br>До 15 устройств</div>
-                            <div><i class="fas fa-globe"></i><br>Все страны</div>
-                            <div><i class="fas fa-lock"></i><br>Высокая безопасность</div>
+                    <div class="tariff-card" data-tariff="premium" onclick="selectTariff(this, 'premium')">
+                        <div class="tariff-name">Премиум</div>
+                        <div class="tariff-features">
+                            <span><i class="fas fa-crown"></i> 15 устр.</span>
+                            <span><i class="fas fa-tachometer-alt"></i> 25 Гбит/с</span>
+                            <span><i class="fas fa-infinity"></i> Безлимит</span>
                         </div>
-                    </div>
-                    <div class="pricing-card-block" id="buy-days-premium">
-                        <div class="tariff-days-option" data-link="https://t.me/on1xVPN_bot?start=premium_30" onclick="selectBuyDay('premium', this)"><span>30 дней</span><span class="option-price">500 ₽</span></div>
-                        <div class="tariff-days-option" data-link="https://t.me/on1xVPN_bot?start=premium_90" onclick="selectBuyDay('premium', this)"><span>90 дней</span><span class="option-price">1400 ₽</span></div>
-                        <div class="tariff-days-option" data-link="https://t.me/on1xVPN_bot?start=premium_180" onclick="selectBuyDay('premium', this)"><span>180 дней</span><span class="option-price">2400 ₽</span></div>
-                        <div class="tariff-days-option" data-link="https://t.me/on1xVPN_bot?start=premium_365" onclick="selectBuyDay('premium', this)"><span>365 дней</span><span class="option-price">4000 ₽</span></div>
-                    </div>
-                    <div class="tariff-buy-button-container">
-                        <a id="buy-button-premium" class="button disabled">Выберите срок</a>
                     </div>
                 </div>
             </div>
 
-            <div class="app-version">Версия: 1.0.0</div>
-        </div>
-    </div>
-
-    <!-- ДОБАВЛЕННАЯ СТРАНИЦА ПРОДЛЕНИЯ ИЗ 9.txt (АДАПТИРОВАНО) -->
-    <div id="renew-page" class="page">
-        <div class="main-content">
-            <div class="header">
-                <h1><span>ON1X</span> VPN</h1>
-                <div class="tagline">Продление подписки</div>
+            <!-- БЛОК 2: ВЫБОР СРОКА -->
+            <div class="duration-selection" style="display: none;">
+                <div style="text-align: center; margin-bottom: 16px; font-size: 1.1em; font-weight: 600; color: var(--text-color);">
+                    Выберите срок подписки
+                </div>
+                <div id="duration-options" style="display: flex; flex-direction: column; gap: 10px;"></div>
             </div>
 
-            <h2>Продлить подписку</h2>
-            <p>Выберите тариф и срок</p>
-
-            <!-- ПЕРЕКЛЮЧАТЕЛЬ ТАРИФОВ -->
-            <div class="tariff-toggle-inside">
-                <div class="toggle-button active" data-tariff="personal" onclick="switchRenewTariff('personal')">Личный</div>
-                <div class="toggle-button" data-tariff="family" onclick="switchRenewTariff('family')">Семейный</div>
-                <div class="toggle-button developing" data-tariff="premium" onclick="switchRenewTariff('premium')">Премиум</div>
-            </div>
-
-            <!-- КОНТЕНТ ТАРИФОВ -->
-            <div id="renew-tariffs-container">
-                <!-- ЛИЧНЫЙ -->
-                <div class="tariff-content" data-tariff="personal" style="display: block;">
-                    <div class="compact-tariff-card unified-tariff-card">
-                        <p class="tariff-slogan slogan-personal">Для личного использования</p>
-                        <div class="tariff-features-list-v2">
-                            <div><i class="fas fa-user"></i><br>До 3 устройств</div>
-                            <div><i class="fas fa-globe"></i><br>Все страны</div>
-                            <div><i class="fas fa-lock"></i><br>Высокая безопасность</div>
-                        </div>
-                    </div>
-                    <div class="pricing-card-block" id="renew-days-personal">
-                        <div class="tariff-days-option" data-link="https://t.me/on1xVPN_bot?start=personal_30" onclick="selectRenewDay('personal', this)"><span>30 дней</span><span class="option-price">150 ₽</span></div>
-                        <div class="tariff-days-option" data-link="https://t.me/on1xVPN_bot?start=personal_90" onclick="selectRenewDay('personal', this)"><span>90 дней</span><span class="option-price">400 ₽</span></div>
-                        <div class="tariff-days-option" data-link="https://t.me/on1xVPN_bot?start=personal_180" onclick="selectRenewDay('personal', this)"><span>180 дней</span><span class="option-price">700 ₽</span></div>
-                        <div class="tariff-days-option" data-link="https://t.me/on1xVPN_bot?start=personal_365" onclick="selectRenewDay('personal', this)"><span>365 дней</span><span class="option-price">1200 ₽</span></div>
-                    </div>
-                    <div class="tariff-buy-button-container">
-                        <a id="renew-button-personal" class="button disabled">Выберите срок</a>
-                    </div>
-                </div>
-
-                <!-- СЕМЕЙНЫЙ -->
-                <div class="tariff-content" data-tariff="family" style="display: none;">
-                    <div class="compact-tariff-card unified-tariff-card">
-                        <p class="tariff-slogan slogan-family">Для семьи и друзей</p>
-                        <div class="tariff-features-list-v2">
-                            <div><i class="fas fa-users"></i><br>До 6 устройств</div>
-                            <div><i class="fas fa-globe"></i><br>Все страны</div>
-                            <div><i class="fas fa-lock"></i><br>Высокая безопасность</div>
-                        </div>
-                    </div>
-                    <div class="pricing-card-block" id="renew-days-family">
-                        <div class="tariff-days-option" data-link="https://t.me/on1xVPN_bot?start=family_30" onclick="selectRenewDay('family', this)"><span>30 дней</span><span class="option-price">250 ₽</span></div>
-                        <div class="tariff-days-option" data-link="https://t.me/on1xVPN_bot?start=family_90" onclick="selectRenewDay('family', this)"><span>90 дней</span><span class="option-price">700 ₽</span></div>
-                        <div class="tariff-days-option" data-link="https://t.me/on1xVPN_bot?start=family_180" onclick="selectRenewDay('family', this)"><span>180 дней</span><span class="option-price">1200 ₽</span></div>
-                        <div class="tariff-days-option" data-link="https://t.me/on1xVPN_bot?start=family_365" onclick="selectRenewDay('family', this)"><span>365 дней</span><span class="option-price">2000 ₽</span></div>
-                    </div>
-                    <div class="tariff-buy-button-container">
-                        <a id="renew-button-family" class="button disabled">Выберите срок</a>
-                    </div>
-                </div>
-
-                <!-- ПРЕМИУМ -->
-                <div class="tariff-content disabled" data-tariff="premium" style="display: none;">
-                    <div class="compact-tariff-card unified-tariff-card">
-                        <p class="tariff-slogan slogan-premium">Для бизнеса и команд</p>
-                        <div class="tariff-features-list-v2">
-                            <div><i class="fas fa-briefcase"></i><br>До 15 устройств</div>
-                            <div><i class="fas fa-globe"></i><br>Все страны</div>
-                            <div><i class="fas fa-lock"></i><br>Высокая безопасность</div>
-                        </div>
-                    </div>
-                    <div class="pricing-card-block" id="renew-days-premium">
-                        <div class="tariff-days-option" data-link="https://t.me/on1xVPN_bot?start=premium_30" onclick="selectRenewDay('premium', this)"><span>30 дней</span><span class="option-price">500 ₽</span></div>
-                        <div class="tariff-days-option" data-link="https://t.me/on1xVPN_bot?start=premium_90" onclick="selectRenewDay('premium', this)"><span>90 дней</span><span class="option-price">1400 ₽</span></div>
-                        <div class="tariff-days-option" data-link="https://t.me/on1xVPN_bot?start=premium_180" onclick="selectRenewDay('premium', this)"><span>180 дней</span><span class="option-price">2400 ₽</span></div>
-                        <div class="tariff-days-option" data-link="https://t.me/on1xVPN_bot?start=premium_365" onclick="selectRenewDay('premium', this)"><span>365 дней</span><span class="option-price">4000 ₽</span></div>
-                    </div>
-                    <div class="tariff-buy-button-container">
-                        <a id="renew-button-premium" class="button disabled">Выберите срок</a>
-                    </div>
-                </div>
-            </div>
+            <!-- КНОПКА КУПИТЬ -->
+            <button id="buy-button" class="tg-button single-button" style="margin-top: 24px; opacity: 0.5; pointer-events: none;" disabled>
+                <i class="fas fa-shopping-cart"></i> Купить
+            </button>
 
             <div class="app-version">Версия: 1.0.0</div>
         </div>
@@ -924,12 +670,22 @@
             });
 
             if (Telegram?.WebApp?.BackButton) {
-                if (['subscription-page', 'profile-page'].includes(pageId)) {
+                if (['subscription-page', 'profile-page', 'buy-page'].includes(pageId)) {
                     Telegram.WebApp.BackButton.hide();
                 } else {
                     Telegram.WebApp.BackButton.show();
-                    Telegram.WebApp.BackButton.onClick(() => showPage('subscription-page')); // Изменено на возврат к подписке
+                    Telegram.WebApp.BackButton.onClick(() => showPage('profile-page'));
                 }
+            }
+
+            // Сброс выбора на странице покупки
+            if (pageId === 'buy-page') {
+                selectedTariff = null;
+                selectedDuration = null;
+                document.querySelectorAll('.tariff-card').forEach(c => c.classList.remove('selected'));
+                document.querySelectorAll('.duration-option').forEach(o => o.classList.remove('selected'));
+                document.querySelector('.duration-selection').style.display = 'none';
+                updateBuyButton();
             }
         }
 
@@ -961,6 +717,78 @@
             if (!isOpen) {
                 answer.classList.add('open');
                 element.classList.add('active');
+            }
+        }
+
+        // ДАННЫЕ ПО ТАРИФАМ И СРОКАМ
+        const tariffPrices = {
+            personal: [
+                { days: 30, price: 100 },
+                { days: 60, price: 200 },
+                { days: 90, price: 300 },
+                { days: 180, price: 600 }
+            ],
+            family: [
+                { days: 30, price: 200 },
+                { days: 60, price: 400 },
+                { days: 90, price: 600 },
+                { days: 180, price: 1200 }
+            ],
+            premium: [
+                { days: 30, price: 350 },
+                { days: 60, price: 700 },
+                { days: 90, price: 1500 },
+                { days: 180, price: 2100 }
+            ]
+        };
+
+        let selectedTariff = null;
+        let selectedDuration = null;
+
+        // ВЫБОР ТАРИФА
+        function selectTariff(element, tariff) {
+            document.querySelectorAll('.tariff-card').forEach(card => card.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedTariff = tariff;
+
+            const durationContainer = document.getElementById('duration-options');
+            const durationSection = document.querySelector('.duration-selection');
+            durationContainer.innerHTML = '';
+            selectedDuration = null;
+            updateBuyButton();
+
+            tariffPrices[tariff].forEach(item => {
+                const opt = document.createElement('div');
+                opt.className = 'duration-option';
+                opt.innerHTML = `
+                    <span>${item.days} дней</span>
+                    <span class="price">${item.price} ₽</span>
+                `;
+                opt.onclick = () => {
+                    document.querySelectorAll('.duration-option').forEach(o => o.classList.remove('selected'));
+                    opt.classList.add('selected');
+                    selectedDuration = item;
+                    updateBuyButton();
+                };
+                durationContainer.appendChild(opt);
+            });
+
+            durationSection.style.display = 'block';
+        }
+
+        // ОБНОВЛЕНИЕ КНОПКИ КУПИТЬ
+        function updateBuyButton() {
+            const btn = document.getElementById('buy-button');
+            if (selectedTariff && selectedDuration) {
+                btn.style.opacity = '1';
+                btn.style.pointerEvents = 'auto';
+                btn.disabled = false;
+                btn.onclick = () => goToLinkAndClose(`https://t.me/on1xVPN_bot?start=buy_${selectedTariff}_${selectedDuration.days}`);
+            } else {
+                btn.style.opacity = '0.5';
+                btn.style.pointerEvents = 'none';
+                btn.disabled = true;
+                btn.onclick = null;
             }
         }
 
@@ -1031,11 +859,10 @@
             if (isNoSub) {
                 buttonsHtml = `<a class="tg-button single-button" onclick="showPage('buy-page')"><i class="fas fa-shopping-cart"></i> Купить</a>`;
             } else {
-                // СНАЧАЛА СМЕНИТЬ, ПОТОМ ПРОДЛИТЬ
                 buttonsHtml = `
                     <div class="action-buttons-row">
-                        <a class="tg-button" onclick="showPage('buy-page')"><i class="fas fa-exchange-alt"></i> Сменить тариф</a>
-                        <a class="tg-button" onclick="showPage('renew-page')"><i class="fas fa-clock"></i> Продлить</a>
+                        <a class="tg-button" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=change')"><i class="fas fa-exchange-alt"></i> Сменить тариф</a>
+                        <a class="tg-button" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=extend')"><i class="fas fa-clock"></i> Продлить</a>
                     </div>`;
             }
 
@@ -1065,107 +892,9 @@
                 Telegram.WebApp.ready();
                 Telegram.WebApp.disableVerticalSwipes?.();
             }
+            updateBuyButton(); // инициализация
             loadUserData();
         });
-
-        // ДОБАВЛЕННЫЕ ФУНКЦИИ ИЗ 9.txt ДЛЯ ПОКУПКИ И ПРОДЛЕНИЯ
-        function switchBuyTariff(tariffName) {
-            document.querySelectorAll('#buy-tariffs-container .tariff-content').forEach(content => {
-                content.style.display = 'none';
-            });
-            const activeContent = document.querySelector(`#buy-tariffs-container .tariff-content[data-tariff="${tariffName}"]`);
-            if (activeContent) {
-                activeContent.style.display = 'block';
-                document.querySelectorAll('#buy-tariffs-container .toggle-button').forEach(btn => {
-                    btn.classList.remove('active');
-                    if (btn.dataset.tariff === tariffName) {
-                        btn.classList.add('active');
-                    }
-                });
-                document.querySelectorAll(`#buy-days-${tariffName} .tariff-days-option`).forEach(option => {
-                    option.classList.remove('active');
-                });
-                const buyButton = document.getElementById(`buy-button-${tariffName}`);
-                if (buyButton) {
-                    buyButton.classList.add('disabled');
-                    buyButton.href = '#';
-                    buyButton.innerHTML = 'Выберите срок';
-                }
-            }
-        }
-
-        function selectBuyDay(tariffName, selectedOption) {
-            document.querySelectorAll(`#buy-days-${tariffName} .tariff-days-option`).forEach(option => {
-                option.classList.remove('active');
-            });
-            selectedOption.classList.add('active');
-            const buyButton = document.getElementById(`buy-button-${tariffName}`);
-            if (buyButton) {
-                buyButton.classList.remove('disabled');
-                buyButton.href = selectedOption.dataset.link;
-                buyButton.innerHTML = 'Купить';
-
-                buyButton.onclick = function(e) {
-                    e.preventDefault();
-                    const url = this.href;
-                    window.location.href = url;
-                    setTimeout(() => {
-                        if (typeof Telegram !== 'undefined' && Telegram.WebApp && Telegram.WebApp.close) {
-                            Telegram.WebApp.close();
-                        }
-                    }, 300);
-                };
-            }
-        }
-
-        function switchRenewTariff(tariffName) {
-            document.querySelectorAll('#renew-tariffs-container .tariff-content').forEach(content => {
-                content.style.display = 'none';
-            });
-            const activeContent = document.querySelector(`#renew-tariffs-container .tariff-content[data-tariff="${tariffName}"]`);
-            if (activeContent) {
-                activeContent.style.display = 'block';
-                document.querySelectorAll('#renew-tariffs-container .toggle-button').forEach(btn => {
-                    btn.classList.remove('active');
-                    if (btn.dataset.tariff === tariffName) {
-                        btn.classList.add('active');
-                    }
-                });
-                document.querySelectorAll(`#renew-days-${tariffName} .tariff-days-option`).forEach(option => {
-                    option.classList.remove('active');
-                });
-                const renewButton = document.getElementById(`renew-button-${tariffName}`);
-                if (renewButton) {
-                    renewButton.classList.add('disabled');
-                    renewButton.href = '#';
-                    renewButton.innerHTML = 'Выберите срок';
-                }
-            }
-        }
-
-        function selectRenewDay(tariffName, selectedOption) {
-            document.querySelectorAll(`#renew-days-${tariffName} .tariff-days-option`).forEach(option => {
-                option.classList.remove('active');
-            });
-            selectedOption.classList.add('active');
-            const renewButton = document.getElementById(`renew-button-${tariffName}`);
-            if (renewButton) {
-                renewButton.classList.remove('disabled');
-                renewButton.href = selectedOption.dataset.link;
-                renewButton.innerHTML = 'Продлить';
-
-                renewButton.onclick = function(e) {
-                    e.preventDefault();
-                    const url = this.href;
-                    window.location.href = url;
-                    setTimeout(() => {
-                        if (typeof Telegram !== 'undefined' && Telegram.WebApp && Telegram.WebApp.close) {
-                            Telegram.WebApp.close();
-                        }
-                    }, 300);
-                };
-            }
-        }
     </script>
 </body>
 </html>
