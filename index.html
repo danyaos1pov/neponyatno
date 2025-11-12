@@ -145,7 +145,7 @@
             box-shadow: 0 6px 16px rgba(0,0,0,0.3);
             border: 1px solid rgba(255,255,255,0.05);
             font-size: 0.95em;
-            line-height: 1.5;
+            line-height: 1.6;
             color: #b0b8c2;
         }
         .referral-info strong { color: var(--text-color); }
@@ -173,7 +173,7 @@
             color: var(--primary-color);
         }
 
-        /* === НИЖНЕЕ МЕНЮ — С ОТСТУПАМИ, ЗАКРУГЛЁННОЕ, ПРОЗРАЧНОЕ === */
+        /* === НИЖНЕЕ МЕНЮ === */
         .bottom-nav {
             position: fixed;
             bottom: 12px;
@@ -202,6 +202,64 @@
             color: var(--primary-color); background: rgba(36,129,204,0.15);
         }
         .nav-item:hover { background: rgba(255,255,255,0.05); }
+
+        /* === FAQ АККОРДЕОН === */
+        .faq-accordion {
+            background: var(--card-bg);
+            border-radius: 18px;
+            margin: 20px 0;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.05);
+            overflow: hidden;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            padding: 16px 18px;
+            background: transparent;
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 1em;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+            user-select: none;
+        }
+        .faq-question:hover {
+            background: rgba(255,255,255,0.03);
+        }
+
+        .faq-question i {
+            color: #b0b8c2;
+            transition: transform 0.3s ease;
+            font-size: 0.9em;
+        }
+        .faq-question.active i {
+            transform: rotate(180deg);
+            color: var(--primary-color);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 18px;
+            color: #b0b8c2;
+            font-size: 0.95em;
+            line-height: 1.6;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .faq-answer.open {
+            max-height: 300px; /* Достаточно для длинных ответов */
+            padding: 16px 18px;
+        }
     </style>
 </head>
 <body>
@@ -264,7 +322,7 @@
                 <div class="profile-menu-btn">
                     <i class="fas fa-download"></i> Установить приложение
                 </div>
-                <div class="profile-menu-btn">
+                <div class="profile-menu-btn" onclick="showPage('faq-page')">
                     <i class="fas fa-question-circle"></i> FAQ
                 </div>
                 <div class="profile-menu-btn">
@@ -299,6 +357,77 @@
         </div>
     </div>
 
+    <!-- === СТРАНИЦА "FAQ" — АККОРДЕОН === -->
+    <div id="faq-page" class="page">
+        <div class="main-content">
+            <div class="header">
+                <h1><span>ON1X</span> VPN</h1>
+                <div class="tagline">Часто задаваемые вопросы</div>
+            </div>
+
+            <div class="faq-accordion">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Как подключиться? <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Для того, чтобы подключиться, вам необходимо в разделе "Подписка" нажать кнопку "Купить", а затем выбрать необходимый тариф.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Лимит устройств <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Каждый тариф ограничивается определенным количеством устройств на одном ключе:<br>
+                        <strong>Личный</strong> — 3 устройства<br>
+                        <strong>Семейный</strong> — 6 устройств<br>
+                        <strong>Премиум</strong> — 15 устройств
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Как поменять тариф? <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Для того, чтобы поменять тариф, вам необходимо в разделе "Подписка" нажать кнопку "Сменить тариф".
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Как вывести деньги с кошелька? <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Для того, чтобы вывести денежные средства на банковскую карту или криптокошелек, вам необходимо перейти в раздел "Профиль" и под балансом нажать кнопку "Вывести".
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Как вернуть подписку? <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Для того, чтобы оформить возврат подписки, вам необходимо перейти в раздел "Профиль", а затем выбрать "Возврат подписки".
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Какой бонус за друга? <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        После того, как ваш друг перешел по вашей реферальной ссылке, то вы будете получать каждый раз <strong>15%</strong>, когда друг будет приобретать/продлевать подписку.
+                    </div>
+                </div>
+            </div>
+
+            <div class="app-version">Версия: 1.0.0</div>
+        </div>
+    </div>
+
     <!-- === НИЖНЕЕ МЕНЮ === -->
     <div class="bottom-nav">
         <div class="nav-item active" data-page="subscription-page">
@@ -310,6 +439,26 @@
     </div>
 
     <script>
+        // === АККОРДЕОН FAQ ===
+        function toggleFaq(element) {
+            const answer = element.nextElementSibling;
+            const isOpen = answer.classList.contains('open');
+
+            // Закрываем все
+            document.querySelectorAll('.faq-answer').forEach(a => {
+                a.classList.remove('open');
+            });
+            document.querySelectorAll('.faq-question').forEach(q => {
+                q.classList.remove('active');
+            });
+
+            // Открываем текущий (если не был открыт)
+            if (!isOpen) {
+                answer.classList.add('open');
+                element.classList.add('active');
+            }
+        }
+
         let isDataLoaded = false;
 
         function copyText(text, btn) {
