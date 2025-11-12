@@ -96,6 +96,29 @@
         .copy-key-button { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: var(--primary-color); color: white; border: none; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9em; transition: all 0.2s; }
         .copy-key-button:hover { background: #0066aa; transform: translateY(-50%) scale(1.1); }
 
+        .action-buttons-row {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+        }
+        .tg-button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            flex: 1;
+            padding: 13px 0;
+            background: var(--primary-color);
+            color: white;
+            font-weight: 500;
+            font-size: 1em;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .tg-button:hover { background: #0066aa; }
+
         .balance-card { background: var(--card-bg); border-radius: 18px; padding: 18px; margin: 20px 0; box-shadow: 0 6px 16px rgba(0,0,0,0.15); border: 1px solid var(--border-color); text-align: center; }
         .balance-label { font-size: 0.9em; color: var(--text-secondary); margin-bottom: 6px; }
         .balance-value { font-size: 1.8em; font-weight: 700; color: var(--text-color); margin-bottom: 16px; }
@@ -142,7 +165,7 @@
             height: 72px; box-shadow: 0 6px 20px rgba(0,0,0,0.35);
         }
         .nav-item { flex: 1; padding: 10px 0; color: #8b949e; font-size: 0.8em; font-weight: 600; text-align: center; border-radius: 12px; cursor: pointer; transition: all 0.25s ease; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-        .nav-item i { font CIE: 1.35em; transition: transform 0.2s; }
+        .nav-item i { font-size: 1.35em; transition: transform 0.2s; }
         .nav-item.active { color: var(--primary-color); background: var(--nav-active); font-weight: 700; }
         .nav-item.active i { transform: scale(1.15); }
         .nav-item:hover:not(.active) { background: var(--hover-bg); }
@@ -151,7 +174,7 @@
         .setting-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--border-color); font-size: 1em; }
         .setting-item:last-child { border-bottom: none; }
         .setting-label { font-weight: 500; color: var(--text-color); }
-        .toggle-switch { position: relative; width: 48px; height: 26px; background: #cacaca; border-radius: 50px; cursor: pointer; }
+        .toggle-switch { position: relative; width: 48px; height: 26px; background: #ccc; border-radius: 50px; cursor: pointer; }
         .toggle-switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #ccc; border-radius: 50px; transition: 0.3s; }
         .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
@@ -387,7 +410,7 @@
             }, 300);
         }
 
-        // ЗАГРУЗКА ДАННЫХ — ИСПРАВЛЕНО
+        // ЗАГРУЗКА ДАННЫХ
         let isDataLoaded = false;
         function loadUserData() {
             if (isDataLoaded) return;
@@ -459,12 +482,37 @@
             const block = document.createElement('div');
             block.className = 'subscription-block';
             const isNoSub = !data.key_1 || data.not_found;
+            const isActive = data.key_status === 'active';
+            const isExpired = data.key_status === 'expired';
 
             const statusHtml = isNoSub
                 ? `<span class="status-chip status-none">Нет</span>`
-                : (data.key_status === 'active'
+                : (isActive
                     ? `<span class="status-chip status-active">Активна</span>`
                     : `<span class="status-chip status-expired">Истекла</span>`);
+
+            let buttonsHtml = '';
+            if (isNoSub) {
+                buttonsHtml = `
+                    <a class="tg-button" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=buy')">
+                        <i class="fas fa-shopping-cart"></i> Купить
+                    </a>`;
+            } else if (isActive) {
+                buttonsHtml = `
+                    <div class="action-buttons-row">
+                        <a class="tg-button" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=extend')">
+                            <i class="fas fa-clock"></i> Продлить
+                        </a>
+                        <a class="tg-button" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=change')">
+                            <i class="fas fa-exchange-alt"></i> Сменить тариф
+                        </a>
+                    </div>`;
+            } else if (isExpired) {
+                buttonsHtml = `
+                    <a class="tg-button" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=extend')">
+                        <i class="fas fa-redo"></i> Продлить
+                    </a>`;
+            }
 
             block.innerHTML = `
                 <div class="info-row"><span class="info-label">Тариф:</span><span class="info-value">${isNoSub ? '—' : (data.tariff || 'Неизвестно')}</span></div>
@@ -473,7 +521,7 @@
                     <input type="text" class="key-input" value="${isNoSub ? 'У вас нет подписки' : data.key_1}" readonly ${isNoSub ? 'style="color:#dc3545"' : ''}>
                     ${isNoSub ? '' : `<button class="copy-key-button" onclick="copyText('${data.key_1}', this)"><i class="fas fa-copy"></i></button>`}
                 </div>
-                ${isNoSub ? `<a class="tg-button" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=buy')"><i class="fas fa-shopping-cart"></i> Купить</a>` : ''}
+                ${buttonsHtml}
             `;
 
             return block;
