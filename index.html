@@ -96,20 +96,6 @@
         .copy-key-button { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: var(--primary-color); color: white; border: none; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9em; transition: all 0.2s; }
         .copy-key-button:hover { background: #0066aa; transform: translateY(-50%) scale(1.1); }
 
-        .comment-container {
-            margin: 12px 0 0; background: rgba(0,0,0,0.03); border-radius: 12px; padding: 10px 12px;
-            font-size: 0.9em; color: var(--text-secondary); line-height: 1.4; border: 1px solid var(--border-color);
-        }
-
-        .action-buttons-row { display: flex; gap: 8px; margin-top: 16px; }
-        .tg-button {
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            width: 100%; padding: 13px 0; background: var(--primary-color); color: white;
-            font-weight: 500; font-size: 1em; text-align: center; border-radius: 8px;
-            cursor: pointer; transition: background 0.2s;
-        }
-        .tg-button:hover { background: #0066aa; }
-
         .balance-card { background: var(--card-bg); border-radius: 18px; padding: 18px; margin: 20px 0; box-shadow: 0 6px 16px rgba(0,0,0,0.15); border: 1px solid var(--border-color); text-align: center; }
         .balance-label { font-size: 0.9em; color: var(--text-secondary); margin-bottom: 6px; }
         .balance-value { font-size: 1.8em; font-weight: 700; color: var(--text-color); margin-bottom: 16px; }
@@ -231,7 +217,7 @@
                 </div>
             </div>
 
-            <div class="app-version">Версия: 1.0.0</div>
+            <div porous class="app-version">Версия: 1.0.0</div>
         </div>
     </div>
 
@@ -256,10 +242,10 @@
                 <div id="balance-value" class="balance-value">0 RUB</div>
                 <div class="balance-actions">
                     <div class="balance-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=f_3781780')">
-                        Вывести
+                        <i class="fas fa-arrow-up"></i> Вывести
                     </div>
                     <div class="balance-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=f_5494846')">
-                        Пополнить
+                        <i class="fas fa-plus"></i> Пополнить
                     </div>
                 </div>
             </div>
@@ -303,7 +289,7 @@
                 <div class="tagline">Настройки приложения</div>
             </div>
 
-            <div class="settings-block">
+            <div class="settings-block832">
                 <div class="setting-item">
                     <div class="setting-label">Светлая тема</div>
                     <label class="toggle-switch">
@@ -312,7 +298,7 @@
                     </label>
                 </div>
                 <button class="reload-btn" onclick="reloadApp()">
-                    Перезагрузить приложение
+                    <i class="fas fa-sync-alt"></i> Перезагрузить приложение
                 </button>
             </div>
 
@@ -320,13 +306,15 @@
         </div>
     </div>
 
-    <!-- === НИЖНЕЕ МЕНЮ — ИСПРАВЛЕНО === -->
+    <!-- === НИЖНЕЕ МЕНЮ — С ИКОНКАМИ === -->
     <div class="bottom-nav">
         <div class="nav-item active" data-page="subscription-page">
-            Подписка
+            <i class="fas fa-key"></i>
+            <div>Подписка</div>
         </div>
         <div class="nav-item" data-page="profile-page">
-            Профиль
+            <i class="fas fa-user"></i>
+            <div>Профиль</div>
         </div>
     </div>
 
@@ -360,7 +348,8 @@
         // === НАВИГАЦИЯ ===
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(pageId)?.classList.add('active');
+            const page = document.getElementById(pageId);
+            if (page) page.classList.add('active');
 
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
@@ -386,17 +375,17 @@
             });
         });
 
-        // === ПЕРЕХОД ПО ССЫЛКЕ ===
+        // === ПЕРЕХОД ===
         function goToLinkAndClose(url) {
             window.location.href = url;
             setTimeout(() => {
-                if (typeof Telegram !== 'undefined' && Telegram.WebApp?.close) {
+                if (Telegram?.WebApp?.close) {
                     Telegram.WebApp.close();
                 }
             }, 300);
         }
 
-        // === ЗАГРУЗКА ДАННЫХ — ИСПРАВЛЕНО ===
+        // === ЗАГРУЗКА ДАННЫХ ===
         let isDataLoaded = false;
         function loadUserData() {
             if (isDataLoaded) return;
@@ -405,30 +394,18 @@
             const container = document.getElementById('subscriptions-container');
             const balanceEl = document.getElementById('balance-value');
 
-            // ПРОВЕРКА: В TELEGRAM?
             if (!window.Telegram?.WebApp?.initDataUnsafe?.user) {
                 container.innerHTML = `
-                    <div style="
-                        color: #dc3545; 
-                        padding: 30px 20px; 
-                        text-align: center; 
-                        font-size: 1em; 
-                        font-weight: 500;
-                        background: var(--card-bg);
-                        border-radius: 18px;
-                        border: 1px solid var(--border-color);
-                        margin-top: 16px;
-                    ">
+                    <div style="color:#dc3545;padding:30px 20px;text-align:center;font-size:1em;font-weight:500;background:var(--card-bg);border-radius:18px;border:1px solid var(--border-color);margin-top:16px;">
                         Запустите приложение в <strong>Telegram</strong>
                     </div>`;
                 balanceEl.textContent = '—';
                 return;
             }
 
-            // ПОКАЗЫВАЕМ ЗАГРУЗКУ
             container.innerHTML = `
                 <div class="loading-placeholder">
-                    Загружаем подписку...
+                    <i class="fas fa-spinner fa-spin"></i> Загружаем подписку...
                 </div>`;
 
             const u = Telegram.WebApp.initDataUnsafe.user;
@@ -445,7 +422,7 @@
             const API_URL = 'https://script.google.com/macros/s/AKfycbxSmUasXhD9sp6T0QUEgKq_on2rRhDDDtzT5aKGn8J-s73Wm-bLvryq0Q8XgzlBLObE/exec';
             const url = `${API_URL}?id=${userId}`;
 
-            fetch(url, { timeout: 10000 })
+            fetch(url)
                 .then(r => r.ok ? r.json() : Promise.reject())
                 .then(rawData => {
                     container.innerHTML = '';
@@ -461,7 +438,7 @@
                     balanceEl.textContent = `${totalBalance} RUB`;
                 })
                 .catch(() => {
-                    container.innerHTML = '<div style="color: #dc3545; padding: 20px; text-align: center;">Ошибка. <a href="#" onclick="location.reload()" style="color: var(--primary-color);">Обновить</a></div>';
+                    container.innerHTML = '<div style="color:#dc3545;padding:20px;text-align:center;">Ошибка. <a href="#" onclick="location.reload()" style="color:var(--primary-color);">Обновить</a></div>';
                 });
         }
 
@@ -481,9 +458,9 @@
                 <div class="info-row"><span class="info-label">Статус:</span><span>${statusHtml}</span></div>
                 <div class="key-input-container">
                     <input type="text" class="key-input" value="${isNoSub ? 'У вас нет подписки' : data.key_1}" readonly ${isNoSub ? 'style="color:#dc3545"' : ''}>
-                    ${isNoSub ? '' : `<button class="copy-key-button" onclick="copyText('${data.key_1}', this)">Копировать</button>`}
+                    ${isNoSub ? '' : `<button class="copy-key-button" onclick="copyText('${data.key_1}', this)"><i class="fas fa-copy"></i></button>`}
                 </div>
-                ${isNoSub ? `<a class="tg-button full">Купить</a>` : ''}
+                ${isNoSub ? `<a class="tg-button">Купить</a>` : ''}
             `;
 
             return block;
@@ -497,7 +474,6 @@
             });
         }
 
-        // === ИНИЦИАЛИЗАЦИЯ ===
         document.addEventListener('DOMContentLoaded', () => {
             if (Telegram?.WebApp) {
                 Telegram.WebApp.ready();
