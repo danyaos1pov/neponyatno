@@ -257,7 +257,7 @@
             transition: max-height 0.3s ease, padding 0.3s ease;
         }
         .faq-answer.open {
-            max-height: 300px; /* Достаточно для длинных ответов */
+            max-height: 300px;
             padding: 16px 18px;
         }
     </style>
@@ -328,8 +328,14 @@
                 <div class="profile-menu-btn">
                     <i class="fas fa-server"></i> Статус систем
                 </div>
-                <div class="profile-menu-btn">
+                <div class="profile-menu-btn" onclick="openLink('https://t.me/on1xVPN_admin')">
                     <i class="fas fa-headset"></i> Поддержка
+                </div>
+                <div class="profile-menu-btn" onclick="openLink('https://t.me/on1xVPN_bot?start=f_5098822')">
+                    <i class="fas fa-undo"></i> Возврат подписки
+                </div>
+                <div class="profile-menu-btn" onclick="openLink('https://t.me/on1xVPN_bot?start=c_2293355')">
+                    <i class="fas fa-gift"></i> Тестовый период
                 </div>
             </div>
 
@@ -439,12 +445,20 @@
     </div>
 
     <script>
+        // === ОТКРЫТИЕ ССЫЛОК ===
+        function openLink(url) {
+            if (Telegram?.WebApp?.openLink) {
+                Telegram.WebApp.openLink(url);
+            } else {
+                window.open(url, '_blank');
+            }
+        }
+
         // === АККОРДЕОН FAQ ===
         function toggleFaq(element) {
             const answer = element.nextElementSibling;
             const isOpen = answer.classList.contains('open');
 
-            // Закрываем все
             document.querySelectorAll('.faq-answer').forEach(a => {
                 a.classList.remove('open');
             });
@@ -452,7 +466,6 @@
                 q.classList.remove('active');
             });
 
-            // Открываем текущий (если не был открыт)
             if (!isOpen) {
                 answer.classList.add('open');
                 element.classList.add('active');
