@@ -137,27 +137,6 @@
         .profile-menu-btn i { font-size: 1.2em; color: #2481cc; width: 24px; text-align: center; }
         .profile-menu-btn:hover { background: rgba(255,255,255,0.05); }
 
-        .referral-info {
-            background: var(--card-bg);
-            border-radius: 18px;
-            padding: 18px;
-            margin: 20px 0;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.05);
-            font-size: 0.95em;
-            line-height: 1.6;
-            color: #b0b8c2;
-        }
-        .referral-info strong { color: var(--text-color); }
-
-        .referral-label {
-            font-size: 0.95em;
-            color: #b0b8c2;
-            margin: 20px 0 8px;
-            font-weight: 600;
-            text-align: center;
-        }
-
         .app-version { margin-top: 30px; font-size: 0.8em; color: #6c757d; text-align: center; }
 
         /* === ЗАГРУЗКА === */
@@ -310,13 +289,19 @@
                 <div class="balance-label">Ваш баланс</div>
                 <div id="balance-value" class="balance-value">0 RUB</div>
                 <div class="balance-actions">
-                    <div class="balance-btn"><i class="fas fa-arrow-up"></i> Вывести</div>
-                    <div class="balance-btn"><i class="fas fa-plus"></i> Пополнить</div>
+                    <!-- КНОПКА "ВЫВЕСТИ" -->
+                    <div class="balance-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=f_3781780')">
+                        <i class="fas fa-arrow-up"></i> Вывести
+                    </div>
+                    <!-- КНОПКА "ПОПОЛНИТЬ" -->
+                    <div class="balance-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=f_5494846')">
+                        <i class="fas fa-plus"></i> Пополнить
+                    </div>
                 </div>
             </div>
 
             <div class="profile-menu">
-                <div class="profile-menu-btn" onclick="showPage('referral-page')">
+                <div class="profile-menu-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=f_5371698')">
                     <i class="fas fa-user-plus"></i> Пригласить друзей
                 </div>
                 <div class="profile-menu-btn">
@@ -338,26 +323,6 @@
                     <i class="fas fa-gift"></i> Тестовый период
                 </div>
             </div>
-
-            <div class="app-version">Версия: 1.0.0</div>
-        </div>
-    </div>
-
-    <!-- === СТРАНИЦА "ПРИГЛАСИТЬ ДРУЗЕЙ" === -->
-    <div id="referral-page" class="page">
-        <div class="main-content">
-            <div class="header">
-                <h1><span>ON1X</span> VPN</h1>
-                <div class="tagline">Приглашайте друзей</div>
-            </div>
-
-            <div class="referral-info">
-                Делитесь своей <strong>реферальной ссылкой</strong> с друзьями, родными или просто знакомыми людьми и получайте на свой баланс <strong>15%</strong> от всех покупок и продлений в нашем сервисе.<br><br>
-                Заработанные средства вы можете вывести на банковскую карту или использовать их на покупку/продление подписки в нашем сервисе.
-            </div>
-
-            <div class="referral-label">Твоя реферальная ссылка</div>
-            <div id="referral-container"></div>
 
             <div class="app-version">Версия: 1.0.0</div>
         </div>
@@ -445,16 +410,7 @@
     </div>
 
     <script>
-        // === ОТКРЫТИЕ ССЫЛОК ===
-        function openLink(url) {
-            if (Telegram?.WebApp?.openLink) {
-                Telegram.WebApp.openLink(url);
-            } else {
-                window.open(url, '_blank');
-            }
-        }
-
-        // === НОВАЯ ФУНКЦИЯ ИЗ 9.txt: ОТКРЫТИЕ ССЫЛКИ С ЗАКРЫТИЕМ MINIAPP ===
+        // === ОТКРЫТИЕ ССЫЛОК С ЗАКРЫТИЕМ MINIAPP ===
         function goToLinkAndClose(url) {
             window.location.href = url;
             setTimeout(() => {
@@ -582,12 +538,10 @@
 
             const container = document.getElementById('subscriptions-container');
             const balanceEl = document.getElementById('balance-value');
-            const refContainer = document.getElementById('referral-container');
 
             if (!Telegram?.WebApp?.initDataUnsafe?.user) {
                 container.innerHTML = '<div style="color: #dc3545; padding: 20px; text-align: center;">Запустите в Telegram</div>';
                 balanceEl.textContent = '—';
-                refContainer.innerHTML = '<div style="color: #dc3545; padding: 16px;">Ошибка</div>';
                 return;
             }
 
@@ -614,7 +568,6 @@
             const timeout = setTimeout(() => {
                 container.innerHTML = '<div style="color: #dc3545; padding: 20px; text-align: center;">Время ожидания истекло. <a href="#" onclick="location.reload()" style="color: #2481cc;">Обновить</a></div>';
                 balanceEl.textContent = '—';
-                refContainer.innerHTML = '<div style="color: #dc3545; padding: 16px;">Ошибка</div>';
             }, 10000);
 
             fetch(url)
@@ -629,18 +582,15 @@
 
                     let subscriptions = [];
                     let totalBalance = 0;
-                    let referralLink = '';
 
                     if (rawData.not_found) {
                         subscriptions = [{ key_1: null, not_found: true }];
                     } else if (Array.isArray(rawData)) {
                         subscriptions = rawData.length > 0 ? rawData : [{ key_1: null }];
                         totalBalance = rawData.reduce((sum, sub) => sum + (Number(sub.balance) || 0), 0);
-                        referralLink = rawData[0]?.referral_link || '';
                     } else if (rawData && rawData.key_1) {
                         subscriptions = [rawData];
                         totalBalance = Number(rawData.balance) || 0;
-                        referralLink = rawData.referral_link || '';
                     } else {
                         subscriptions = [{ key_1: null }];
                     }
@@ -651,28 +601,12 @@
                     });
 
                     balanceEl.textContent = `${totalBalance} RUB`;
-
-                    if (referralLink) {
-                        refContainer.innerHTML = `
-                            <div class="key-input-container">
-                                <input type="text" class="key-input" value="${referralLink}" readonly>
-                                <button class="copy-key-button" onclick="copyText('${referralLink}', this)"><i class="fas fa-copy"></i></button>
-                            </div>
-                        `;
-                    } else {
-                        refContainer.innerHTML = `
-                            <div style="text-align: center; color: #dc3545; padding: 16px; font-size: 0.9em;">
-                                Реферальная ссылка не найдена
-                            </div>
-                        `;
-                    }
                 })
                 .catch(err => {
                     clearTimeout(timeout);
                     console.error('Ошибка:', err);
                     container.innerHTML = '<div style="color: #dc3545; padding: 20px; text-align: center;">Ошибка сети. <a href="#" onclick="location.reload()" style="color: #2481cc;">Обновить</a></div>';
                     balanceEl.textContent = '—';
-                    refContainer.innerHTML = '<div style="color: #dc3545; padding: 16px;">Ошибка загрузки</div>';
                 });
         }
 
