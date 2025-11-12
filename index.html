@@ -57,15 +57,6 @@
         .header h1 span { color: var(--text-color); }
         .header .tagline { font-size: 1.05em; color: var(--text-secondary); margin-top: 4px; font-weight: 500; }
 
-        .settings-icon {
-            position: absolute; right: 0; top: 50%; transform: translateY(-50%);
-            width: 36px; height: 36px; background: var(--card-bg); border: 1px solid var(--border-color);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 1.1em; color: var(--primary-color);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.2s;
-        }
-        .settings-icon:hover { background: var(--hover-bg); transform: translateY(-50%) scale(1.1); }
-
         .user-profile {
             display: flex; align-items: center; justify-content: flex-start;
             margin: 10px auto 20px; max-width: 500px; padding: 15px;
@@ -118,6 +109,9 @@
             transition: background 0.2s;
         }
         .tg-button:hover { background: #0066aa; }
+        .tg-button.single-button {
+            margin-top: 16px;
+        }
 
         .balance-card { background: var(--card-bg); border-radius: 18px; padding: 18px; margin: 20px 0; box-shadow: 0 6px 16px rgba(0,0,0,0.15); border: 1px solid var(--border-color); text-align: center; }
         .balance-label { font-size: 0.9em; color: var(--text-secondary); margin-bottom: 6px; }
@@ -142,19 +136,6 @@
         }
         .profile-menu-btn:hover { background: var(--hover-bg); }
 
-        .subscription-management {
-            background: var(--card-bg);
-            border-radius: 18px;
-            padding: 18px;
-            margin-top: 20px;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-            border: 1px solid var(--border-color);
-        }
-        .subscription-management h3 {
-            font-size: 1.1em; font-weight: 600; color: var(--text-color);
-            margin-bottom: 14px; text-align: center;
-        }
-
         .app-version { margin-top: 30px; font-size: 0.8em; color: var(--text-secondary); text-align: center; }
 
         .bottom-nav {
@@ -170,16 +151,26 @@
         .nav-item.active i { transform: scale(1.15); }
         .nav-item:hover:not(.active) { background: var(--hover-bg); }
 
+        /* === НАСТРОЙКИ — ТЕКСТ И ПОЛЗУНОК В ОДНУ СТРОКУ === */
         .settings-block { background: var(--card-bg); border-radius: 18px; padding: 20px; margin: 20px 0; box-shadow: 0 6px 16px rgba(0,0,0,0.15); border: 1px solid var(--border-color); }
-        .setting-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--border-color); font-size: 1em; }
+        .setting-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 1em;
+        }
         .setting-item:last-child { border-bottom: none; }
         .setting-label { font-weight: 500; color: var(--text-color); }
+
         .toggle-switch { position: relative; width: 48px; height: 26px; background: #ccc; border-radius: 50px; cursor: pointer; }
         .toggle-switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #ccc; border-radius: 50px; transition: 0.3s; }
         .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
         input:checked + .slider { background: var(--primary-color); }
         input:checked + .slider:before { transform: translateX(22px); }
+
         .reload-btn { background: var(--primary-color); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-size: 1em; font-weight: 500; cursor: pointer; width: 100%; margin-top: 16px; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .reload-btn:hover { background: #0066aa; }
 
@@ -199,6 +190,64 @@
             margin-right: 8px;
             color: var(--primary-color);
         }
+
+        /* === FAQ АККОРДЕОН — КРАСИВЫЙ ВЫПАДАЮЩИЙ СПИСОК === */
+        .faq-accordion {
+            background: var(--card-bg);
+            border-radius: 18px;
+            margin: 20px 0;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+            border: 1px solid var(--border-color);
+            overflow: hidden;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border-color);
+        }
+        .faq-item:last-child {
+            border-bottom: none;
+        }
+
+        .faq-question {
+            padding: 16px 18px;
+            background: transparent;
+            color: var(--text-color);
+            font-weight: 600;
+            font-size: 1em;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+            user-select: none;
+        }
+        .faq-question:hover {
+            background: var(--hover-bg);
+        }
+
+        .faq-question i {
+            color: var(--text-secondary);
+            transition: transform 0.3s ease;
+            font-size: 0.9em;
+        }
+        .faq-question.active i {
+            transform: rotate(180deg);
+            color: var(--primary-color);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            padding: 0 18px;
+            color: var(--text-secondary);
+            font-size: 0.95em;
+            line-height: 1.6;
+            transition: max-height 0.3s ease, padding 0.3s ease;
+        }
+        .faq-answer.open {
+            max-height: 500px;
+            padding: 16px 18px;
+        }
     </style>
 </head>
 <body data-theme="dark">
@@ -209,9 +258,6 @@
             <div class="header">
                 <h1><span>ON1X</span> VPN</h1>
                 <div class="tagline">Свобода. Безопасность. Надежность.</div>
-                <div class="settings-icon" onclick="showPage('settings-page')">
-                    <i class="fas fa-cog"></i>
-                </div>
             </div>
 
             <div class="user-profile">
@@ -225,20 +271,6 @@
             <div id="subscriptions-container" class="subscriptions-container">
                 <div class="loading-placeholder">
                     <i class="fas fa-spinner fa-spin"></i> Загружаем подписку...
-                </div>
-            </div>
-
-            <div class="subscription-management">
-                <h3>Управление подпиской</h3>
-                <div class="profile-menu">
-                    <div class="profile-menu-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=c_2293355')">
-                        <i class="fas fa-gift"></i>
-                        <div class="btn-text">Тестовый период</div>
-                    </div>
-                    <div class="profile-menu-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=f_5098822')">
-                        <i class="fas fa-undo"></i>
-                        <div class="btn-text">Возврат подписки</div>
-                    </div>
                 </div>
             </div>
 
@@ -331,6 +363,77 @@
         </div>
     </div>
 
+    <!-- FAQ — ИЗ ТВОЕГО ФАЙЛА 6.txt -->
+    <div id="faq-page" class="page">
+        <div class="main-content">
+            <div class="header">
+                <h1><span>ON1X</span> VPN</h1>
+                <div class="tagline">Часто задаваемые вопросы</div>
+            </div>
+
+            <div class="faq-accordion">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Как подключиться? <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Для того, чтобы подключиться, вам необходимо в разделе "Подписка" нажать кнопку "Купить", а затем выбрать необходимый тариф.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Лимит устройств <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Каждый тариф ограничивается определенным количеством устройств на одном ключе:<br>
+                        <strong>Личный</strong> — 3 устройства<br>
+                        <strong>Семейный</strong> — 6 устройств<br>
+                        <strong>Премиум</strong> — 15 устройств
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Как поменять тариф? <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Для того, чтобы поменять тариф, вам необходимо в разделе "Подписка" нажать кнопку "Сменить тариф".
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Как вывести деньги с кошелька? <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Для того, чтобы вывести денежные средства на банковскую карту или криптокошелек, вам необходимо перейти в раздел "Профиль" и под балансом нажать кнопку "Вывести".
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Как вернуть подписку? <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Для того, чтобы оформить возврат подписки, вам необходимо перейти в раздел "Профиль", а затем выбрать "Возврат подписки".
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Какой бонус за друга? <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        После того, как ваш друг перешел по вашей реферальной ссылке, то вы будете получать каждый раз <strong>15%</strong>, когда друг будет приобретать/продлевать подписку.
+                    </div>
+                </div>
+            </div>
+
+            <div class="app-version">Версия: 1.0.0</div>
+        </div>
+    </div>
+
     <!-- НИЖНЕЕ МЕНЮ -->
     <div class="bottom-nav">
         <div class="nav-item active" data-page="subscription-page">
@@ -410,6 +513,20 @@
             }, 300);
         }
 
+        // АККОРДЕОН FAQ
+        function toggleFaq(element) {
+            const answer = element.nextElementSibling;
+            const isOpen = answer.classList.contains('open');
+
+            document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+            document.querySelectorAll('.faq-question').forEach(q => q.classList.remove('active'));
+
+            if (!isOpen) {
+                answer.classList.add('open');
+                element.classList.add('active');
+            }
+        }
+
         // ЗАГРУЗКА ДАННЫХ
         let isDataLoaded = false;
         function loadUserData() {
@@ -420,18 +537,12 @@
             const balanceEl = document.getElementById('balance-value');
 
             if (!window.Telegram?.WebApp?.initDataUnsafe?.user) {
-                container.innerHTML = `
-                    <div style="color:#dc3545;padding:30px 20px;text-align:center;font-size:1em;font-weight:500;background:var(--card-bg);border-radius:18px;border:1px solid var(--border-color);margin-top:16px;">
-                        Запустите приложение в <strong>Telegram</strong>
-                    </div>`;
+                container.innerHTML = `<div style="color:#dc3545;padding:30px 20px;text-align:center;background:var(--card-bg);border-radius:18px;border:1px solid var(--border-color);margin-top:16px;">Запустите приложение в <strong>Telegram</strong></div>`;
                 balanceEl.textContent = '—';
                 return;
             }
 
-            container.innerHTML = `
-                <div class="loading-placeholder">
-                    <i class="fas fa-spinner fa-spin"></i> Загружаем подписку...
-                </div>`;
+            container.innerHTML = `<div class="loading-placeholder"><i class="fas fa-spinner fa-spin"></i> Загружаем подписку...</div>`;
 
             const u = Telegram.WebApp.initDataUnsafe.user;
             const userId = u.id;
@@ -447,11 +558,8 @@
             const API_URL = 'https://script.google.com/macros/s/AKfycbxSmUasXhD9sp6T0QUEgKq_on2rRhDDDtzT5aKGn8J-s73Wm-bLvryq0Q8XgzlBLObE/exec';
             const url = `${API_URL}?id=${userId}`;
 
-            fetch(url, { timeout: 10000 })
-                .then(r => {
-                    if (!r.ok) throw new Error('Network error');
-                    return r.json();
-                })
+            fetch(url)
+                .then(r => r.ok ? r.json() : Promise.reject())
                 .then(rawData => {
                     container.innerHTML = '';
                     const subscriptions = Array.isArray(rawData) ? rawData : [rawData];
@@ -465,15 +573,8 @@
 
                     balanceEl.textContent = `${totalBalance} RUB`;
                 })
-                .catch(err => {
-                    console.error('Fetch error:', err);
-                    container.innerHTML = `
-                        <div style="color:#dc3545;padding:30px 20px;text-align:center;background:var(--card-bg);border-radius:18px;border:1px solid var(--border-color);">
-                            Ошибка загрузки.<br>
-                            <a href="#" onclick="location.reload(); return false;" style="color:var(--primary-color);text-decoration:underline;">
-                                Обновить
-                            </a>
-                        </div>`;
+                .catch(() => {
+                    container.innerHTML = `<div style="color:#dc3545;padding:30px 20px;text-align:center;background:var(--card-bg);border-radius:18px;border:1px solid var(--border-color);">Ошибка загрузки.<br><a href="#" onclick="location.reload(); return false;" style="color:var(--primary-color);text-decoration:underline;">Обновить</a></div>`;
                     balanceEl.textContent = '—';
                 });
         }
@@ -482,36 +583,22 @@
             const block = document.createElement('div');
             block.className = 'subscription-block';
             const isNoSub = !data.key_1 || data.not_found;
-            const isActive = data.key_status === 'active';
-            const isExpired = data.key_status === 'expired';
 
             const statusHtml = isNoSub
                 ? `<span class="status-chip status-none">Нет</span>`
-                : (isActive
+                : (data.key_status === 'active'
                     ? `<span class="status-chip status-active">Активна</span>`
                     : `<span class="status-chip status-expired">Истекла</span>`);
 
             let buttonsHtml = '';
             if (isNoSub) {
-                buttonsHtml = `
-                    <a class="tg-button" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=buy')">
-                        <i class="fas fa-shopping-cart"></i> Купить
-                    </a>`;
-            } else if (isActive) {
+                buttonsHtml = `<a class="tg-button single-button" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=buy')"><i class="fas fa-shopping-cart"></i> Купить</a>`;
+            } else {
                 buttonsHtml = `
                     <div class="action-buttons-row">
-                        <a class="tg-button" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=extend')">
-                            <i class="fas fa-clock"></i> Продлить
-                        </a>
-                        <a class="tg-button" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=change')">
-                            <i class="fas fa-exchange-alt"></i> Сменить тариф
-                        </a>
+                        <a class="tg-button" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=extend')"><i class="fas fa-clock"></i> Продлить</a>
+                        <a class="tg-button" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=change')"><i class="fas fa-exchange-alt"></i> Сменить тариф</a>
                     </div>`;
-            } else if (isExpired) {
-                buttonsHtml = `
-                    <a class="tg-button" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=extend')">
-                        <i class="fas fa-redo"></i> Продлить
-                    </a>`;
             }
 
             block.innerHTML = `
