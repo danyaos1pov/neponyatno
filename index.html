@@ -8,7 +8,6 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            /* === ТЁМНАЯ ТЕМА === */
             --primary-color: #2481cc;
             --bg-dark: #0d1117;
             --card-bg: #161b22;
@@ -24,7 +23,6 @@
             --hover-bg: rgba(255,255,255,0.05);
         }
 
-        /* === СВЕТЛАЯ ТЕМА === */
         [data-theme="light"] {
             --primary-color: #0077cc;
             --bg-dark: #f8f9fa;
@@ -48,53 +46,25 @@
         .page { display: none; opacity: 0; transition: opacity 0.2s; }
         .page.active { display: block; opacity: 1; }
 
-        .main-content {
-            padding: 20px 15px;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+        .main-content { padding: 20px 15px; max-width: 600px; margin: 0 auto; }
 
         .header {
             margin: 20px auto 8px;
             text-align: center;
             position: relative;
         }
-        .header h1 {
-            font-size: 2.5em; color: var(--primary-color); margin: 0;
-            line-height: 1.1;
-        }
+        .header h1 { font-size: 2.5em; color: var(--primary-color); margin: 0; line-height: 1.1; }
         .header h1 span { color: var(--text-color); }
-        .header .tagline {
-            font-size: 1.05em;
-            color: var(--text-secondary);
-            margin-top: 4px;
-            font-weight: 500;
-        }
+        .header .tagline { font-size: 1.05em; color: var(--text-secondary); margin-top: 4px; font-weight: 500; }
 
-        /* === ИКОНКА НАСТРОЕК В ШАПКЕ ПОДПИСКИ === */
         .settings-icon {
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            width: 36px;
-            height: 36px;
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.1em;
-            color: var(--primary-color);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-            transition: all 0.2s;
+            position: absolute; right: 0; top: 50%; transform: translateY(-50%);
+            width: 36px; height: 36px; background: var(--card-bg); border: 1px solid var(--border-color);
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 1.1em; color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.2s;
         }
-        .settings-icon:hover {
-            background: var(--hover-bg);
-            transform: translateY(-50%) scale(1.1);
-        }
+        .settings-icon:hover { background: var(--hover-bg); transform: translateY(-50%) scale(1.1); }
 
         .user-profile {
             display: flex; align-items: center; justify-content: flex-start;
@@ -103,11 +73,11 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.15); border: 1px solid var(--border-color);
         }
         .user-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
-        .user-greeting { font-size: 1.1em; font-weight: 600; color: var(--text-color); text-align: left; margin-bottom: 3px; }
-        .user-id { font-size: 0.85em; color: var(--text-secondary); text-align: left; }
+        .user-greeting { font-size: 1.1em; font-weight: 600; color: var(--text-color); margin-bottom: 3px; }
+        .user-id { font-size: 0.85em; color: var(--text-secondary); }
 
         .subscriptions-container { display: flex; flex-direction: column; gap: 16px; }
-        .subscription-block { background: var(--card-bg); border-radius: 18px; padding: 20px 18px 20px; box-shadow: 0 6px 16px rgba(0,0,0,0.15); border: 1px solid var(--border-color); }
+        .subscription-block { background: var(--card-bg); border-radius: 18px; padding: 20px 18px; box-shadow: 0 6px 16px rgba(0,0,0,0.15); border: 1px solid var(--border-color); }
 
         .info-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 1.05em; }
         .info-label { font-weight: 600; color: var(--text-secondary); }
@@ -125,20 +95,10 @@
         .key-input { background: transparent; border: none; color: var(--text-color); font-family: monospace; font-size: 0.95em; width: 100%; padding-right: 42px; pointer-events: none; word-break: break-all; line-height: 1.4; }
         .copy-key-button { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: var(--primary-color); color: white; border: none; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9em; transition: all 0.2s; }
         .copy-key-button:hover { background: #0066aa; transform: translateY(-50%) scale(1.1); }
-        .copy-key-button:disabled { background: #999; cursor: not-allowed; }
 
         .comment-container {
-            margin: 12px 0 0;
-            background: rgba(0,0,0,0.03);
-            border-radius: 12px;
-            padding: 10px 12px;
-            opacity: 0.9;
-            font-size: 0.9em;
-            color: var(--text-secondary);
-            line-height: 1.4;
-            word-wrap: break-word;
-            white-space: pre-wrap;
-            border: 1px solid var(--border-color);
+            margin: 12px 0 0; background: rgba(0,0,0,0.03); border-radius: 12px; padding: 10px 12px;
+            font-size: 0.9em; color: var(--text-secondary); line-height: 1.4; border: 1px solid var(--border-color);
         }
 
         .action-buttons-row { display: flex; gap: 8px; margin-top: 16px; }
@@ -148,35 +108,17 @@
             font-weight: 500; font-size: 1em; text-align: center; border-radius: 8px;
             cursor: pointer; transition: background 0.2s;
         }
-        .tg-button:hover, .tg-button:active { background: #0066aa; }
-        .tg-button.full { margin-top: 16px !important; width: 100% !important; display: flex !important; }
+        .tg-button:hover { background: #0066aa; }
 
-        .balance-card {
-            background: var(--card-bg);
-            border-radius: 18px;
-            padding: 18px;
-            margin: 20px 0;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-            border: 1px solid var(--border-color);
-            text-align: center;
-        }
+        .balance-card { background: var(--card-bg); border-radius: 18px; padding: 18px; margin: 20px 0; box-shadow: 0 6px 16px rgba(0,0,0,0.15); border: 1px solid var(--border-color); text-align: center; }
         .balance-label { font-size: 0.9em; color: var(--text-secondary); margin-bottom: 6px; }
         .balance-value { font-size: 1.8em; font-weight: 700; color: var(--text-color); margin-bottom: 16px; }
 
-        .balance-actions {
-            display: flex; gap: 10px;
-        }
-        .balance-btn {
-            flex: 1; padding: 12px 0; background: var(--primary-color); color: white;
-            font-weight: 500; font-size: 0.95em; text-align: center; border-radius: 8px;
-            cursor: pointer; transition: background 0.2s;
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-        }
+        .balance-actions { display: flex; gap: 10px; }
+        .balance-btn { flex: 1; padding: 12px 0; background: var(--primary-color); color: white; font-weight: 500; font-size: 0.95em; text-align: center; border-radius: 8px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .balance-btn:hover { background: #0066aa; }
 
-        .profile-menu {
-            display: flex; flex-direction: column; gap: 8px; margin-top: 20px;
-        }
+        .profile-menu { display: flex; flex-direction: column; gap: 8px; margin-top: 20px; }
         .profile-menu-btn {
             display: flex; align-items: center; gap: 12px;
             padding: 14px 16px; background: var(--card-bg); color: var(--text-color);
@@ -184,100 +126,53 @@
             transition: background 0.2s; border: 1px solid var(--border-color);
             position: relative;
         }
-        .profile-menu-btn i {
-            font-size: 1.2em; color: var(--primary-color); width: 24px; text-align: center;
-        }
-        .profile-menu-btn span {
+        .profile-menu-btn i { font-size: 1.2em; color: var(--primary-color); width: 24px; text-align: center; }
+        .profile-menu-btn .btn-text {
             flex: 1; text-align: center;
             margin-left: -18px;
         }
         .profile-menu-btn:hover { background: var(--hover-bg); }
 
-        /* === СТРАНИЦА НАСТРОЕК === */
-        .settings-block {
+        .subscription-management {
             background: var(--card-bg);
             border-radius: 18px;
-            padding: 20px;
-            margin: 20px 0;
+            padding: 18px;
+            margin-top: 20px;
             box-shadow: 0 6px 16px rgba(0,0,0,0.15);
             border: 1px solid var(--border-color);
         }
-        .setting-item {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 14px 0;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 1em;
+        .subscription-management h3 {
+            font-size: 1.1em; font-weight: 600; color: var(--text-color);
+            margin-bottom: 14px; text-align: center;
         }
-        .setting-item:last-child { border-bottom: none; }
-        .setting-label { font-weight: 500; color: var(--text-color); }
-        .toggle-switch {
-            position: relative; width: 48px; height: 26px; background: #ccc; border-radius: 50px; cursor: pointer; transition: 0.3s;
-        }
-        .toggle-switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #ccc; border-radius: 50px; transition: 0.3s; }
-        .slider:before {
-            position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px;
-            background: white; border-radius: 50%; transition: 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
-        }
-        input:checked + .slider { background: var(--primary-color); }
-        input:checked + .slider:before { transform: translateX(22px); }
-
-        .reload-btn {
-            background: var(--primary-color); color: white; border: none; padding: 12px 20px;
-            border-radius: 12px; font-size: 1em; font-weight: 500; cursor: pointer;
-            width: 100%; margin-top: 16px; transition: 0.2s;
-        }
-        .reload-btn:hover { background: #0066aa; }
 
         .app-version { margin-top: 30px; font-size: 0.8em; color: var(--text-secondary); text-align: center; }
 
-        /* === НИЖНЕЕ МЕНЮ === */
         .bottom-nav {
-            position: fixed;
-            bottom: 16px;
-            left: 16px;
-            right: 16px;
-            background: var(--nav-bg);
-            border: 1px solid var(--nav-border);
-            border-radius: 20px;
-            overflow: hidden;
-            display: flex;
-            padding: 8px 12px;
-            gap: 8px;
-            z-index: 1000;
-            backdrop-filter: blur(16px);
-            height: 72px;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+            position: fixed; bottom: 16px; left: 16px; right: 16px;
+            background: var(--nav-bg); border: 1px solid var(--nav-border);
+            border-radius: 20px; overflow: hidden; display: flex;
+            padding: 8px 12px; gap: 8px; z-index: 1000; backdrop-filter: blur(16px);
+            height: 72px; box-shadow: 0 6px 20px rgba(0,0,0,0.35);
         }
-        .nav-item {
-            flex: 1;
-            padding: 10px 0;
-            background: transparent;
-            color: #8b949e;
-            font-size: 0.8em;
-            font-weight: 600;
-            text-align: center;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 4px;
-        }
+        .nav-item { flex: 1; padding: 10px 0; color: #8b949e; font-size: 0.8em; font-weight: 600; text-align: center; border-radius: 12px; cursor: pointer; transition: all 0.25s ease; display: flex; flex-direction: column; align-items: center; gap: 4px; }
         .nav-item i { font-size: 1.35em; transition: transform 0.2s; }
         .nav-item.active { color: var(--primary-color); background: var(--nav-active); font-weight: 700; }
         .nav-item.active i { transform: scale(1.15); }
         .nav-item:hover:not(.active) { background: var(--hover-bg); }
 
-        .loading-placeholder {
-            text-align: center;
-            padding: 32px 20px;
-            color: var(--text-secondary);
-            font-size: 1em;
-            font-weight: 500;
-        }
-        .loading-placeholder i { margin-right: 8px; color: var(--primary-color); }
+        .settings-block { background: var(--card-bg); border-radius: 18px; padding: 20px; margin: 20px 0; box-shadow: 0 6px 16px rgba(0,0,0,0.15); border: 1px solid var(--border-color); }
+        .setting-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--border-color); font-size: 1em; }
+        .setting-item:last-child { border-bottom: none; }
+        .setting-label { font-weight: 500; color: var(--text-color); }
+        .toggle-switch { position: relative; width: 48px; height: 26px; background: #ccc; border-radius: 50px; cursor: pointer; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #ccc; border-radius: 50px; transition: 0.3s; }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+        input:checked + .slider { background: var(--primary-color); }
+        input:checked + .slider:before { transform: translateX(22px); }
+        .reload-btn { background: var(--primary-color); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-size: 1em; font-weight: 500; cursor: pointer; width: 100%; margin-top: 16px; transition: 0.2s; }
+        .reload-btn:hover { background: #0066aa; }
     </style>
 </head>
 <body data-theme="dark">
@@ -312,11 +207,11 @@
                 <div class="profile-menu">
                     <div class="profile-menu-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=c_2293355')">
                         <i class="fas fa-gift"></i>
-                        <span>Тестовый период</span>
+                        <div class="btn-text">Тестовый период</div>
                     </div>
                     <div class="profile-menu-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=f_5098822')">
                         <i class="fas fa-undo"></i>
-                        <span>Возврат подписки</span>
+                        <div class="btn-text">Возврат подписки</div>
                     </div>
                 </div>
             </div>
@@ -357,27 +252,27 @@
             <div class="profile-menu">
                 <div class="profile-menu-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=f_5371698')">
                     <i class="fas fa-user-plus"></i>
-                    <span>Пригласить друзей</span>
+                    <div class="btn-text">Пригласить друзей</div>
                 </div>
                 <div class="profile-menu-btn">
                     <i class="fas fa-download"></i>
-                    <span>Установить приложение</span>
+                    <div class="btn-text">Установить приложение</div>
                 </div>
                 <div class="profile-menu-btn" onclick="showPage('faq-page')">
                     <i class="fas fa-question-circle"></i>
-                    <span>FAQ</span>
+                    <div class="btn-text">FAQ</div>
                 </div>
                 <div class="profile-menu-btn">
                     <i class="fas fa-server"></i>
-                    <span>Статус систем</span>
+                    <div class="btn-text">Статус систем</div>
                 </div>
                 <div class="profile-menu-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_admin')">
                     <i class="fas fa-headset"></i>
-                    <span>Поддержка</span>
+                    <div class="btn-text">Поддержка</div>
                 </div>
                 <div class="profile-menu-btn" onclick="showPage('settings-page')">
                     <i class="fas fa-cog"></i>
-                    <span>Настройки приложения</span>
+                    <div class="btn-text">Настройки приложения</div>
                 </div>
             </div>
 
@@ -431,7 +326,6 @@
             localStorage.setItem('on1x-theme', theme);
         }
 
-        // Загрузка темы
         const savedTheme = localStorage.getItem('on1x-theme') || 'dark';
         applyTheme(savedTheme);
 
@@ -439,15 +333,15 @@
             applyTheme(themeToggle.checked ? 'light' : 'dark');
         });
 
-        // === ПЕРЕЗАГРУЗКА ===
+        // === ПЕРЕЗАГРУЗКА — ИСПРАВЛЕНО ===
         function reloadApp() {
-            if (Telegram?.WebApp?.close) {
-                Telegram.WebApp.close();
+            if (Telegram?.WebApp?.restart) {
+                Telegram.WebApp.restart(); // Официальный перезапуск
+            } else {
+                location.reload(); // Запасной вариант
             }
-            setTimeout(() => location.reload(), 500);
         }
 
-        // === ОСТАЛЬНАЯ ЛОГИКА (без изменений) ===
         function goToLinkAndClose(url) {
             window.location.href = url;
             setTimeout(() => {
@@ -480,7 +374,7 @@
             item.addEventListener('click', () => showPage(item.getAttribute('data-page')));
         });
 
-        // Загрузка данных пользователя (без изменений)
+        // Загрузка данных (без изменений)
         let isDataLoaded = false;
         function loadUserData() {
             if (isDataLoaded) return;
