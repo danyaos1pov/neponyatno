@@ -269,7 +269,7 @@
             padding: 16px 18px;
         }
 
-        /* ------------------- СТРАНИЦА КУПИТЬ ПОДПИСКУ ------------------- */
+        /* ------------------- СТРАНИЦА КУПИТЬ ПОДПИСКУ (НОВЫЙ ДИЗАЙН) ------------------- */
         .tariff-selection-block {
             background: var(--card-bg);
             border-radius: 18px;
@@ -348,6 +348,7 @@
             text-align: center;
         }
 
+        /* БЛОК СРОК + КНОПКА — ВСЕГДА ВИДИМ */
         .duration-block {
             background: var(--card-bg);
             border-radius: 18px;
@@ -477,8 +478,197 @@
         </div>
     </div>
 
-    <!-- ПРОФИЛЬ, НАСТРОЙКИ, FAQ, BUY-PAGE — без изменений -->
-    <!-- (остальные страницы опущены для краткости — они идентичны предыдущей версии) -->
+    <!-- ПРОФИЛЬ -->
+    <div id="profile-page" class="page">
+        <div class="main-content">
+            <div class="header">
+                <h1><span>ON1X</span> VPN</h1>
+                <div class="tagline">Свобода. Безопасность. Надежность.</div>
+            </div>
+
+            <div class="user-profile">
+                <img id="user-avatar-prof" class="user-avatar" src="" alt="Аватар">
+                <div>
+                    <div id="user-greeting-prof" class="user-greeting">Добро пожаловать, </div>
+                    <div id="user-id-prof" class="user-id"></div>
+                </div>
+            </div>
+
+            <div class="balance-card">
+                <div class="balance-label">Ваш баланс</div>
+                <div id="balance-value" class="balance-value">0 RUB</div>
+                <div class="balance-actions">
+                    <div class="balance-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=f_3781780')">
+                        <i class="fas fa-arrow-up"></i> Вывести
+                    </div>
+                    <div class="balance-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=f_5494846')">
+                        <i class="fas fa-plus"></i> Пополнить
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-menu">
+                <div class="profile-menu-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=f_5371698')">
+                    <i class="fas fa-user-plus"></i>
+                    <div class="btn-text">Пригласить друзей</div>
+                </div>
+                <div class="profile-menu-btn">
+                    <i class="fas fa-download"></i>
+                    <div class="btn-text">Установить приложение</div>
+                </div>
+                <div class="profile-menu-btn" onclick="showPage('faq-page')">
+                    <i class="fas fa-question-circle"></i>
+                    <div class="btn-text">FAQ</div>
+                </div>
+                <div class="profile-menu-btn">
+                    <i class="fas fa-server"></i>
+                    <div class="btn-text">Статус систем</div>
+                </div>
+                <div class="profile-menu-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_admin')">
+                    <i class="fas fa-headset"></i>
+                    <div class="btn-text">Поддержка</div>
+                </div>
+                <div class="profile-menu-btn" onclick="showPage('settings-page')">
+                    <i class="fas fa-cog"></i>
+                    <div class="btn-text">Настройки приложения</div>
+                </div>
+            </div>
+
+            <div class="app-version">Версия: 1.0.0</div>
+        </div>
+    </div>
+
+    <!-- НАСТРОЙКИ -->
+    <div id="settings-page" class="page">
+        <div class="main-content">
+            <div class="header">
+                <h1><span>ON1X</span> VPN</h1>
+                <div class="tagline">Настройки приложения</div>
+            </div>
+
+            <div class="settings-block">
+                <div class="setting-item">
+                    <div class="setting-label">Светлая тема</div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <button class="reload-btn" onclick="reloadApp()">
+                    <i class="fas fa-sync-alt"></i> Перезагрузить приложение
+                </button>
+            </div>
+
+            <div class="app-version">Версия: 1.0.0</div>
+        </div>
+    </div>
+
+    <!-- FAQ -->
+    <div id="faq-page" class="page">
+        <div class="main-content">
+            <div class="header">
+                <h1><span>ON1X</span> VPN</h1>
+                <div class="tagline">Часто задаваемые вопросы</div>
+            </div>
+
+            <div class="faq-accordion">
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Как подключиться? <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Для того, чтобы подключиться, вам необходимо в разделе "Подписка" нажать кнопку "Купить", а затем выбрать необходимый тариф.
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Лимит устройств <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Каждый тариф ограничивается определенным количеством устройств на одном ключе:<br>
+                        <strong>Личный</strong> — 3 устройства<br>
+                        <strong>Семейный</strong> — 6 устройств<br>
+                        <strong>Премиум</strong> — 15 устройств
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Как поменять тариф? <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Для того, чтобы поменять тариф, вам необходимо в разделе "Подписка" нажать кнопку "Сменить тариф".
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Как вывести деньги с кошелька? <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Для того, чтобы вывести денежные средства на банковскую карту или криптокошелек, вам необходимо перейти в раздел "Профиль" и под балансом нажать кнопку "Вывести".
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Как вернуть подписку? <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        Для того, чтобы оформить возврат подписки, вам необходимо перейти в раздел "Профиль", а затем выбрать "Возврат подписки".
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFaq(this)">
+                        Какой бонус за друга? <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="faq-answer">
+                        После того, как ваш друг перешел по вашей реферальной ссылке, то вы будете получать каждый раз <strong>15%</strong>, когда друг будет приобретать/продлевать подписку.
+                    </div>
+                </div>
+            </div>
+
+            <div class="app-version">Версия: 1.0.0</div>
+        </div>
+    </div>
+
+    <!-- СТРАНИЦА КУПИТЬ ПОДПИСКУ -->
+    <div id="buy-page" class="page">
+        <div class="main-content">
+            <div class="header">
+                <h1><span>ON1X</span> VPN</h1>
+                <div class="tagline">Купить подписку</div>
+            </div>
+
+            <!-- БЛОК 1: ВЫБОР ТАРИФА -->
+            <div class="tariff-selection-block">
+                <div class="tariff-title">Выберите тариф</div>
+                <div class="tariff-buttons">
+                    <div class="tariff-btn selected" data-tariff="personal" onclick="selectTariff(this, 'personal')">Личный</div>
+                    <div class="tariff-btn" data-tariff="family" onclick="selectTariff(this, 'family')">Семейный</div>
+                    <div class="tariff-btn" data-tariff="premium" onclick="selectTariff(this, 'premium')">Премиум</div>
+                </div>
+                <div id="tariff-features" class="tariff-features-row">
+                    <!-- Заполняется автоматически -->
+                </div>
+            </div>
+
+            <!-- БЛОК 2: СРОК + КНОПКА — ВСЕГДА ВИДИМ -->
+            <div class="duration-block">
+                <div class="duration-title">Выберите срок подписки</div>
+                <div id="duration-options" class="duration-options">
+                    <!-- Заполняется автоматически -->
+                </div>
+                <div id="buy-full-button" class="buy-full-button disabled">
+                    <i class="fas fa-shopping-cart"></i> Выберите срок подписки
+                </div>
+            </div>
+
+            <div class="app-version">Версия: 1.0.0</div>
+        </div>
+    </div>
 
     <!-- НИЖНЕЕ МЕНЮ -->
     <div class="bottom-nav">
@@ -493,12 +683,99 @@
     </div>
 
     <script>
-        // ТЕМА, НАВИГАЦИЯ, FAQ, ТАРИФЫ — без изменений
-        // (всё идентично предыдущей версии)
+        // ТЕМА
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
 
-        // ДАННЫЕ ПО ТАРИФАМ — ИКОНКА "ЛИЧНЫЙ" — ЧЕЛОВЕЧЕК
+        function applyTheme(theme) {
+            body.setAttribute('data-theme', theme);
+            themeToggle.checked = theme === 'light';
+            localStorage.setItem('on1x-theme', theme);
+        }
+
+        const savedTheme = localStorage.getItem('on1x-theme') || 'dark';
+        applyTheme(savedTheme);
+
+        themeToggle.addEventListener('change', () => {
+            applyTheme(themeToggle.checked ? 'light' : 'dark');
+        });
+
+        // ПЕРЕЗАГРУЗКА
+        function reloadApp() {
+            if (Telegram?.WebApp?.restart) {
+                Telegram.WebApp.restart();
+            } else {
+                location.reload();
+            }
+        }
+
+        // НАВИГАЦИЯ
+        function showPage(pageId) {
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+            const page = document.getElementById(pageId);
+            if (page) page.classList.add('active');
+
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-page') === pageId) {
+                    item.classList.add('active');
+                }
+            });
+
+            if (Telegram?.WebApp?.BackButton) {
+                if (['subscription-page', 'profile-page'].includes(pageId)) {
+                    Telegram.WebApp.BackButton.hide();
+                } else {
+                    Telegram.WebApp.BackButton.show();
+                    Telegram.WebApp.BackButton.onClick(() => {
+                        if (pageId === 'buy-page') {
+                            showPage('subscription-page');
+                        } else {
+                            showPage('profile-page');
+                        }
+                    });
+                }
+            }
+
+            if (pageId === 'buy-page') {
+                initBuyPage();
+            }
+        }
+
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const page = item.getAttribute('data-page');
+                showPage(page);
+            });
+        });
+
+        // ПЕРЕХОД
+        function goToLinkAndClose(url) {
+            window.location.href = url;
+            setTimeout(() => {
+                if (Telegram?.WebApp?.close) {
+                    Telegram.WebApp.close();
+                }
+            }, 300);
+        }
+
+        // АККОРДЕОН FAQ
+        function toggleFaq(element) {
+            const answer = element.nextElementSibling;
+            const isOpen = answer.classList.contains('open');
+
+            document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+            document.querySelectorAll('.faq-question').forEach(q => q.classList.remove('active'));
+
+            if (!isOpen) {
+                answer.classList.add('open');
+                element.classList.add('active');
+            }
+        }
+
+        // ДАННЫЕ ПО ТАРИФАМ — ИКОНКА "ЛИЧНЫЙ" ИЗМЕНЕНА НА ЧЕЛОВЕЧКА
         const tariffData = {
-            personal: { devices: 3, speed: '10 Гбит/с', traffic: 'Безлимит', icon: 'fa-user' },
+            personal: { devices: 3, speed: '10 Гбит/с', traffic: 'Безлимит', icon: 'fa-user' },        // было fa-mobile-alt
             family: { devices: 6, speed: '10 Гбит/с', traffic: 'Безлимит', icon: 'fa-users' },
             premium: { devices: 15, speed: '25 Гбит/с', traffic: 'Безлимит', icon: 'fa-crown' }
         };
@@ -527,6 +804,7 @@
         let selectedTariff = null;
         let selectedDuration = null;
 
+        // ИНИЦИАЛИЗАЦИЯ ПРИ ВХОДЕ
         function initBuyPage() {
             const personalBtn = document.querySelector('.tariff-btn[data-tariff="personal"]');
             selectTariff(personalBtn, 'personal');
@@ -578,7 +856,7 @@
             }
         }
 
-        // ИСПРАВЛЕНО: ЗАГРУЗКА ТОЛЬКО ПОСЛЕ DOMContentLoaded
+        // ЗАГРУЗКА ДАННЫХ
         let isDataLoaded = false;
         function loadUserData() {
             if (isDataLoaded) return;
@@ -587,7 +865,6 @@
             const container = document.getElementById('subscriptions-container');
             const balanceEl = document.getElementById('balance-value');
 
-            // Проверка Telegram WebApp
             if (!window.Telegram?.WebApp?.initDataUnsafe?.user) {
                 container.innerHTML = `<div style="color:#dc3545;padding:30px 20px;text-align:center;background:var(--card-bg);border-radius:18px;border:1px solid var(--border-color);margin-top:16px;">Запустите приложение в <strong>Telegram</strong></div>`;
                 balanceEl.textContent = '—';
@@ -611,7 +888,7 @@
             const url = `${API_URL}?id=${userId}`;
 
             fetch(url)
-                .then(r => r.ok ? r.json() : Promise.reject(new Error('Network error')))
+                .then(r => r.ok ? r.json() : Promise.reject())
                 .then(rawData => {
                     container.innerHTML = '';
                     const subscriptions = Array.isArray(rawData) ? rawData : [rawData];
@@ -625,8 +902,7 @@
 
                     balanceEl.textContent = `${totalBalance} RUB`;
                 })
-                .catch(err => {
-                    console.error('Fetch error:', err);
+                .catch(() => {
                     container.innerHTML = `<div style="color:#dc3545;padding:30px 20px;text-align:center;background:var(--card-bg);border-radius:18px;border:1px solid var(--border-color);">Ошибка загрузки.<br><a href="#" onclick="location.reload(); return false;" style="color:var(--primary-color);text-decoration:underline;">Обновить</a></div>`;
                     balanceEl.textContent = '—';
                 });
@@ -675,13 +951,12 @@
             });
         }
 
-        // ВСЁ В DOMContentLoaded — ГАРАНТИЯ, ЧТО Telegram.WebApp ГОТОВ
         document.addEventListener('DOMContentLoaded', () => {
             if (Telegram?.WebApp) {
                 Telegram.WebApp.ready();
                 Telegram.WebApp.disableVerticalSwipes?.();
             }
-            loadUserData(); // Теперь вызывается здесь
+            loadUserData();
         });
     </script>
 </body>
