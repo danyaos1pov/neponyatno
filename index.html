@@ -310,6 +310,8 @@
     </div>
 
     <script>
+        let isDataLoaded = false;
+
         function copyText(text, btn) {
             navigator.clipboard.writeText(text).then(() => {
                 const icon = btn.querySelector('i');
@@ -403,8 +405,17 @@
         }
 
         function loadUserData() {
+            if (isDataLoaded) return;
+            isDataLoaded = true;
+
+            const container = document.getElementById('subscriptions-container');
+            const balanceEl = document.getElementById('balance-value');
+            const refContainer = document.getElementById('referral-container');
+
             if (!Telegram?.WebApp?.initDataUnsafe?.user) {
-                document.getElementById('subscriptions-container').innerHTML = '<div style="color: #dc3545; padding: 20px;">Запустите в Telegram</div>';
+                container.innerHTML = '<div style="color: #dc3545; padding: 20px; text-align: center;">Запустите в Telegram</div>';
+                balanceEl.textContent = '—';
+                refContainer.innerHTML = '<div style="color: #dc3545; padding: 16px;">Ошибка</div>';
                 return;
             }
 
@@ -413,15 +424,12 @@
             const avatarUrl = u.photo_url || 'https://sun9-8.userapi.com/s/v1/ig2/YBkIITuiQ13e1vw3WhNGJekU_fMB3jXEeTjqLb-EAnydjnDmqCVu7sATDepkrUUo6UXWQ4x74BtgfBrgdhWUZZlN.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640&from=bu&cs=640x0';
             const greeting = `Добро пожаловать, ${u.first_name}${u.last_name ? ' ' + u.last_name : ''}`;
 
-            document.getElementById('user-avatar-sub').src = avatarUrl;
-            document.getElementById('user-greeting-sub').textContent = greeting;
-            document.getElementById('user-id-sub').textContent = `ID: ${userId}`;
+            ['sub', 'prof'].forEach(suffix => {
+                document.getElementById(`user-avatar-${suffix}`).src = avatarUrl;
+                document.getElementById(`user-greeting-${suffix}`).textContent = greeting;
+                document.getElementById(`user-id-${suffix}`).textContent = `ID: ${userId}`;
+            });
 
-            document.getElementById('user-avatar-prof').src = avatarUrl;
-            document.getElementById('user-greeting-prof').textContent = greeting;
-            document.getElementById('user-id-prof').textContent = `ID: ${userId}`;
-
-            const container = document.getElementById('subscriptions-container');
             container.innerHTML = `
                 <div class="loading-placeholder">
                     <i class="fas fa-spinner fa-spin"></i> Загружаем подписку...
@@ -431,8 +439,15 @@
             const url = `${API_URL}?id=${userId}`;
             console.log('Запрос:', url);
 
+            const timeout = setTimeout(() => {
+                container.innerHTML = '<div style="color: #dc3545; padding: 20px; text-align: center;">Время ожидания истекло. <a href="#" onclick="location.reload()" style="color: #2481cc;">Обновить</a></div>';
+                balanceEl.textContent = '—';
+                refContainer.innerHTML = '<div style="color: #dc3545; padding: 16px;">Ошибка</div>';
+            }, 10000);
+
             fetch(url)
                 .then(r => {
+                    clearTimeout(timeout);
                     if (!r.ok) throw new Error(`HTTP ${r.status}`);
                     return r.json();
                 })
@@ -463,9 +478,8 @@
                         container.appendChild(block);
                     });
 
-                    document.getElementById('balance-value').textContent = `${totalBalance} RUB`;
+                    balanceEl.textContent = `${totalBalance} RUB`;
 
-                    const refContainer = document.getElementById('referral-container');
                     if (referralLink) {
                         refContainer.innerHTML = `
                             <div class="key-input-container">
@@ -482,10 +496,11 @@
                     }
                 })
                 .catch(err => {
+                    clearTimeout(timeout);
                     console.error('Ошибка:', err);
-                    container.innerHTML = '<div style="color: #dc3545; padding: 20px;">Ошибка сети. <a href="#" onclick="location.reload()" style="color: #2481cc;">Обновить</a></div>';
-                    document.getElementById('balance-value').textContent = '—';
-                    document.getElementById('referral-container').innerHTML = '<div style="color: #dc3545; padding: 16px;">Ошибка загрузки</div>';
+                    container.innerHTML = '<div style="color: #dc3545; padding: 20px; text-align: center;">Ошибка сети. <a href="#" onclick="location.reload()" style="color: #2481cc;">Обновить</a></div>';
+                    balanceEl.textContent = '—';
+                    refContainer.innerHTML = '<div style="color: #dc3545; padding: 16px;">Ошибка загрузки</div>';
                 });
         }
 
@@ -494,7 +509,6 @@
                 Telegram.WebApp.ready();
                 if (Telegram.WebApp.disableVerticalSwipes) Telegram.WebApp.disableVerticalSwipes();
             }
-
             loadUserData();
         });
     </script>
