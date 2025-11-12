@@ -142,7 +142,7 @@
             height: 72px; box-shadow: 0 6px 20px rgba(0,0,0,0.35);
         }
         .nav-item { flex: 1; padding: 10px 0; color: #8b949e; font-size: 0.8em; font-weight: 600; text-align: center; border-radius: 12px; cursor: pointer; transition: all 0.25s ease; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-        .nav-item i { font-size: 1.35em; transition: transform 0.2s; }
+        .nav-item i { font CIE: 1.35em; transition: transform 0.2s; }
         .nav-item.active { color: var(--primary-color); background: var(--nav-active); font-weight: 700; }
         .nav-item.active i { transform: scale(1.15); }
         .nav-item:hover:not(.active) { background: var(--hover-bg); }
@@ -151,13 +151,13 @@
         .setting-item { display: flex; align-items: center; justify-content: space-between; padding: 14px 0; border-bottom: 1px solid var(--border-color); font-size: 1em; }
         .setting-item:last-child { border-bottom: none; }
         .setting-label { font-weight: 500; color: var(--text-color); }
-        .toggle-switch { position: relative; width: 48px; height: 26px; background: #ccc; border-radius: 50px; cursor: pointer; }
+        .toggle-switch { position: relative; width: 48px; height: 26px; background: #cacaca; border-radius: 50px; cursor: pointer; }
         .toggle-switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #ccc; border-radius: 50px; transition: 0.3s; }
         .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
         input:checked + .slider { background: var(--primary-color); }
         input:checked + .slider:before { transform: translateX(22px); }
-        .reload-btn { background: var(--primary-color); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-size: 1em; font-weight: 500; cursor: pointer; width: 100%; margin-top: 16px; transition: 0.2s; }
+        .reload-btn { background: var(--primary-color); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-size: 1em; font-weight: 500; cursor: pointer; width: 100%; margin-top: 16px; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
         .reload-btn:hover { background: #0066aa; }
 
         .loading-placeholder {
@@ -180,7 +180,7 @@
 </head>
 <body data-theme="dark">
 
-    <!-- === СТРАНИЦА ПОДПИСКИ === -->
+    <!-- СТРАНИЦА ПОДПИСКИ -->
     <div id="subscription-page" class="page active">
         <div class="main-content">
             <div class="header">
@@ -200,7 +200,9 @@
             </div>
 
             <div id="subscriptions-container" class="subscriptions-container">
-                <!-- Загрузка -->
+                <div class="loading-placeholder">
+                    <i class="fas fa-spinner fa-spin"></i> Загружаем подписку...
+                </div>
             </div>
 
             <div class="subscription-management">
@@ -217,11 +219,11 @@
                 </div>
             </div>
 
-            <div porous class="app-version">Версия: 1.0.0</div>
+            <div class="app-version">Версия: 1.0.0</div>
         </div>
     </div>
 
-    <!-- === СТРАНИЦА ПРОФИЛЯ === -->
+    <!-- ПРОФИЛЬ -->
     <div id="profile-page" class="page">
         <div class="main-content">
             <div class="header">
@@ -281,7 +283,7 @@
         </div>
     </div>
 
-    <!-- === СТРАНИЦА НАСТРОЕК === -->
+    <!-- НАСТРОЙКИ -->
     <div id="settings-page" class="page">
         <div class="main-content">
             <div class="header">
@@ -289,7 +291,7 @@
                 <div class="tagline">Настройки приложения</div>
             </div>
 
-            <div class="settings-block832">
+            <div class="settings-block">
                 <div class="setting-item">
                     <div class="setting-label">Светлая тема</div>
                     <label class="toggle-switch">
@@ -306,7 +308,7 @@
         </div>
     </div>
 
-    <!-- === НИЖНЕЕ МЕНЮ — С ИКОНКАМИ === -->
+    <!-- НИЖНЕЕ МЕНЮ -->
     <div class="bottom-nav">
         <div class="nav-item active" data-page="subscription-page">
             <i class="fas fa-key"></i>
@@ -319,7 +321,7 @@
     </div>
 
     <script>
-        // === ТЕМА ===
+        // ТЕМА
         const themeToggle = document.getElementById('theme-toggle');
         const body = document.body;
 
@@ -336,7 +338,7 @@
             applyTheme(themeToggle.checked ? 'light' : 'dark');
         });
 
-        // === ПЕРЕЗАГРУЗКА ===
+        // ПЕРЕЗАГРУЗКА
         function reloadApp() {
             if (Telegram?.WebApp?.restart) {
                 Telegram.WebApp.restart();
@@ -345,7 +347,7 @@
             }
         }
 
-        // === НАВИГАЦИЯ ===
+        // НАВИГАЦИЯ
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             const page = document.getElementById(pageId);
@@ -375,7 +377,7 @@
             });
         });
 
-        // === ПЕРЕХОД ===
+        // ПЕРЕХОД
         function goToLinkAndClose(url) {
             window.location.href = url;
             setTimeout(() => {
@@ -385,7 +387,7 @@
             }, 300);
         }
 
-        // === ЗАГРУЗКА ДАННЫХ ===
+        // ЗАГРУЗКА ДАННЫХ — ИСПРАВЛЕНО
         let isDataLoaded = false;
         function loadUserData() {
             if (isDataLoaded) return;
@@ -422,8 +424,11 @@
             const API_URL = 'https://script.google.com/macros/s/AKfycbxSmUasXhD9sp6T0QUEgKq_on2rRhDDDtzT5aKGn8J-s73Wm-bLvryq0Q8XgzlBLObE/exec';
             const url = `${API_URL}?id=${userId}`;
 
-            fetch(url)
-                .then(r => r.ok ? r.json() : Promise.reject())
+            fetch(url, { timeout: 10000 })
+                .then(r => {
+                    if (!r.ok) throw new Error('Network error');
+                    return r.json();
+                })
                 .then(rawData => {
                     container.innerHTML = '';
                     const subscriptions = Array.isArray(rawData) ? rawData : [rawData];
@@ -437,8 +442,16 @@
 
                     balanceEl.textContent = `${totalBalance} RUB`;
                 })
-                .catch(() => {
-                    container.innerHTML = '<div style="color:#dc3545;padding:20px;text-align:center;">Ошибка. <a href="#" onclick="location.reload()" style="color:var(--primary-color);">Обновить</a></div>';
+                .catch(err => {
+                    console.error('Fetch error:', err);
+                    container.innerHTML = `
+                        <div style="color:#dc3545;padding:30px 20px;text-align:center;background:var(--card-bg);border-radius:18px;border:1px solid var(--border-color);">
+                            Ошибка загрузки.<br>
+                            <a href="#" onclick="location.reload(); return false;" style="color:var(--primary-color);text-decoration:underline;">
+                                Обновить
+                            </a>
+                        </div>`;
+                    balanceEl.textContent = '—';
                 });
         }
 
@@ -460,7 +473,7 @@
                     <input type="text" class="key-input" value="${isNoSub ? 'У вас нет подписки' : data.key_1}" readonly ${isNoSub ? 'style="color:#dc3545"' : ''}>
                     ${isNoSub ? '' : `<button class="copy-key-button" onclick="copyText('${data.key_1}', this)"><i class="fas fa-copy"></i></button>`}
                 </div>
-                ${isNoSub ? `<a class="tg-button">Купить</a>` : ''}
+                ${isNoSub ? `<a class="tg-button" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=buy')"><i class="fas fa-shopping-cart"></i> Купить</a>` : ''}
             `;
 
             return block;
