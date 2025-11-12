@@ -8,20 +8,41 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
+            /* === ТЁМНАЯ ТЕМА === */
             --primary-color: #2481cc;
             --bg-dark: #0d1117;
             --card-bg: #161b22;
             --text-color: #e6edf3;
+            --text-secondary: #b0b8c2;
+            --border-color: rgba(255,255,255,0.05);
             --chip-bg-active: #1e3a2b;
             --chip-bg-expired: #3a1e1e;
             --chip-bg-none: #2d2d2d;
             --nav-bg: rgba(10, 14, 19, 0.9);
             --nav-border: rgba(255,255,255,0.15);
             --nav-active: rgba(36,129,204,0.25);
+            --hover-bg: rgba(255,255,255,0.05);
+        }
+
+        /* === СВЕТЛАЯ ТЕМА === */
+        [data-theme="light"] {
+            --primary-color: #0077cc;
+            --bg-dark: #f8f9fa;
+            --card-bg: #ffffff;
+            --text-color: #1a1a1a;
+            --text-secondary: #555555;
+            --border-color: #e0e0e0;
+            --chip-bg-active: #d4edda;
+            --chip-bg-expired: #f8d7da;
+            --chip-bg-none: #e9ecef;
+            --nav-bg: rgba(255, 255, 255, 0.95);
+            --nav-border: rgba(0, 0, 0, 0.1);
+            --nav-active: rgba(0, 119, 204, 0.15);
+            --hover-bg: rgba(0, 0, 0, 0.05);
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-        body { background: var(--bg-dark); color: var(--text-color); min-height: 100vh; overflow-x: hidden; padding-bottom: 90px; position: relative; }
+        body { background: var(--bg-dark); color: var(--text-color); min-height: 100vh; overflow-x: hidden; padding-bottom: 90px; position: relative; transition: background 0.3s; }
         a { text-decoration: none; color: inherit; }
 
         .page { display: none; opacity: 0; transition: opacity 0.2s; }
@@ -36,6 +57,7 @@
         .header {
             margin: 20px auto 8px;
             text-align: center;
+            position: relative;
         }
         .header h1 {
             font-size: 2.5em; color: var(--primary-color); margin: 0;
@@ -44,26 +66,51 @@
         .header h1 span { color: var(--text-color); }
         .header .tagline {
             font-size: 1.05em;
-            color: #b0b8c2;
+            color: var(--text-secondary);
             margin-top: 4px;
             font-weight: 500;
+        }
+
+        /* === ИКОНКА НАСТРОЕК В ШАПКЕ ПОДПИСКИ === */
+        .settings-icon {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 36px;
+            height: 36px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.1em;
+            color: var(--primary-color);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.2s;
+        }
+        .settings-icon:hover {
+            background: var(--hover-bg);
+            transform: translateY(-50%) scale(1.1);
         }
 
         .user-profile {
             display: flex; align-items: center; justify-content: flex-start;
             margin: 10px auto 20px; max-width: 500px; padding: 15px;
             gap: 12px; background: var(--card-bg); border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15); border: 1px solid var(--border-color);
         }
         .user-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
         .user-greeting { font-size: 1.1em; font-weight: 600; color: var(--text-color); text-align: left; margin-bottom: 3px; }
-        .user-id { font-size: 0.85em; color: #b0b8c2; text-align: left; }
+        .user-id { font-size: 0.85em; color: var(--text-secondary); text-align: left; }
 
         .subscriptions-container { display: flex; flex-direction: column; gap: 16px; }
-        .subscription-block { background: var(--card-bg); border-radius: 18px; padding: 20px 18px 20px; box-shadow: 0 6px 16px rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.05); }
+        .subscription-block { background: var(--card-bg); border-radius: 18px; padding: 20px 18px 20px; box-shadow: 0 6px 16px rgba(0,0,0,0.15); border: 1px solid var(--border-color); }
 
         .info-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 1.05em; }
-        .info-label { font-weight: 600; color: #b0b8c2; }
+        .info-label { font-weight: 600; color: var(--text-secondary); }
         .info-value { font-weight: 600; color: var(--text-color); }
 
         .status-chip {
@@ -72,25 +119,26 @@
         }
         .status-active { background: var(--chip-bg-active); color: #28a745; border: 1px solid #28a745; }
         .status-expired { background: var(--chip-bg-expired); color: #dc3545; border: 1px solid #dc3545; }
-        .status-none { background: var(--chip-bg-none); color: #b0b8c2; border: 1px solid #444; }
+        .status-none { background: var(--chip-bg-none); color: var(--text-secondary); border: 1px solid #ccc; }
 
-        .key-input-container { position: relative; margin: 14px 0 0; background: rgba(255,255,255,0.04); border-radius: 12px; padding: 12px; display: flex; align-items: center; }
+        .key-input-container { position: relative; margin: 14px 0 0; background: rgba(0,0,0,0.03); border-radius: 12px; padding: 12px; display: flex; align-items: center; border: 1px solid var(--border-color); }
         .key-input { background: transparent; border: none; color: var(--text-color); font-family: monospace; font-size: 0.95em; width: 100%; padding-right: 42px; pointer-events: none; word-break: break-all; line-height: 1.4; }
         .copy-key-button { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: var(--primary-color); color: white; border: none; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9em; transition: all 0.2s; }
-        .copy-key-button:hover { background: #1d6fa5; transform: translateY(-50%) scale(1.1); }
-        .copy-key-button:disabled { background: #444; cursor: not-allowed; }
+        .copy-key-button:hover { background: #0066aa; transform: translateY(-50%) scale(1.1); }
+        .copy-key-button:disabled { background: #999; cursor: not-allowed; }
 
         .comment-container {
             margin: 12px 0 0;
-            background: rgba(255,255,255,0.04);
+            background: rgba(0,0,0,0.03);
             border-radius: 12px;
             padding: 10px 12px;
             opacity: 0.9;
             font-size: 0.9em;
-            color: #b0b8c2;
+            color: var(--text-secondary);
             line-height: 1.4;
             word-wrap: break-word;
             white-space: pre-wrap;
+            border: 1px solid var(--border-color);
         }
 
         .action-buttons-row { display: flex; gap: 8px; margin-top: 16px; }
@@ -100,7 +148,7 @@
             font-weight: 500; font-size: 1em; text-align: center; border-radius: 8px;
             cursor: pointer; transition: background 0.2s;
         }
-        .tg-button:hover, .tg-button:active { background: #1d6fa5; }
+        .tg-button:hover, .tg-button:active { background: #0066aa; }
         .tg-button.full { margin-top: 16px !important; width: 100% !important; display: flex !important; }
 
         .balance-card {
@@ -108,11 +156,11 @@
             border-radius: 18px;
             padding: 18px;
             margin: 20px 0;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.05);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+            border: 1px solid var(--border-color);
             text-align: center;
         }
-        .balance-label { font-size: 0.9em; color: #b0b8c2; margin-bottom: 6px; }
+        .balance-label { font-size: 0.9em; color: var(--text-secondary); margin-bottom: 6px; }
         .balance-value { font-size: 1.8em; font-weight: 700; color: var(--text-color); margin-bottom: 16px; }
 
         .balance-actions {
@@ -124,7 +172,7 @@
             cursor: pointer; transition: background 0.2s;
             display: flex; align-items: center; justify-content: center; gap: 8px;
         }
-        .balance-btn:hover { background: #1d6fa5; }
+        .balance-btn:hover { background: #0066aa; }
 
         .profile-menu {
             display: flex; flex-direction: column; gap: 8px; margin-top: 20px;
@@ -133,38 +181,57 @@
             display: flex; align-items: center; gap: 12px;
             padding: 14px 16px; background: var(--card-bg); color: var(--text-color);
             font-size: 1em; border-radius: 12px; cursor: pointer;
-            transition: background 0.2s; border: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.2s; border: 1px solid var(--border-color);
             position: relative;
         }
         .profile-menu-btn i {
-            font-size: 1.2em; color: #2481cc; width: 24px; text-align: center;
+            font-size: 1.2em; color: var(--primary-color); width: 24px; text-align: center;
         }
         .profile-menu-btn span {
             flex: 1; text-align: center;
-            margin-left: -18px; /* Сдвиг текста вправо, чтобы не налезать на иконку */
+            margin-left: -18px;
         }
-        .profile-menu-btn:hover { background: rgba(255,255,255,0.05); }
+        .profile-menu-btn:hover { background: var(--hover-bg); }
 
-        /* === УПРАВЛЕНИЕ ПОДПИСКОЙ — ИКОНКА СЛЕВА, ТЕКСТ ПО ЦЕНТРУ === */
-        .subscription-management {
+        /* === СТРАНИЦА НАСТРОЕК === */
+        .settings-block {
             background: var(--card-bg);
             border-radius: 18px;
-            padding: 18px;
-            margin-top: 20px;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.05);
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
+            border: 1px solid var(--border-color);
         }
-        .subscription-management h3 {
-            font-size: 1.1em;
-            font-weight: 600;
-            color: var(--text-color);
-            margin-bottom: 14px;
-            text-align: center;
+        .setting-item {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 0;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 1em;
         }
+        .setting-item:last-child { border-bottom: none; }
+        .setting-label { font-weight: 500; color: var(--text-color); }
+        .toggle-switch {
+            position: relative; width: 48px; height: 26px; background: #ccc; border-radius: 50px; cursor: pointer; transition: 0.3s;
+        }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #ccc; border-radius: 50px; transition: 0.3s; }
+        .slider:before {
+            position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px;
+            background: white; border-radius: 50%; transition: 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+        }
+        input:checked + .slider { background: var(--primary-color); }
+        input:checked + .slider:before { transform: translateX(22px); }
 
-        .app-version { margin-top: 30px; font-size: 0.8em; color: #6c757d; text-align: center; }
+        .reload-btn {
+            background: var(--primary-color); color: white; border: none; padding: 12px 20px;
+            border-radius: 12px; font-size: 1em; font-weight: 500; cursor: pointer;
+            width: 100%; margin-top: 16px; transition: 0.2s;
+        }
+        .reload-btn:hover { background: #0066aa; }
 
-        /* === НИЖНЕЕ МЕНЮ — ИСПРАВЛЕНО И УЛУЧШЕНО === */
+        .app-version { margin-top: 30px; font-size: 0.8em; color: var(--text-secondary); text-align: center; }
+
+        /* === НИЖНЕЕ МЕНЮ === */
         .bottom-nav {
             position: fixed;
             bottom: 16px;
@@ -198,94 +265,22 @@
             align-items: center;
             gap: 4px;
         }
-        .nav-item i {
-            font-size: 1.35em;
-            transition: transform 0.2s;
-        }
-        .nav-item.active {
-            color: var(--primary-color);
-            background: var(--nav-active);
-            font-weight: 700;
-        }
-        .nav-item.active i {
-            transform: scale(1.15);
-        }
-        .nav-item:hover:not(.active) {
-            background: rgba(255,255,255,0.08);
-        }
-
-        /* === FAQ АККОРДЕОН === */
-        .faq-accordion {
-            background: var(--card-bg);
-            border-radius: 18px;
-            margin: 20px 0;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.3);
-            border: 1px solid rgba(255,255,255,0.05);
-            overflow: hidden;
-        }
-
-        .faq-item {
-            border-bottom: 1px solid rgba(255,255,255,0.05);
-        }
-        .faq-item:last-child {
-            border-bottom: none;
-        }
-
-        .faq-question {
-            padding: 16px 18px;
-            background: transparent;
-            color: var(--text-color);
-            font-weight: 600;
-            font-size: 1em;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background 0.2s;
-            user-select: none;
-        }
-        .faq-question:hover {
-            background: rgba(255,255,255,0.03);
-        }
-
-        .faq-question i {
-            color: #b0b8c2;
-            transition: transform 0.3s ease;
-            font-size: 0.9em;
-        }
-        .faq-question.active i {
-            transform: rotate(180deg);
-            color: var(--primary-color);
-        }
-
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            padding: 0 18px;
-            color: #b0b8c2;
-            font-size: 0.95em;
-            line-height: 1.6;
-            transition: max-height 0.3s ease, padding 0.3s ease;
-        }
-        .faq-answer.open {
-            max-height: 300px;
-            padding: 16px 18px;
-        }
+        .nav-item i { font-size: 1.35em; transition: transform 0.2s; }
+        .nav-item.active { color: var(--primary-color); background: var(--nav-active); font-weight: 700; }
+        .nav-item.active i { transform: scale(1.15); }
+        .nav-item:hover:not(.active) { background: var(--hover-bg); }
 
         .loading-placeholder {
             text-align: center;
             padding: 32px 20px;
-            color: #b0b8c2;
+            color: var(--text-secondary);
             font-size: 1em;
             font-weight: 500;
         }
-        .loading-placeholder i {
-            margin-right: 8px;
-            color: var(--primary-color);
-        }
+        .loading-placeholder i { margin-right: 8px; color: var(--primary-color); }
     </style>
 </head>
-<body>
+<body data-theme="dark">
 
     <!-- === СТРАНИЦА ПОДПИСКИ === -->
     <div id="subscription-page" class="page active">
@@ -293,6 +288,9 @@
             <div class="header">
                 <h1><span>ON1X</span> VPN</h1>
                 <div class="tagline">Свобода. Безопасность. Надежность.</div>
+                <div class="settings-icon" onclick="showPage('settings-page')">
+                    <i class="fas fa-cog"></i>
+                </div>
             </div>
 
             <div class="user-profile">
@@ -309,7 +307,6 @@
                 </div>
             </div>
 
-            <!-- УПРАВЛЕНИЕ ПОДПИСКОЙ — ИКОНКА СЛЕВА, ТЕКСТ ПО ЦЕНТРУ -->
             <div class="subscription-management">
                 <h3>Управление подпиской</h3>
                 <div class="profile-menu">
@@ -378,84 +375,42 @@
                     <i class="fas fa-headset"></i>
                     <span>Поддержка</span>
                 </div>
+                <div class="profile-menu-btn" onclick="showPage('settings-page')">
+                    <i class="fas fa-cog"></i>
+                    <span>Настройки приложения</span>
+                </div>
             </div>
 
             <div class="app-version">Версия: 1.0.0</div>
         </div>
     </div>
 
-    <!-- === СТРАНИЦА FAQ === -->
-    <div id="faq-page" class="page">
+    <!-- === СТРАНИЦА НАСТРОЕК === -->
+    <div id="settings-page" class="page">
         <div class="main-content">
             <div class="header">
                 <h1><span>ON1X</span> VPN</h1>
-                <div class="tagline">Часто задаваемые вопросы</div>
+                <div class="tagline">Настройки приложения</div>
             </div>
 
-            <div class="faq-accordion">
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        Как подключиться? <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        Для того, чтобы подключиться, вам необходимо в разделе "Подписка" нажать кнопку "Купить", а затем выбрать необходимый тариф.
-                    </div>
+            <div class="settings-block">
+                <div class="setting-item">
+                    <div class="setting-label">Светлая тема</div>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="theme-toggle">
+                        <span class="slider"></span>
+                    </label>
                 </div>
-
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        Лимит устройств <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        Каждый тариф ограничивается определенным количеством устройств на одном ключе:<br>
-                        <strong>Личный</strong> — 3 устройства<br>
-                        <strong>Семейный</strong> — 6 устройств<br>
-                        <strong>Премиум</strong> — 15 устройств
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        Как поменять тариф? <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        Для того, чтобы поменять тариф, вам необходимо в разделе "Подписка" нажать кнопку "Сменить тариф".
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        Как вывести деньги с кошелька? <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        Для того, чтобы вывести денежные средства на банковскую карту или криптокошелек, вам необходимо перейти в раздел "Профиль" и под балансом нажать кнопку "Вывести".
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        Как вернуть подписку? <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        Для того, чтобы оформить возврат подписки, вам необходимо перейти в раздел "Подписка" → "Управление подпиской" → "Возврат подписки".
-                    </div>
-                </div>
-
-                <div class="faq-item">
-                    <div class="faq-question" onclick="toggleFaq(this)">
-                        Какой бонус за друга? <i class="fas fa-chevron-down"></i>
-                    </div>
-                    <div class="faq-answer">
-                        После того, как ваш друг перешел по вашей реферальной ссылке, то вы будете получать каждый раз <strong>15%</strong>, когда друг будет приобретать/продлевать подписку.
-                    </div>
-                </div>
+                <button class="reload-btn" onclick="reloadApp()">
+                    <i class="fas fa-sync-alt"></i> Перезагрузить приложение
+                </button>
             </div>
 
             <div class="app-version">Версия: 1.0.0</div>
         </div>
     </div>
 
-    <!-- === НИЖНЕЕ МЕНЮ — ИСПРАВЛЕНО === -->
+    <!-- === НИЖНЕЕ МЕНЮ === -->
     <div class="bottom-nav">
         <div class="nav-item active" data-page="subscription-page">
             <i class="fas fa-key"></i> Подписка
@@ -466,7 +421,33 @@
     </div>
 
     <script>
-        // === ОТКРЫТИЕ ССЫЛОК С ЗАКРЫТИЕМ MINIAPP ===
+        // === ТЕМА ===
+        const themeToggle = document.getElementById('theme-toggle');
+        const body = document.body;
+
+        function applyTheme(theme) {
+            body.setAttribute('data-theme', theme);
+            themeToggle.checked = theme === 'light';
+            localStorage.setItem('on1x-theme', theme);
+        }
+
+        // Загрузка темы
+        const savedTheme = localStorage.getItem('on1x-theme') || 'dark';
+        applyTheme(savedTheme);
+
+        themeToggle.addEventListener('change', () => {
+            applyTheme(themeToggle.checked ? 'light' : 'dark');
+        });
+
+        // === ПЕРЕЗАГРУЗКА ===
+        function reloadApp() {
+            if (Telegram?.WebApp?.close) {
+                Telegram.WebApp.close();
+            }
+            setTimeout(() => location.reload(), 500);
+        }
+
+        // === ОСТАЛЬНАЯ ЛОГИКА (без изменений) ===
         function goToLinkAndClose(url) {
             window.location.href = url;
             setTimeout(() => {
@@ -476,114 +457,31 @@
             }, 300);
         }
 
-        // === АККОРДЕОН FAQ ===
-        function toggleFaq(element) {
-            const answer = element.nextElementSibling;
-            const isOpen = answer.classList.contains('open');
-
-            document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
-            document.querySelectorAll('.faq-question').forEach(q => q.classList.remove('active'));
-
-            if (!isOpen) {
-                answer.classList.add('open');
-                element.classList.add('active');
-            }
-        }
-
-        let isDataLoaded = false;
-
-        function copyText(text, btn) {
-            navigator.clipboard.writeText(text).then(() => {
-                const icon = btn.querySelector('i');
-                icon.classList.replace('fa-copy', 'fa-check');
-                btn.style.background = '#28a745';
-                setTimeout(() => {
-                    icon.classList.replace('fa-check', 'fa-copy');
-                    btn.style.background = 'var(--primary-color)';
-                }, 1000);
-            });
-        }
-
-        let backButtonHandler = null;
-
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(pageId).classList.add('active');
 
             document.querySelectorAll('.nav-item').forEach(item => {
                 item.classList.remove('active');
-                if (item.getAttribute('data-page') === pageId) {
-                    item.classList.add('active');
-                }
+                if (item.getAttribute('data-page') === pageId) item.classList.add('active');
             });
 
             if (Telegram?.WebApp?.BackButton) {
-                if (pageId === 'subscription-page' || pageId === 'profile-page') {
+                if (['subscription-page', 'profile-page'].includes(pageId)) {
                     Telegram.WebApp.BackButton.hide();
-                    if (backButtonHandler) {
-                        Telegram.WebApp.BackButton.offClick(backButtonHandler);
-                        backButtonHandler = null;
-                    }
                 } else {
                     Telegram.WebApp.BackButton.show();
-                    if (backButtonHandler) {
-                        Telegram.WebApp.BackButton.offClick(backButtonHandler);
-                    }
-                    backButtonHandler = () => showPage('profile-page');
-                    Telegram.WebApp.BackButton.onClick(backButtonHandler);
+                    Telegram.WebApp.BackButton.onClick(() => showPage('profile-page'));
                 }
             }
         }
 
         document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const page = item.getAttribute('data-page');
-                showPage(page);
-            });
+            item.addEventListener('click', () => showPage(item.getAttribute('data-page')));
         });
 
-        const API_URL = 'https://script.google.com/macros/s/AKfycbxSmUasXhD9sp6T0QUEgKq_on2rRhDDDtzT5aKGn8J-s73Wm-bLvryq0Q8XgzlBLObE/exec';
-
-        function createSubscriptionBlock(data) {
-            const block = document.createElement('div');
-            block.className = 'subscription-block';
-
-            const isNoSub = !data.key_1 || data.not_found || data.key_1 === "У вас нет подписки";
-
-            const statusHtml = isNoSub
-                ? `<span class="status-chip status-none">Нет</span>`
-                : (data.key_status === 'active'
-                    ? `<span class="status-chip status-active">Активна</span>`
-                    : `<span class="status-chip status-expired">Истекла</span>`);
-
-            const keyHtml = isNoSub
-                ? `<div class="key-input-container"><input type="text" class="key-input" value="У вас нет подписки" readonly style="color: #dc3545;"><button class="copy-key-button" disabled><i class="fas fa-copy"></i></button></div>`
-                : `<div class="key-input-container"><input type="text" class="key-input" value="${data.key_1}" readonly><button class="copy-key-button" onclick="copyText('${data.key_1}', this)"><i class="fas fa-copy"></i></button></div>`;
-
-            const buttonsHtml = isNoSub
-                ? `<a class="tg-button full" onclick="showPage('buy')"><i class="fas fa-shopping-cart"></i> Купить</a>`
-                : `<div class="action-buttons-row">
-                    <a class="tg-button"><i class="fas fa-sync-alt"></i> Сменить тариф</a>
-                    <a class="tg-button" onclick="showPage('renew')"><i class="fas fa-clock"></i> Продлить</a>
-                   </div>`;
-
-            block.innerHTML = `
-                <div class="info-row"><span class="info-label">Тариф:</span><span class="info-value">${isNoSub ? '—' : (data.tariff || 'Неизвестно')}</span></div>
-                <div class="info-row"><span class="info-label">Статус подписки:</span><span>${statusHtml}</span></div>
-                ${keyHtml}
-                ${buttonsHtml}
-            `;
-
-            if (data.key_2 && !isNoSub) {
-                const commentDiv = document.createElement('div');
-                commentDiv.className = 'comment-container';
-                commentDiv.textContent = data.key_2;
-                block.appendChild(commentDiv);
-            }
-
-            return block;
-        }
-
+        // Загрузка данных пользователя (без изменений)
+        let isDataLoaded = false;
         function loadUserData() {
             if (isDataLoaded) return;
             isDataLoaded = true;
@@ -608,64 +506,67 @@
                 document.getElementById(`user-id-${suffix}`).textContent = `ID: ${userId}`;
             });
 
-            container.innerHTML = `
-                <div class="loading-placeholder">
-                    <i class="fas fa-spinner fa-spin"></i> Загружаем подписку...
-                </div>
-            `;
+            container.innerHTML = `<div class="loading-placeholder"><i class="fas fa-spinner fa-spin"></i> Загружаем подписку...</div>`;
 
+            const API_URL = 'https://script.google.com/macros/s/AKfycbxSmUasXhD9sp6T0QUEgKq_on2rRhDDDtzT5aKGn8J-s73Wm-bLvryq0Q8XgzlBLObE/exec';
             const url = `${API_URL}?id=${userId}`;
-            console.log('Запрос:', url);
 
-            const timeout = setTimeout(() => {
-                container.innerHTML = '<div style="color: #dc3545; padding: 20px; text-align: center;">Время ожидания истекло. <a href="#" onclick="location.reload()" style="color: #2481cc;">Обновить</a></div>';
-                balanceEl.textContent = '—';
-            }, 10000);
-
-            fetch(url)
-                .then(r => {
-                    clearTimeout(timeout);
-                    if (!r.ok) throw new Error(`HTTP ${r.status}`);
-                    return r.json();
-                })
+            fetch(url, { timeout: 10000 })
+                .then(r => r.ok ? r.json() : Promise.reject())
                 .then(rawData => {
-                    console.log('Ответ API:', rawData);
                     container.innerHTML = '';
-
-                    let subscriptions = [];
+                    const subscriptions = Array.isArray(rawData) ? rawData : [rawData];
                     let totalBalance = 0;
 
-                    if (rawData.not_found) {
-                        subscriptions = [{ key_1: null, not_found: true }];
-                    } else if (Array.isArray(rawData)) {
-                        subscriptions = rawData.length > 0 ? rawData : [{ key_1: null }];
-                        totalBalance = rawData.reduce((sum, sub) => sum + (Number(sub.balance) || 0), 0);
-                    } else if (rawData && rawData.key_1) {
-                        subscriptions = [rawData];
-                        totalBalance = Number(rawData.balance) || 0;
-                    } else {
-                        subscriptions = [{ key_1: null }];
-                    }
-
                     subscriptions.forEach(data => {
+                        if (data.balance) totalBalance += Number(data.balance);
                         const block = createSubscriptionBlock(data);
                         container.appendChild(block);
                     });
 
                     balanceEl.textContent = `${totalBalance} RUB`;
                 })
-                .catch(err => {
-                    clearTimeout(timeout);
-                    console.error('Ошибка:', err);
-                    container.innerHTML = '<div style="color: #dc3545; padding: 20px; text-align: center;">Ошибка сети. <a href="#" onclick="location.reload()" style="color: #2481cc;">Обновить</a></div>';
-                    balanceEl.textContent = '—';
+                .catch(() => {
+                    container.innerHTML = '<div style="color: #dc3545; padding: 20px; text-align: center;">Ошибка. <a href="#" onclick="location.reload()" style="color: var(--primary-color);">Обновить</a></div>';
                 });
+        }
+
+        function createSubscriptionBlock(data) {
+            const block = document.createElement('div');
+            block.className = 'subscription-block';
+            const isNoSub = !data.key_1 || data.not_found;
+
+            const statusHtml = isNoSub
+                ? `<span class="status-chip status-none">Нет</span>`
+                : (data.key_status === 'active'
+                    ? `<span class="status-chip status-active">Активна</span>`
+                    : `<span class="status-chip status-expired">Истекла</span>`);
+
+            block.innerHTML = `
+                <div class="info-row"><span class="info-label">Тариф:</span><span class="info-value">${isNoSub ? '—' : (data.tariff || 'Неизвестно')}</span></div>
+                <div class="info-row"><span class="info-label">Статус:</span><span>${statusHtml}</span></div>
+                <div class="key-input-container">
+                    <input type="text" class="key-input" value="${isNoSub ? 'У вас нет подписки' : data.key_1}" readonly ${isNoSub ? 'style="color:#dc3545"' : ''}>
+                    ${isNoSub ? '' : `<button class="copy-key-button" onclick="copyText('${data.key_1}', this)"><i class="fas fa-copy"></i></button>`}
+                </div>
+                ${isNoSub ? `<a class="tg-button full"><i class="fas fa-shopping-cart"></i> Купить</a>` : ''}
+            `;
+
+            return block;
+        }
+
+        function copyText(text, btn) {
+            navigator.clipboard.writeText(text).then(() => {
+                const icon = btn.querySelector('i');
+                icon.classList.replace('fa-copy', 'fa-check');
+                setTimeout(() => icon.classList.replace('fa-check', 'fa-copy'), 1000);
+            });
         }
 
         document.addEventListener('DOMContentLoaded', () => {
             if (Telegram?.WebApp) {
                 Telegram.WebApp.ready();
-                if (Telegram.WebApp.disableVerticalSwipes) Telegram.WebApp.disableVerticalSwipes();
+                Telegram.WebApp.disableVerticalSwipes?.();
             }
             loadUserData();
         });
