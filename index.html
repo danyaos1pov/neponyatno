@@ -269,7 +269,6 @@
             padding: 16px 18px;
         }
 
-        /* СТРАНИЦЫ ПОКУПКИ / ПРОДЛЕНИЯ */
         .tariff-selection-block {
             background: var(--card-bg);
             border-radius: 18px;
@@ -430,7 +429,6 @@
             background: #0066aa;
         }
 
-        /* МОДАЛЬНОЕ ОКНО */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0, 0, 0, 0.7); z-index: 2000; display: flex;
@@ -871,10 +869,7 @@
         };
 
         function initBuyPage(pageId) {
-            // Сброс выбора
             selection[pageId] = { tariff: null, duration: null };
-
-            // Выбираем "Личный" по умолчанию
             const defaultBtn = document.querySelector(`#${pageId} .tariff-btn[data-tariff="personal"]`);
             if (defaultBtn) {
                 selectTariff(defaultBtn, pageId);
@@ -885,7 +880,6 @@
             const isBuy = pageId === 'buy-page';
             const prefix = isBuy ? 'buy' : 'extend';
 
-            // Снимаем выделение
             document.querySelectorAll(`#${pageId} .tariff-btn`).forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
 
@@ -958,6 +952,34 @@
             }
         }
 
+        // КЭШИРОВАНИЕ В localStorage
+        const CACHE_KEY = (userId) => `on1x_sub_${userId}`;
+        const CACHE_TTL = 5 * 60 * 1000; // 5 минут
+
+        function getCachedData(userId) {
+            const cached = localStorage.getItem(CACHE_KEY(userId));
+            if (!cached) return null;
+
+            const { data, timestamp } = JSON.parse(cached);
+            if (Date.now() - timestamp > CACHE_TTL) {
+                localStorage.removeItem(CACHE_KEY(userId));
+                return null;
+            }
+            return data;
+        }
+
+        function setCachedData(userId, data) {
+            const payload = {
+                data,
+                timestamp: Date.now()
+            };
+            try {
+                localStorage.setItem(CACHE_KEY(userId), JSON.stringify(payload));
+            } catch (e) {
+                console.warn('Не удалось сохранить кэш:', e);
+            }
+        }
+
         // ЗАГРУЗКА ДАННЫХ
         let isDataLoaded = false;
         function loadUserData() {
@@ -986,28 +1008,41 @@
                 document.getElementById(`user-id-${suffix}`).textContent = `ID: ${userId}`;
             });
 
+            const cachedData = getCachedData(userId);
+            if (cachedData) {
+                console.log('Подписка загружена из кэша');
+                renderSubscriptionData(cachedData, container, balanceEl);
+                return;
+            }
+
             const API_URL = 'https://script.google.com/macros/s/AKfycbxSmUasXhD9sp6T0QUEgKq_on2rRhDDDtzT5aKGn8J-s73Wm-bLvryq0Q8XgzlBLObE/exec';
             const url = `${API_URL}?id=${userId}`;
 
             fetch(url)
-                .then(r => r.ok ? r.json() : Promise.reject())
+                .then(r => r.ok ? r.json() : Promise.reject(new Error('Network error')))
                 .then(rawData => {
-                    container.innerHTML = '';
-                    const subscriptions = Array.isArray(rawData) ? rawData : [rawData];
-                    let totalBalance = 0;
-
-                    subscriptions.forEach(data => {
-                        if (data.balance) totalBalance += Number(data.balance);
-                        const block = createSubscriptionBlock(data);
-                        container.appendChild(block);
-                    });
-
-                    balanceEl.textContent = `${totalBalance} RUB`;
+                    setCachedData(userId, rawData);
+                    renderSubscriptionData(rawData, container, balanceEl);
                 })
-                .catch(() => {
+                .catch(err => {
+                    console.error('Ошибка загрузки:', err);
                     container.innerHTML = `<div style="color:#dc3545;padding:30px 20px;text-align:center;background:var(--card-bg);border-radius:18px;border:1px solid var(--border-color);">Ошибка загрузки.<br><a href="#" onclick="location.reload(); return false;" style="color:var(--primary-color);text-decoration:underline;">Обновить</a></div>`;
                     balanceEl.textContent = '—';
                 });
+        }
+
+        function renderSubscriptionData(rawData, container, balanceEl) {
+            container.innerHTML = '';
+            const subscriptions = Array.isArray(rawData) ? rawData : [rawData];
+            let totalBalance = 0;
+
+            subscriptions.forEach(data => {
+                if (data.balance) totalBalance += Number(data.balance);
+                const block = createSubscriptionBlock(data);
+                container.appendChild(block);
+            });
+
+            balanceEl.textContent = `${totalBalance} RUB`;
         }
 
         function createSubscriptionBlock(data) {
