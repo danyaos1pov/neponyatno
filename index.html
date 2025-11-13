@@ -206,9 +206,8 @@
                 </div>
             </div>
 
-            <!-- КНОПКА ПЕРЕЗАГРУЗКИ -->
             <button class="reload-btn" onclick="reloadApp()">
-                <i class="fas fa-sync-alt"></i> Обновить
+                <i class="fas fa-sync-alt"></i> Перезагрузить
             </button>
 
             <div class="app-version">Версия: 1.0.0</div>
@@ -248,7 +247,7 @@
         </div>
     </div>
 
-    <!-- НОВАЯ СТРАНИЦА: МЕНЮ -->
+    <!-- МЕНЮ -->
     <div id="menu-page" class="page">
         <div class="main-content">
             <div class="header">
@@ -273,7 +272,7 @@
                     <i class="fas fa-download"></i>
                     <div class="btn-text">Установить приложение</div>
                 </div>
-                <div class="profile-menu-btn" onclick="showPage('faq-page')">
+                <div class="profile-menu-btn" onclick="showPage('faq-page', 'menu-page')">
                     <i class="fas fa-question-circle"></i>
                     <div class="btn-text">FAQ</div>
                 </div>
@@ -285,7 +284,7 @@
                     <i class="fas fa-headset"></i>
                     <div class="btn-text">Поддержка</div>
                 </div>
-                <div class="profile-menu-btn" onclick="showPage('settings-page')">
+                <div class="profile-menu-btn" onclick="showPage('settings-page', 'menu-page')">
                     <i class="fas fa-cog"></i>
                     <div class="btn-text">Настройки приложения</div>
                 </div>
@@ -456,7 +455,7 @@
         </div>
     </div>
 
-    <!-- НИЖНЕЕ МЕНЮ (3 КНОПКИ) -->
+    <!-- НИЖНЕЕ МЕНЮ -->
     <div class="bottom-nav">
         <div class="nav-item active" data-page="subscription-page">
             <i class="fas fa-key"></i>
@@ -486,18 +485,31 @@
         // ПЕРЕЗАГРУЗКА
         function reloadApp(){Telegram?.WebApp?.restart?Telegram.WebApp.restart():location.reload();}
 
-        // НАВИГАЦИЯ
-        function showPage(id){
+        // НАВИГАЦИЯ С ПАМЯТЬЮ "ОТКУДА ПРИШЛИ"
+        let lastMainPage = 'subscription-page'; // по умолчанию
+
+        function showPage(id, from = null){
+            if (from) lastMainPage = from;
+            
             document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
             document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.page===id));
+
             if(Telegram?.WebApp?.BackButton){
-                ['subscription-page','profile-page','menu-page'].includes(id)?Telegram.WebApp.BackButton.hide():
-                (Telegram.WebApp.BackButton.show(),Telegram.WebApp.BackButton.onClick(()=>showPage('subscription-page')));
+                const mainPages = ['subscription-page','profile-page','menu-page'];
+                if(mainPages.includes(id)){
+                    Telegram.WebApp.BackButton.hide();
+                } else {
+                    Telegram.WebApp.BackButton.show();
+                    Telegram.WebApp.BackButton.onClick(() => showPage(lastMainPage));
+                }
             }
             if(id==='buy-page'||id==='extend-page') initBuyPage(id);
         }
-        document.querySelectorAll('.nav-item').forEach(i=>i.addEventListener('click',()=>showPage(i.dataset.page)));
+        document.querySelectorAll('.nav-item').forEach(i=>i.addEventListener('click',()=>{
+            lastMainPage = i.dataset.page;
+            showPage(i.dataset.page);
+        }));
 
         // ПЕРЕХОД
         function goToLinkAndClose(url){
@@ -519,8 +531,8 @@
 
         // ТАРИФЫ
         const tariffData={
-            personal:{devices:3,speed:'Скорость до 25 Гбит/с',traffic:'Безлимит трафик',icon:'fa-user'},
-            family:{devices:6,speed:'Скорость до 25 Гбит/с',traffic:'Безлимит трафик',icon:'fa-users'},
+            personal:{devices:3,speed:'Скорость до 10 Гбит/с',traffic:'Безлимит трафик',icon:'fa-user'},
+            family:{devices:6,speed:'Скорость до 10 Гбит/с',traffic:'Безлимит трафик',icon:'fa-users'},
             forever:{devices:'от 3 до 6',speed:'Скорость до 25 Гбит/с',traffic:'Безлимит трафик',icon:'fa-infinity'}
         };
         const tariffPrices={
@@ -599,6 +611,7 @@
                 if(id) id.textContent=`ID: ${uid}`;
             });
 
+            // ВСТАВЛЕНА ТВОЯ ССЫЛКА ИЗ APP SCRIPTS
             const API_URL='https://script.google.com/macros/s/AKfycbw02X1b1uJXdqTY7u5IUCfmDjwuqLwd4tBkgbwq8DCZXlsnX5swXKlgarpwm1JsBSCV/exec';
             fetch(`${API_URL}?id=${uid}`)
                 .then(r=>r.ok?r.json():Promise.reject())
@@ -617,4 +630,3 @@
     </script>
 </body>
 </html>
-
