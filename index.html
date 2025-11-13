@@ -269,7 +269,7 @@
             padding: 16px 18px;
         }
 
-        /* ------------------- СТРАНИЦА КУПИТЬ ПОДПИСКУ (НОВЫЙ ДИЗАЙН) ------------------- */
+        /* ------------------- СТРАНИЦА КУПИТЬ ПОДПИСКУ ------------------- */
         .tariff-selection-block {
             background: var(--card-bg);
             border-radius: 18px;
@@ -348,7 +348,7 @@
             text-align: center;
         }
 
-        /* БЛОК СРОК + КНОПКА — ВСЕГДА ВИДИМ */
+        /* БЛОК СРОК + КНОПКА */
         .duration-block {
             background: var(--card-bg);
             border-radius: 18px;
@@ -589,7 +589,7 @@
                         Каждый тариф ограничивается определенным количеством устройств на одном ключе:<br>
                         <strong>Личный</strong> — 3 устройства<br>
                         <strong>Семейный</strong> — 6 устройств<br>
-                        <strong>Премиум</strong> — 15 устройств
+                        <strong>Навсегда</strong> — от 3 до 6 устройств
                     </div>
                 </div>
 
@@ -648,14 +648,14 @@
                 <div class="tariff-buttons">
                     <div class="tariff-btn selected" data-tariff="personal" onclick="selectTariff(this, 'personal')">Личный</div>
                     <div class="tariff-btn" data-tariff="family" onclick="selectTariff(this, 'family')">Семейный</div>
-                    <div class="tariff-btn" data-tariff="premium" onclick="selectTariff(this, 'premium')">Премиум</div>
+                    <div class="tariff-btn" data-tariff="forever" onclick="selectTariff(this, 'forever')">Навсегда</div>
                 </div>
                 <div id="tariff-features" class="tariff-features-row">
                     <!-- Заполняется автоматически -->
                 </div>
             </div>
 
-            <!-- БЛОК 2: СРОК + КНОПКА — ВСЕГДА ВИДИМ -->
+            <!-- БЛОК 2: СРОК / УСТРОЙСТВА + КНОПКА -->
             <div class="duration-block">
                 <div class="duration-title">Выберите срок подписки</div>
                 <div id="duration-options" class="duration-options">
@@ -773,11 +773,11 @@
             }
         }
 
-        // ДАННЫЕ ПО ТАРИФАМ — ИКОНКА "ЛИЧНЫЙ" ИЗМЕНЕНА НА ЧЕЛОВЕЧКА
+        // ДАННЫЕ ПО ТАРИФАМ
         const tariffData = {
-            personal: { devices: 3, speed: 'Скорость до 10 Гбит/с', traffic: 'Безлимит трафик', icon: 'fa-user' },        // было fa-mobile-alt
+            personal: { devices: 3, speed: 'Скорость до 10 Гбит/с', traffic: 'Безлимит трафик', icon: 'fa-user' },
             family: { devices: 6, speed: 'Скорость до 10 Гбит/с', traffic: 'Безлимит трафик', icon: 'fa-users' },
-            premium: { devices: 15, speed: 'Скорость до 25 Гбит/с', traffic: 'Безлимит трафик', icon: 'fa-crown' }
+            forever: { devices: 'от 3 до 6', speed: 'Скорость до 25 Гбит/с', traffic: 'Безлимит трафик', icon: 'fa-infinity' }
         };
 
         const tariffPrices = {
@@ -793,18 +793,17 @@
                 { days: 90, price: 600 },
                 { days: 180, price: 1200 }
             ],
-            premium: [
-                { days: 30, price: 350 },
-                { days: 60, price: 700 },
-                { days: 90, price: 1500 },
-                { days: 180, price: 2100 }
+            forever: [
+                { devices: 3, price: 4000 },
+                { devices: 4, price: 4500 },
+                { devices: 5, price: 5000 },
+                { devices: 6, price: 5500 }
             ]
         };
 
         let selectedTariff = null;
         let selectedDuration = null;
 
-        // ИНИЦИАЛИЗАЦИЯ ПРИ ВХОДЕ
         function initBuyPage() {
             const personalBtn = document.querySelector('.tariff-btn[data-tariff="personal"]');
             selectTariff(personalBtn, 'personal');
@@ -818,7 +817,7 @@
             const features = tariffData[tariff];
             const featuresEl = document.getElementById('tariff-features');
             featuresEl.innerHTML = `
-                <div class="feature-item"><i class="fas ${features.icon}"></i><span>${features.devices} устройства</span></div>
+                <div class="feature-item"><i class="fas ${features.icon}"></i><span>${features.devices} ${tariff === 'forever' ? '' : 'устройства'}</span></div>
                 <div class="feature-item"><i class="fas fa-tachometer-alt"></i><span>${features.speed}</span></div>
                 <div class="feature-item"><i class="fas fa-infinity"></i><span>${features.traffic}</span></div>
             `;
@@ -827,14 +826,20 @@
             optionsContainer.innerHTML = '';
             selectedDuration = null;
 
-            tariffPrices[tariff].forEach(item => {
+            const isForever = tariff === 'forever';
+            document.querySelector('.duration-title').textContent = isForever ? 'Выберите кол-во устройств' : 'Выберите срок подписки';
+
+            const prices = tariffPrices[tariff];
+            prices.forEach(item => {
                 const opt = document.createElement('div');
                 opt.className = 'duration-option';
-                opt.innerHTML = `<span>${item.days} дней</span><span class="price">${item.price} ₽</span>`;
+                const label = isForever ? `${item.devices} устройства` : `${item.days} дней`;
+                const value = isForever ? item.devices : item.days;
+                opt.innerHTML = `<span>${label}</span><span class="price">${item.price} ₽</span>`;
                 opt.onclick = () => {
                     document.querySelectorAll('.duration-option').forEach(o => o.classList.remove('selected'));
                     opt.classList.add('selected');
-                    selectedDuration = item;
+                    selectedDuration = { ...item, value };
                     updateBuyButton();
                 };
                 optionsContainer.appendChild(opt);
@@ -847,11 +852,13 @@
             const btn = document.getElementById('buy-full-button');
             if (selectedTariff && selectedDuration) {
                 btn.classList.remove('disabled');
+                const suffix = selectedTariff === 'forever' ? selectedDuration.value : selectedDuration.days;
                 btn.innerHTML = `<i class="fas fa-shopping-cart"></i> Купить за ${selectedDuration.price} ₽`;
-                btn.onclick = () => goToLinkAndClose(`https://t.me/on1xVPN_bot?start=buy_${selectedTariff}_${selectedDuration.days}`);
+                btn.onclick = () => goToLinkAndClose(`https://t.me/on1xVPN_bot?start=buy_${selectedTariff}_${suffix}`);
             } else {
                 btn.classList.add('disabled');
-                btn.innerHTML = `<i class="fas fa-shopping-cart"></i> Выберите срок подписки`;
+                const placeholder = selectedTariff === 'forever' ? 'кол-во устройств' : 'срок подписки';
+                btn.innerHTML = `<i class="fas fa-shopping-cart"></i> Выберите ${placeholder}`;
                 btn.onclick = null;
             }
         }
@@ -961,5 +968,3 @@
     </script>
 </body>
 </html>
-
-
