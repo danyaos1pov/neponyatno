@@ -683,7 +683,7 @@
                 <div class="duration-title">Выберите срок подписки</div>
                 <div id="duration-options-buy" class="duration-options"></div>
                 <div id="buy-full-button-buy" class="buy-full-button disabled">
-                    <i class="fas fa-shopping-cart"></i> Выберите срок подписки
+                    <i class="fas fa-shopping-cart"></i> Выберите тариф
                 </div>
             </div>
 
@@ -713,7 +713,7 @@
                 <div class="duration-title">Выберите срок продления</div>
                 <div id="duration-options-extend" class="duration-options"></div>
                 <div id="buy-full-button-extend" class="buy-full-button disabled">
-                    <i class="fas fa-clock"></i> Выберите срок продления
+                    <i class="fas fa-clock"></i> Выберите тариф
                 </div>
             </div>
 
@@ -871,8 +871,14 @@
         };
 
         function initBuyPage(pageId) {
+            // Сброс выбора
+            selection[pageId] = { tariff: null, duration: null };
+
+            // Выбираем "Личный" по умолчанию
             const defaultBtn = document.querySelector(`#${pageId} .tariff-btn[data-tariff="personal"]`);
-            if (defaultBtn) selectTariff(defaultBtn, pageId);
+            if (defaultBtn) {
+                selectTariff(defaultBtn, pageId);
+            }
         }
 
         function selectTariff(btn, pageId) {
@@ -937,9 +943,18 @@
                 btn.onclick = () => goToLinkAndClose(`https://t.me/on1xVPN_bot?start=${cmd}_${sel.tariff}_${suffix}`);
             } else {
                 btn.classList.add('disabled');
-                const placeholder = sel.tariff === 'forever' ? 'кол-во устройств' : (isBuy ? 'срок подписки' : 'срок продления');
-                btn.innerHTML = `<i class="fas fa-${isBuy ? 'shopping-cart' : 'clock'}"></i> Выберите ${placeholder}`;
                 btn.onclick = null;
+
+                let placeholder = '';
+                if (!sel.tariff) {
+                    placeholder = 'Выберите тариф';
+                } else if (sel.tariff === 'forever') {
+                    placeholder = 'Выберите кол-во устройств';
+                } else {
+                    placeholder = isBuy ? 'Выберите срок подписки' : 'Выберите срок продления';
+                }
+
+                btn.innerHTML = `<i class="fas fa-${isBuy ? 'shopping-cart' : 'clock'}"></i> ${placeholder}`;
             }
         }
 
