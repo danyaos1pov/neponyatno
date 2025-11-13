@@ -269,7 +269,7 @@
             padding: 16px 18px;
         }
 
-        /* ------------------- СТРАНИЦА КУПИТЬ ПОДПИСКУ ------------------- */
+        /* СТРАНИЦЫ ПОКУПКИ / ПРОДЛЕНИЯ */
         .tariff-selection-block {
             background: var(--card-bg);
             border-radius: 18px;
@@ -672,9 +672,9 @@
             <div class="tariff-selection-block">
                 <div class="tariff-title">Выберите тариф</div>
                 <div class="tariff-buttons">
-                    <div class="tariff-btn selected" data-tariff="personal" onclick="selectTariff(this, 'personal', 'buy')">Личный</div>
-                    <div class="tariff-btn" data-tariff="family" onclick="selectTariff(this, 'family', 'buy')">Семейный</div>
-                    <div class="tariff-btn" data-tariff="forever" onclick="selectTariff(this, 'forever', 'buy')">Навсегда</div>
+                    <div class="tariff-btn selected" data-tariff="personal" onclick="selectTariff(this, 'buy-page')">Личный</div>
+                    <div class="tariff-btn" data-tariff="family" onclick="selectTariff(this, 'buy-page')">Семейный</div>
+                    <div class="tariff-btn" data-tariff="forever" onclick="selectTariff(this, 'buy-page')">Навсегда</div>
                 </div>
                 <div id="tariff-features-buy" class="tariff-features-row"></div>
             </div>
@@ -691,7 +691,7 @@
         </div>
     </div>
 
-    <!-- НОВАЯ СТРАНИЦА: ПРОДЛИТЬ ПОДПИСКУ -->
+    <!-- СТРАНИЦА ПРОДЛИТЬ ПОДПИСКУ -->
     <div id="extend-page" class="page">
         <div class="main-content">
             <div class="header">
@@ -702,9 +702,9 @@
             <div class="tariff-selection-block">
                 <div class="tariff-title">Выберите тариф</div>
                 <div class="tariff-buttons">
-                    <div class="tariff-btn selected" data-tariff="personal" onclick="selectTariff(this, 'personal', 'extend')">Личный</div>
-                    <div class="tariff-btn" data-tariff="family" onclick="selectTariff(this, 'family', 'extend')">Семейный</div>
-                    <div class="tariff-btn" data-tariff="forever" onclick="selectTariff(this, 'forever', 'extend')">Навсегда</div>
+                    <div class="tariff-btn selected" data-tariff="personal" onclick="selectTariff(this, 'extend-page')">Личный</div>
+                    <div class="tariff-btn" data-tariff="family" onclick="selectTariff(this, 'extend-page')">Семейный</div>
+                    <div class="tariff-btn" data-tariff="forever" onclick="selectTariff(this, 'extend-page')">Навсегда</div>
                 </div>
                 <div id="tariff-features-extend" class="tariff-features-row"></div>
             </div>
@@ -787,13 +787,11 @@
                     Telegram.WebApp.BackButton.hide();
                 } else {
                     Telegram.WebApp.BackButton.show();
-                    Telegram.WebApp.BackButton.onClick(() => {
-                        showPage('subscription-page');
-                    });
+                    Telegram.WebApp.BackButton.onClick(() => showPage('subscription-page'));
                 }
             }
 
-            if (['buy-page', 'extend-page'].includes(pageId)) {
+            if (pageId === 'buy-page' || pageId === 'extend-page') {
                 initBuyPage(pageId);
             }
         }
@@ -866,21 +864,28 @@
             ]
         };
 
-        let selectedTariff = {};
-        let selectedDuration = {};
+        // Хранилище выбора для каждой страницы
+        const selection = {
+            'buy-page': { tariff: null, duration: null },
+            'extend-page': { tariff: null, duration: null }
+        };
 
-        function initBuyPage(pageType) {
-            const defaultBtn = document.querySelector(`#${pageType} .tariff-btn[data-tariff="personal"]`);
-            selectTariff(defaultBtn, 'personal', pageType === 'buy-page' ? 'buy' : 'extend');
+        function initBuyPage(pageId) {
+            const defaultBtn = document.querySelector(`#${pageId} .tariff-btn[data-tariff="personal"]`);
+            if (defaultBtn) selectTariff(defaultBtn, pageId);
         }
 
-        function selectTariff(btn, tariff, mode) {
-            const pageId = mode === 'buy' ? 'buy-page' : 'extend-page';
-            const prefix = mode === 'buy' ? 'buy' : 'extend';
+        function selectTariff(btn, pageId) {
+            const isBuy = pageId === 'buy-page';
+            const prefix = isBuy ? 'buy' : 'extend';
 
+            // Снимаем выделение
             document.querySelectorAll(`#${pageId} .tariff-btn`).forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
-            selectedTariff[mode] = tariff;
+
+            const tariff = btn.getAttribute('data-tariff');
+            selection[pageId].tariff = tariff;
+            selection[pageId].duration = null;
 
             const features = tariffData[tariff];
             const featuresEl = document.getElementById(`tariff-features-${prefix}`);
@@ -892,10 +897,11 @@
 
             const optionsContainer = document.getElementById(`duration-options-${prefix}`);
             optionsContainer.innerHTML = '';
-            selectedDuration[mode] = null;
 
             const isForever = tariff === 'forever';
-            document.querySelector(`#${pageId} .duration-title`).textContent = isForever ? (mode === 'buy' ? 'Выберите кол-во устройств' : 'Выберите кол-во устройств') : (mode === 'buy' ? 'Выберите срок подписки' : 'Выберите срок продления');
+            document.querySelector(`#${pageId} .duration-title`).textContent = isForever
+                ? (isBuy ? 'Выберите кол-во устройств' : 'Выберите кол-во устройств')
+                : (isBuy ? 'Выберите срок подписки' : 'Выберите срок продления');
 
             const prices = tariffPrices[tariff];
             prices.forEach(item => {
@@ -907,30 +913,32 @@
                 opt.onclick = () => {
                     document.querySelectorAll(`#${pageId} .duration-option`).forEach(o => o.classList.remove('selected'));
                     opt.classList.add('selected');
-                    selectedDuration[mode] = { ...item, value };
-                    updateBuyButton(mode);
+                    selection[pageId].duration = { ...item, value };
+                    updateBuyButton(pageId);
                 };
                 optionsContainer.appendChild(opt);
             });
 
-            updateBuyButton(mode);
+            updateBuyButton(pageId);
         }
 
-        function updateBuyButton(mode) {
-            const prefix = mode === 'buy' ? 'buy' : 'extend';
+        function updateBuyButton(pageId) {
+            const isBuy = pageId === 'buy-page';
+            const prefix = isBuy ? 'buy' : 'extend';
             const btn = document.getElementById(`buy-full-button-${prefix}`);
-            const action = mode === 'buy' ? 'Купить' : 'Продлить';
+            const sel = selection[pageId];
 
-            if (selectedTariff[mode] && selectedDuration[mode]) {
+            if (sel.tariff && sel.duration) {
                 btn.classList.remove('disabled');
-                const suffix = selectedTariff[mode] === 'forever' ? selectedDuration[mode].value : selectedDuration[mode].days;
-                const cmd = mode === 'buy' ? 'buy' : 'extend';
-                btn.innerHTML = `<i class="fas fa-${mode === 'buy' ? 'shopping-cart' : 'clock'}"></i> ${action} за ${selectedDuration[mode].price} ₽`;
-                btn.onclick = () => goToLinkAndClose(`https://t.me/on1xVPN_bot?start=${cmd}_${selectedTariff[mode]}_${suffix}`);
+                const suffix = sel.tariff === 'forever' ? sel.duration.value : sel.duration.days;
+                const cmd = isBuy ? 'buy' : 'extend';
+                const action = isBuy ? 'Купить' : 'Продлить';
+                btn.innerHTML = `<i class="fas fa-${isBuy ? 'shopping-cart' : 'clock'}"></i> ${action} за ${sel.duration.price} ₽`;
+                btn.onclick = () => goToLinkAndClose(`https://t.me/on1xVPN_bot?start=${cmd}_${sel.tariff}_${suffix}`);
             } else {
                 btn.classList.add('disabled');
-                const placeholder = selectedTariff[mode] === 'forever' ? 'кол-во устройств' : (mode === 'buy' ? 'срок подписки' : 'срок продления');
-                btn.innerHTML = `<i class="fas fa-${mode === 'buy' ? 'shopping-cart' : 'clock'}"></  Выберите ${placeholder}`;
+                const placeholder = sel.tariff === 'forever' ? 'кол-во устройств' : (isBuy ? 'срок подписки' : 'срок продления');
+                btn.innerHTML = `<i class="fas fa-${isBuy ? 'shopping-cart' : 'clock'}"></i> Выберите ${placeholder}`;
                 btn.onclick = null;
             }
         }
