@@ -7,457 +7,151 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
-        :root {
-            --primary-color: #2481cc;
-            --bg-dark: #0d1117;
-            --card-bg: #161b22;
-            --text-color: #e6edf3;
-            --text-secondary: #b0b8c2;
-            --border-color: rgba(255,255,255,0.05);
-            --chip-bg-active: #1e3a2b;
-            --chip-bg-expired: #3a1e1e;
-            --chip-bg-none: #2d2d2d;
-            --nav-bg: rgba(10, 14, 19, 0.9);
-            --nav-border: rgba(255,255,255,0.15);
-            --nav-active: rgba(36,129,204,0.25);
-            --hover-bg: rgba(255,255,255,0.05);
+        :root{
+            --primary-color:#2481cc;--bg-dark:#0d1117;--card-bg:#161b22;--text-color:#e6edf3;
+            --text-secondary:#b0b8c2;--border-color:rgba(255,255,255,.05);--nav-bg:rgba(10,14,19,.9);
+            --nav-border:rgba(255,255,255,.15);--nav-active:rgba(36,129,204,.25);--hover-bg:rgba(255,255,255,.05);
+            --reload-bg:#161b22;--reload-text:#b0b8c2;--reload-border:rgba(255,255,255,.05);
+            --reload-hover-bg:rgba(255,255,255,.05);--reload-hover-text:#e6edf3;
         }
-
-        [data-theme="light"] {
-            --primary-color: #0077cc;
-            --bg-dark: #f8f9fa;
-            --card-bg: #ffffff;
-            --text-color: #1a1a1a;
-            --text-secondary: #555555;
-            --border-color: #e0e0e0;
-            --chip-bg-active: #d4edda;
-            --chip-bg-expired: #f8d7da;
-            --chip-bg-none: #e9ecef;
-            --nav-bg: rgba(255, 255, 255, 0.95);
-            --nav-border: rgba(0, 0, 0, 0.1);
-            --nav-active: rgba(0, 119, 204, 0.15);
-            --hover-bg: rgba(0, 0, 0, 0.05);
+        [data-theme="light"]{
+            --primary-color:#0077cc;--bg-dark:#f8f9fa;--card-bg:#ffffff;--text-color:#1a1a1a;
+            --text-secondary:#555555;--border-color:#e0e0e0;--nav-bg:rgba(255,255,255,.95);
+            --nav-border:rgba(0,0,0,.1);--nav-active:rgba(0,119,204,.15);--hover-bg:rgba(0,0,0,.05);
+            --reload-bg:#ffffff;--reload-text:#555555;--reload-border:#e0e0e0;
+            --reload-hover-bg:rgba(0,0,0,.05);--reload-hover-text:#1a1a1a;
         }
-
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-        body { background: var(--bg-dark); color: var(--text-color); min-height: 100vh; overflow-x: hidden; padding-bottom: 90px; position: relative; transition: background 0.3s; }
-        a { text-decoration: none; color: inherit; }
-
-        .page { display: none; opacity: 0; transition: opacity 0.2s; }
-        .page.active { display: block; opacity: 1; }
-
-        .main-content { padding: 20px 15px; max-width: 600px; margin: 0 auto; }
-
-        .header {
-            margin: 20px auto 8px;
-            text-align: center;
-            position: relative;
+        *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;}
+        body{background:var(--bg-dark);color:var(--text-color);min-height:100vh;overflow-x:hidden;padding-bottom:90px;transition:all .3s;}
+        a{color:inherit;text-decoration:none;}
+        .page{display:none;opacity:0;transition:opacity .2s;}
+        .page.active{display:block;opacity:1;}
+        .main-content{padding:20px 15px;max-width:600px;margin:0 auto;}
+        .header{margin:20px auto 8px;text-align:center;position:relative;}
+        .header h1{font-size:2.5em;color:var(--primary-color);margin:0;line-height:1.1;}
+        .header h1 span{color:var(--text-color);}
+        .header .tagline{font-size:1.05em;color:var(--text-secondary);margin-top:4px;font-weight:500;}
+        .settings-icon{position:absolute;right:0;top:50%;transform:translateY(-50%);width:36px;height:36px;
+            background:var(--card-bg);border:1px solid var(--border-color);border-radius:50%;display:flex;
+            align-items:center;justify-content:center;cursor:pointer;font-size:1.1em;color:var(--primary-color);
+            box-shadow:0 2px 8px rgba(0,0,0,.1);transition:.2s;}
+        .settings-icon:hover{background:var(--hover-bg);transform:translateY(-50%) scale(1.1);}
+        .user-profile{display:flex;align-items:center;gap:12px;margin:10px auto 20px;max-width:500px;
+            padding:15px;background:var(--card-bg);border-radius:15px;box-shadow:0 4px 10px rgba(0,0,0,.15);
+            border:1px solid var(--border-color);}
+        .user-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;}
+        .user-greeting{font-size:1.1em;font-weight:600;color:var(--text-color);margin-bottom:3px;}
+        .user-id{font-size:.85em;color:var(--text-secondary);}
+        .subscription-block{background:var(--card-bg);border-radius:18px;padding:20px 18px;
+            box-shadow:0 6px 16px rgba(0,0,0,.15);border:1px solid var(--border-color);margin-bottom:16px;}
+        .block-title{font-size:1.1em;font-weight:600;color:var(--text-color);margin-bottom:14px;text-align:center;}
+        .action-buttons-row{display:flex;gap:8px;margin-bottom:12px;}
+        .tg-button{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 0;
+            background:var(--primary-color);color:#fff;font-weight:500;font-size:1em;border-radius:8px;
+            cursor:pointer;transition:.2s;}
+        .tg-button:hover{background:#0066aa;}
+        .tg-button.single-button{margin-top:12px;}
+        .profile-menu{display:flex;flex-direction:column;gap:8px;}
+        .profile-menu-btn{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--card-bg);
+            color:var(--text-color);font-size:1em;border-radius:12px;cursor:pointer;transition:.2s;
+            border:1px solid var(--border-color);}
+        .profile-menu-btn i{font-size:1.2em;color:var(--primary-color);width:24px;text-align:center;}
+        .profile-menu-btn .btn-text{flex:1;text-align:center;margin-left:-18px;}
+        .profile-menu-btn:hover{background:var(--hover-bg);}
+        .reload-btn{
+            background:var(--reload-bg);color:var(--reload-text);border:1px solid var(--reload-border);
+            padding:10px 20px;border-radius:12px;font-size:.9em;font-weight:500;cursor:pointer;
+            width:180px;margin:20px auto 0;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;
         }
-        .header h1 { font-size: 2.5em; color: var(--primary-color); margin: 0; line-height: 1.1; }
-        .header h1 span { color: var(--text-color); }
-        .header .tagline { font-size: 1.05em; color: var(--text-secondary); margin-top: 4px; font-weight: 500; }
-
-        .settings-icon {
-            position: absolute; right: 0; top: 50%; transform: translateY(-50%);
-            width: 36px; height: 36px; background: var(--card-bg); border: 1px solid var(--border-color);
-            border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            cursor: pointer; font-size: 1.1em; color: var(--primary-color);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1); transition: all 0.2s;
-        }
-        .settings-icon:hover { background: var(--hover-bg); transform: translateY(-50%) scale(1.1); }
-
-        .user-profile {
-            display: flex; align-items: center; justify-content: flex-start;
-            margin: 10px auto 20px; max-width: 500px; padding: 15px;
-            gap: 12px; background: var(--card-bg); border-radius: 15px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.15); border: 1px solid var(--border-color);
-        }
-        .user-avatar { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
-        .user-greeting { font-size: 1.1em; font-weight: 600; color: var(--text-color); margin-bottom: 3px; }
-        .user-id { font-size: 0.85em; color: var(--text-secondary); }
-
-        .subscriptions-container { display: flex; flex-direction: column; gap: 16px; }
-        .subscription-block { background: var(--card-bg); border-radius: 18px; padding: 20px 18px; box-shadow: 0 6px 16px rgba(0,0,0,0.15); border: 1px solid var(--border-color); }
-
-        .info-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-size: 1.05em; }
-        .info-label { font-weight: 600; color: var(--text-secondary); }
-        .info-value { font-weight: 600; color: var(--text-color); }
-
-        .status-chip {
-            display: inline-flex; align-items: center; gap: 4px; padding: 2px 7px; border-radius: 10px;
-            font-size: 0.68em; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; line-height: 1;
-        }
-        .status-active { background: var(--chip-bg-active); color: #28a745; border: 1px solid #28a745; }
-        .status-expired { background: var(--chip-bg-expired); color: #dc3545; border: 1px solid #dc3545; }
-        .status-none { background: var(--chip-bg-none); color: var(--text-secondary); border: 1px solid #ccc; }
-
-        .key-input-container { position: relative; margin: 14px 0 0; background: rgba(0,0,0,0.03); border-radius: 12px; padding: 12px; display: flex; align-items: center; border: 1px solid var(--border-color); }
-        .key-input { background: transparent; border: none; color: var(--text-color); font-family: monospace; font-size: 0.95em; width: 100%; padding-right: 42px; pointer-events: none; word-break: break-all; line-height: 1.4; }
-        .copy-key-button { position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: var(--primary-color); color: white; border: none; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 0.9em; transition: all 0.2s; }
-        .copy-key-button:hover { background: #0066aa; transform: translateY(-50%) scale(1.1); }
-
-        .action-buttons-row {
-            display: flex;
-            gap: 8px;
-            margin-top: 16px;
-        }
-        .tg-button {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            flex: 1;
-            padding: 13px 0;
-            background: var(--primary-color);
-            color: white;
-            font-weight: 500;
-            font-size: 1em;
-            text-align: center;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .tg-button:hover { background: #0066aa; }
-        .tg-button.single-button {
-            margin-top: 16px;
-        }
-
-        .balance-card { background: var(--card-bg); border-radius: 18px; padding: 18px; margin: 20px 0; box-shadow: 0 6px 16px rgba(0,0,0,0.15); border: 1px solid var(--border-color); text-align: center; }
-        .balance-label { font-size: 0.9em; color: var(--text-secondary); margin-bottom: 6px; }
-        .balance-value { font-size: 1.8em; font-weight: 700; color: var(--text-color); margin-bottom: 16px; }
-
-        .balance-actions { display: flex; gap: 10px; }
-        .balance-btn { flex: 1; padding: 12px 0; background: var(--primary-color); color: white; font-weight: 500; font-size: 0.95em; text-align: center; border-radius: 8px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .balance-btn:hover { background: #0066aa; }
-
-        .profile-menu { display: flex; flex-direction: column; gap: 8px; margin-top: 20px; }
-        .profile-menu-btn {
-            display: flex; align-items: center; gap: 12px;
-            padding: 14px 16px; background: var(--card-bg); color: var(--text-color);
-            font-size: 1em; border-radius: 12px; cursor: pointer;
-            transition: background 0.2s; border: 1px solid var(--border-color);
-            position: relative;
-        }
-        .profile-menu-btn i { font-size: 1.2em; color: var(--primary-color); width: 24px; text-align: center; }
-        .profile-menu-btn .btn-text {
-            flex: 1; text-align: center;
-            margin-left: -18px;
-        }
-        .profile-menu-btn:hover { background: var(--hover-bg); }
-
-        .subscription-management {
-            background: var(--card-bg);
-            border-radius: 18px;
-            padding: 18px;
-            margin-top: 20px;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-            border: 1px solid var(--border-color);
-        }
-        .subscription-management h3 {
-            font-size: 1.1em; font-weight: 600; color: var(--text-color);
-            margin-bottom: 14px; text-align: center;
-        }
-
-        .app-version { margin-top: 30px; font-size: 0.8em; color: var(--text-secondary); text-align: center; }
-
-        .bottom-nav {
-            position: fixed; bottom: 16px; left: 16px; right: 16px;
-            background: var(--nav-bg); border: 1px solid var(--nav-border);
-            border-radius: 20px; overflow: hidden; display: flex;
-            padding: 8px 12px; gap: 8px; z-index: 1000; backdrop-filter: blur(16px);
-            height: 72px; box-shadow: 0 6px 20px rgba(0,0,0,0.35);
-        }
-        .nav-item { flex: 1; padding: 10px 0; color: #8b949e; font-size: 0.8em; font-weight: 600; text-align: center; border-radius: 12px; cursor: pointer; transition: all 0.25s ease; display: flex; flex-direction: column; align-items: center; gap: 4px; }
-        .nav-item i { font-size: 1.35em; transition: transform 0.2s; }
-        .nav-item.active { color: var(--primary-color); background: var(--nav-active); font-weight: 700; }
-        .nav-item.active i { transform: scale(1.15); }
-        .nav-item:hover:not(.active) { background: var(--hover-bg); }
-
-        .settings-block { background: var(--card-bg); border-radius: 18px; padding: 20px; margin: 20px 0; box-shadow: 0 6px 16px rgba(0,0,0,0.15); border: 1px solid var(--border-color); }
-        .setting-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 14px 0;
-            border-bottom: 1px solid var(--border-color);
-            font-size: 1em;
-        }
-        .setting-item:last-child { border-bottom: none; }
-        .setting-label { font-weight: 500; color: var(--text-color); }
-
-        .toggle-switch { position: relative; width: 48px; height: 26px; background: #ccc; border-radius: 50px; cursor: pointer; }
-        .toggle-switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: #ccc; border-radius: 50px; transition: 0.3s; }
-        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
-        input:checked + .slider { background: var(--primary-color); }
-        input:checked + .slider:before { transform: translateX(22px); }
-
-        .reload-btn { background: var(--primary-color); color: white; border: none; padding: 12px 20px; border-radius: 12px; font-size: 1em; font-weight: 500; cursor: pointer; width: 100%; margin-top: 16px; transition: 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .reload-btn:hover { background: #0066aa; }
-
-        .loading-placeholder {
-            text-align: center;
-            padding: 32px 20px;
-            color: var(--text-secondary);
-            font-size: 1em;
-            font-weight: 500;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .loading-placeholder i {
-            margin-right: 8px;
-            color: var(--primary-color);
-        }
-
-        .faq-accordion {
-            background: var(--card-bg);
-            border-radius: 18px;
-            margin: 20px 0;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-            border: 1px solid var(--border-color);
-            overflow: hidden;
-        }
-
-        .faq-item {
-            border-bottom: 1px solid var(--border-color);
-        }
-        .faq-item:last-child {
-            border-bottom: none;
-        }
-
-        .faq-question {
-            padding: 16px 18px;
-            background: transparent;
-            color: var(--text-color);
-            font-weight: 600;
-            font-size: 1em;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background 0.2s;
-            user-select: none;
-        }
-        .faq-question:hover {
-            background: var(--hover-bg);
-        }
-
-        .faq-question i {
-            color: var(--text-secondary);
-            transition: transform 0.3s ease;
-            font-size: 0.9em;
-        }
-        .faq-question.active i {
-            transform: rotate(180deg);
-            color: var(--primary-color);
-        }
-
-        .faq-answer {
-            max-height: 0;
-            overflow: hidden;
-            padding: 0 18px;
-            color: var(--text-secondary);
-            font-size: 0.95em;
-            line-height: 1.6;
-            transition: max-height 0.3s ease, padding 0.3s ease;
-        }
-        .faq-answer.open {
-            max-height: 500px;
-            padding: 16px 18px;
-        }
-
-        /* СТРАНИЦЫ ПОКУПКИ / ПРОДЛЕНИЯ */
-        .tariff-selection-block {
-            background: var(--card-bg);
-            border-radius: 18px;
-            padding: 18px;
-            margin: 20px 0;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-            border: 1px solid var(--border-color);
-        }
-
-        .tariff-title {
-            text-align: center;
-            font-size: 1.1em;
-            font-weight: 600;
-            color: var(--text-color);
-            margin-bottom: 16px;
-        }
-
-        .tariff-buttons {
-            display: flex;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-
-        .tariff-btn {
-            flex: 1;
-            padding: 14px 0;
-            background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            font-size: 1em;
-            font-weight: 600;
-            color: var(--text-color);
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-        }
-
-        .tariff-btn:hover {
-            background: var(--hover-bg);
-            border-color: var(--text-secondary);
-        }
-
-        .tariff-btn.selected {
-            border-color: var(--primary-color);
-            background: var(--nav-active);
-            color: var(--primary-color);
-            font-weight: 700;
-        }
-
-        .tariff-features-row {
-            display: flex;
-            justify-content: space-around;
-            gap: 12px;
-            font-size: 0.9em;
-            color: var(--text-secondary);
-            padding: 12px 0;
-            border-top: 1px solid var(--border-color);
-        }
-
-        .feature-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 6px;
-            flex: 1;
-        }
-
-        .feature-item i {
-            color: var(--primary-color);
-            font-size: 1.3em;
-        }
-
-        .feature-item span {
-            font-size: 0.85em;
-            text-align: center;
-        }
-
-        .duration-block {
-            background: var(--card-bg);
-            border-radius: 18px;
-            padding: 18px;
-            margin-top: 16px;
-            box-shadow: 0 6px 16px rgba(0,0,0,0.15);
-            border: 1px solid var(--border-color);
-        }
-
-        .duration-title {
-            text-align: center;
-            font-size: 1.1em;
-            font-weight: 600;
-            color: var(--text-color);
-            margin-bottom: 16px;
-        }
-
-        .duration-options {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-
-        .duration-option {
-            background: var(--card-bg);
-            border: 2px solid var(--border-color);
-            border-radius: 12px;
-            padding: 14px 16px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 1em;
-            font-weight: 500;
-        }
-
-        .duration-option:hover {
-            background: var(--hover-bg);
-            border-color: var(--text-secondary);
-        }
-
-        .duration-option.selected {
-            border-color: var(--primary-color);
-            background: var(--nav-active);
-            color: var(--primary-color);
-            font-weight: 700;
-        }
-
-        .duration-option .price {
-            color: var(--primary-color);
-            font-weight: 700;
-        }
-
-        .buy-full-button {
-            width: 100%;
-            padding: 16px 0;
-            background: var(--primary-color);
-            color: white;
-            font-weight: 600;
-            font-size: 1.1em;
-            text-align: center;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-        }
-
-        .buy-full-button.disabled {
-            background: #555;
-            opacity: 0.6;
-            pointer-events: none;
-        }
-
-        .buy-full-button:not(.disabled):hover {
-            background: #0066aa;
-        }
-
-        /* МОДАЛЬНОЕ ОКНО */
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.7); z-index: 2000; display: flex;
-            align-items: center; justify-content: center; opacity: 0; pointer-events: none;
-            transition: opacity 0.3s;
-        }
-        .modal-overlay.active {
-            opacity: 1; pointer-events: auto;
-        }
-        .modal {
-            background: var(--card-bg); border-radius: 18px; padding: 24px;
-            max-width: 90%; width: 380px; text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3); border: 1px solid var(--border-color);
-        }
-        .modal h3 {
-            font-size: 1.2em; margin-bottom: 12px; color: var(--text-color);
-        }
-        .modal p {
-            font-size: 0.95em; color: var(--text-secondary); line-height: 1.5; margin-bottom: 20px;
-        }
-        .modal .close-btn {
-            background: var(--primary-color); color: white; border: none;
-            padding: 12px 24px; border-radius: 12px; font-weight: 600; cursor: pointer;
-        }
-        .modal .close-btn:hover {
-            background: #0066aa;
-        }
+        .reload-btn:hover{background:var(--reload-hover-bg);color:var(--reload-hover-text);}
+        .reload-btn.full{width:100%;margin:16px 0 0;}
+        .balance-card{background:var(--card-bg);border-radius:18px;padding:18px;margin:20px 0;
+            box-shadow:0 6px 16px rgba(0,0,0,.15);border:1px solid var(--border-color);text-align:center;}
+        .balance-label{font-size:.9em;color:var(--text-secondary);margin-bottom:6px;}
+        .balance-value{font-size:1.8em;font-weight:700;color:var(--text-color);margin-bottom:16px;}
+        .balance-actions{display:flex;gap:10px;}
+        .balance-btn{flex:1;padding:12px 0;background:var(--primary-color);color:#fff;font-weight:500;
+            font-size:.95em;border-radius:8px;cursor:pointer;transition:.2s;display:flex;align-items:center;
+            justify-content:center;gap:8px;}
+        .balance-btn:hover{background:#0066aa;}
+        .app-version{margin-top:30px;font-size:.8em;color:var(--text-secondary);text-align:center;}
+        .bottom-nav{position:fixed;bottom:16px;left:16px;right:16px;background:var(--nav-bg);
+            border:1px solid var(--nav-border);border-radius:20px;overflow:hidden;display:flex;
+            padding:8px 12px;gap:8px;z-index:1000;backdrop-filter:blur(16px);height:72px;
+            box-shadow:0 6px 20px rgba(0,0,0,.35);}
+        .nav-item{flex:1;padding:10px 0;color:#8b949e;font-size:.8em;font-weight:600;text-align:center;
+            border-radius:12px;cursor:pointer;transition:.25s;display:flex;flex-direction:column;
+            align-items:center;gap:4px;}
+        .nav-item i{font-size:1.35em;transition:transform .2s;}
+        .nav-item.active{color:var(--primary-color);background:var(--nav-active);font-weight:700;}
+        .nav-item.active i{transform:scale(1.15);}
+        .nav-item:hover:not(.active){background:var(--hover-bg);}
+        .settings-block{background:var(--card-bg);border-radius:18px;padding:20px;margin:20px 0;
+            box-shadow:0 6px 16px rgba(0,0,0,.15);border:1px solid var(--border-color);}
+        .setting-item{display:flex;align-items:center;justify-content:space-between;padding:14px 0;
+            border-bottom:1px solid var(--border-color);font-size:1em;}
+        .setting-item:last-child{border-bottom:none;}
+        .setting-label{font-weight:500;color:var(--text-color);}
+        .toggle-switch{position:relative;width:48px;height:26px;background:#ccc;border-radius:50px;cursor:pointer;}
+        .toggle-switch input{opacity:0;width:0;height:0;}
+        .slider{position:absolute;top:0;left:0;right:0;bottom:0;background:#ccc;border-radius:50px;transition:.3s;}
+        .slider:before{position:absolute;content:"";height:20px;width:20px;left:3px;bottom:3px;
+            background:#fff;border-radius:50%;transition:.3s;box-shadow:0 1px 3px rgba(0,0,0,.3);}
+        input:checked+.slider{background:var(--primary-color);}
+        input:checked+.slider:before{transform:translateX(22px);}
+        .faq-accordion{background:var(--card-bg);border-radius:18px;margin:20px 0;
+            box-shadow:0 6px 16px rgba(0,0,0,.15);border:1px solid var(--border-color);overflow:hidden;}
+        .faq-item{border-bottom:1px solid var(--border-color);}
+        .faq-item:last-child{border-bottom:none;}
+        .faq-question{padding:16px 18px;background:transparent;color:var(--text-color);font-weight:600;
+            font-size:1em;cursor:pointer;display:flex;justify-content:space-between;align-items:center;
+            transition:.2s;user-select:none;}
+        .faq-question:hover{background:var(--hover-bg);}
+        .faq-question i{color:var(--text-secondary);transition:transform .3s;font-size:.9em;}
+        .faq-question.active i{transform:rotate(180deg);color:var(--primary-color);}
+        .faq-answer{max-height:0;overflow:hidden;padding:0 18px;color:var(--text-secondary);
+            font-size:.95em;line-height:1.6;transition:max-height .3s,padding .3s;}
+        .faq-answer.open{max-height:500px;padding:16px 18px;}
+        .tariff-selection-block,.duration-block{background:var(--card-bg);border-radius:18px;
+            padding:18px;margin:20px 0;box-shadow:0 6px 16px rgba(0,0,0,.15);border:1px solid var(--border-color);}
+        .tariff-title,.duration-title{text-align:center;font-size:1.1em;font-weight:600;
+            color:var(--text-color);margin-bottom:16px;}
+        .tariff-buttons{display:flex;gap:12px;margin-bottom:16px;}
+        .tariff-btn{flex:1;padding:14px 0;background:var(--card-bg);border:2px solid var(--border-color);
+            border-radius:12px;font-size:1em;font-weight:600;color:var(--text-color);text-align:center;
+            cursor:pointer;transition:.2s;box-shadow:0 2px 8px rgba(0,0,0,.1);}
+        .tariff-btn:hover{background:var(--hover-bg);border-color:var(--text-secondary);}
+        .tariff-btn.selected{border-color:var(--primary-color);background:var(--nav-active);
+            color:var(--primary-color);font-weight:700;}
+        .tariff-features-row{display:flex;justify-content:space-around;gap:12px;font-size:.9em;
+            color:var(--text-secondary);padding:12px 0;border-top:1px solid var(--border-color);}
+        .feature-item{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;}
+        .feature-item i{color:var(--primary-color);font-size:1.3em;}
+        .feature-item span{font-size:.85em;text-align:center;}
+        .duration-options{display:flex;flex-direction:column;gap:10px;margin-bottom:20px;}
+        .duration-option{background:var(--card-bg);border:2px solid var(--border-color);
+            border-radius:12px;padding:14px 16px;display:flex;justify-content:space-between;
+            align-items:center;cursor:pointer;transition:.2s;font-size:1em;font-weight:500;}
+        .duration-option:hover{background:var(--hover-bg);border-color:var(--text-secondary);}
+        .duration-option.selected{border-color:var(--primary-color);background:var(--nav-active);
+            color:var(--primary-color);font-weight:700;}
+        .duration-option .price{color:var(--primary-color);font-weight:700;}
+        .buy-full-button{width:100%;padding:16px 0;background:var(--primary-color);color:#fff;
+            font-weight:600;font-size:1.1em;border-radius:12px;cursor:pointer;transition:.2s;
+            display:flex;align-items:center;justify-content:center;gap:8px;}
+        .buy-full-button.disabled{background:#555;opacity:.6;pointer-events:none;}
+        .buy-full-button:not(.disabled):hover{background:#0066aa;}
+        .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);
+            z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;
+            pointer-events:none;transition:opacity .3s;}
+        .modal-overlay.active{opacity:1;pointer-events:auto;}
+        .modal{background:var(--card-bg);border-radius:18px;padding:24px;max-width:90%;width:380px;
+            text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.3);border:1px solid var(--border-color);}
+        .modal h3{font-size:1.2em;margin-bottom:12px;color:var(--text-color);}
+        .modal p{font-size:.95em;color:var(--text-secondary);line-height:1.5;margin-bottom:20px;}
+        .modal .close-btn{background:var(--primary-color);color:#fff;border:none;padding:12px 24px;
+            border-radius:12px;font-weight:600;cursor:pointer;}
+        .modal .close-btn:hover{background:#0066aa;}
     </style>
 </head>
 <body data-theme="dark">
@@ -481,18 +175,29 @@
                 </div>
             </div>
 
-            <div id="subscriptions-container" class="subscriptions-container">
-                <div class="loading-placeholder">
-                    <i class="fas fa-spinner fa-spin"></i> Загружаем подписку...
+            <!-- БЛОК: Подписка ON1X VPN -->
+            <div class="subscription-block">
+                <div class="block-title">Подписка ON1X VPN</div>
+                <div class="action-buttons-row">
+                    <div class="tg-button" onclick="showPage('buy-page')">
+                        <i class="fas fa-shopping-cart"></i> Купить
+                    </div>
+                    <div class="tg-button" onclick="showPage('extend-page')">
+                        <i class="fas fa-clock"></i> Продлить
+                    </div>
+                </div>
+                <div class="tg-button single-button" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=c_2293355')">
+                    <i class="fas fa-gift"></i> Тестовый период
                 </div>
             </div>
 
-            <div class="subscription-management">
-                <h3>Управление подпиской</h3>
+            <!-- БЛОК: Управление подпиской -->
+            <div class="subscription-block">
+                <div class="block-title">Управление подпиской</div>
                 <div class="profile-menu">
-                    <div class="profile-menu-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=c_2293355')">
-                        <i class="fas fa-gift"></i>
-                        <div class="btn-text">Тестовый период</div>
+                    <div class="profile-menu-btn" onclick="showChangeTariffModal()">
+                        <i class="fas fa-exchange-alt"></i>
+                        <div class="btn-text">Сменить тариф</div>
                     </div>
                     <div class="profile-menu-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=f_5098822')">
                         <i class="fas fa-undo"></i>
@@ -501,16 +206,21 @@
                 </div>
             </div>
 
+            <!-- КНОПКА ПЕРЕЗАГРУЗКИ -->
+            <button class="reload-btn" onclick="reloadApp()">
+                <i class="fas fa-sync-alt"></i> Обновить
+            </button>
+
             <div class="app-version">Версия: 1.0.0</div>
         </div>
     </div>
 
-    <!-- ПРОФИЛЬ -->
+    <!-- ПРОФИЛЬ (ТОЛЬКО БАЛАНС) -->
     <div id="profile-page" class="page">
         <div class="main-content">
             <div class="header">
                 <h1><span>ON1X</span> VPN</h1>
-                <div class="tagline">Свобода. Безопасность. Надежность.</div>
+                <div class="tagline">Ваш профиль</div>
             </div>
 
             <div class="user-profile">
@@ -531,6 +241,26 @@
                     <div class="balance-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=f_5494846')">
                         <i class="fas fa-plus"></i> Пополнить
                     </div>
+                </div>
+            </div>
+
+            <div class="app-version">Версия: 1.0.0</div>
+        </div>
+    </div>
+
+    <!-- НОВАЯ СТРАНИЦА: МЕНЮ -->
+    <div id="menu-page" class="page">
+        <div class="main-content">
+            <div class="header">
+                <h1><span>ON1X</span> VPN</h1>
+                <div class="tagline">Меню</div>
+            </div>
+
+            <div class="user-profile">
+                <img id="user-avatar-menu" class="user-avatar" src="" alt="Аватар">
+                <div>
+                    <div id="user-greeting-menu" class="user-greeting">Добро пожаловать, </div>
+                    <div id="user-id-menu" class="user-id"></div>
                 </div>
             </div>
 
@@ -581,7 +311,8 @@
                         <span class="slider"></span>
                     </label>
                 </div>
-                <button class="reload-btn" onclick="reloadApp()">
+
+                <button class="reload-btn full" onclick="reloadApp()">
                     <i class="fas fa-sync-alt"></i> Перезагрузить приложение
                 </button>
             </div>
@@ -607,7 +338,6 @@
                         Для того, чтобы подключиться, вам необходимо в разделе "Подписка" нажать кнопку "Купить", а затем выбрать необходимый тариф.
                     </div>
                 </div>
-
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
                         Лимит устройств <i class="fas fa-chevron-down"></i>
@@ -619,7 +349,6 @@
                         <strong>Навсегда</strong> — от 3 до 6 устройств
                     </div>
                 </div>
-
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
                         Как поменять тариф? <i class="fas fa-chevron-down"></i>
@@ -628,7 +357,6 @@
                         Для того, чтобы поменять тариф, вам необходимо в разделе "Подписка" нажать кнопку "Сменить тариф".
                     </div>
                 </div>
-
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
                         Как вывести деньги с кошелька? <i class="fas fa-chevron-down"></i>
@@ -637,7 +365,6 @@
                         Для того, чтобы вывести денежные средства на банковскую карту или криптокошелек, вам необходимо перейти в раздел "Профиль" и под балансом нажать кнопку "Вывести".
                     </div>
                 </div>
-
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
                         Как вернуть подписку? <i class="fas fa-chevron-down"></i>
@@ -646,7 +373,6 @@
                         Для того, чтобы оформить возврат подписки, вам необходимо перейти в раздел "Профиль", а затем выбрать "Возврат подписки".
                     </div>
                 </div>
-
                 <div class="faq-item">
                     <div class="faq-question" onclick="toggleFaq(this)">
                         Какой бонус за друга? <i class="fas fa-chevron-down"></i>
@@ -672,9 +398,9 @@
             <div class="tariff-selection-block">
                 <div class="tariff-title">Выберите тариф</div>
                 <div class="tariff-buttons">
-                    <div class="tariff-btn selected" data-tariff="personal" onclick="selectTariff(this, 'buy-page')">Личный</div>
-                    <div class="tariff-btn" data-tariff="family" onclick="selectTariff(this, 'buy-page')">Семейный</div>
-                    <div class="tariff-btn" data-tariff="forever" onclick="selectTariff(this, 'buy-page')">Навсегда</div>
+                    <div class="tariff-btn selected" data-tariff="personal" onclick="selectTariff(this,'buy-page')">Личный</div>
+                    <div class="tariff-btn" data-tariff="family" onclick="selectTariff(this,'buy-page')">Семейный</div>
+                    <div class="tariff-btn" data-tariff="forever" onclick="selectTariff(this,'buy-page')">Навсегда</div>
                 </div>
                 <div id="tariff-features-buy" class="tariff-features-row"></div>
             </div>
@@ -702,9 +428,9 @@
             <div class="tariff-selection-block">
                 <div class="tariff-title">Выберите тариф</div>
                 <div class="tariff-buttons">
-                    <div class="tariff-btn selected" data-tariff="personal" onclick="selectTariff(this, 'extend-page')">Личный</div>
-                    <div class="tariff-btn" data-tariff="family" onclick="selectTariff(this, 'extend-page')">Семейный</div>
-                    <div class="tariff-btn" data-tariff="forever" onclick="selectTariff(this, 'extend-page')">Навсегда</div>
+                    <div class="tariff-btn selected" data-tariff="personal" onclick="selectTariff(this,'extend-page')">Личный</div>
+                    <div class="tariff-btn" data-tariff="family" onclick="selectTariff(this,'extend-page')">Семейный</div>
+                    <div class="tariff-btn" data-tariff="forever" onclick="selectTariff(this,'extend-page')">Навсегда</div>
                 </div>
                 <div id="tariff-features-extend" class="tariff-features-row"></div>
             </div>
@@ -730,337 +456,164 @@
         </div>
     </div>
 
-    <!-- НИЖНЕЕ МЕНЮ -->
+    <!-- НИЖНЕЕ МЕНЮ (3 КНОПКИ) -->
     <div class="bottom-nav">
         <div class="nav-item active" data-page="subscription-page">
             <i class="fas fa-key"></i>
             <div>Подписка</div>
         </div>
         <div class="nav-item" data-page="profile-page">
-            <i class="fas fa-user"></i>
+            <i class="fas fa-wallet"></i>
             <div>Профиль</div>
+        </div>
+        <div class="nav-item" data-page="menu-page">
+            <i class="fas fa-bars"></i>
+            <div>Меню</div>
         </div>
     </div>
 
     <script>
         // ТЕМА
-        const themeToggle = document.getElementById('theme-toggle');
-        const body = document.body;
-
-        function applyTheme(theme) {
-            body.setAttribute('data-theme', theme);
-            themeToggle.checked = theme === 'light';
-            localStorage.setItem('on1x-theme', theme);
+        const themeToggle=document.getElementById('theme-toggle'),body=document.body;
+        function applyTheme(t){
+            body.setAttribute('data-theme',t);
+            themeToggle.checked=t==='light';
+            localStorage.setItem('on1x-theme',t);
         }
-
-        const savedTheme = localStorage.getItem('on1x-theme') || 'dark';
-        applyTheme(savedTheme);
-
-        themeToggle.addEventListener('change', () => {
-            applyTheme(themeToggle.checked ? 'light' : 'dark');
-        });
+        applyTheme(localStorage.getItem('on1x-theme')||'dark');
+        themeToggle.addEventListener('change',()=>applyTheme(themeToggle.checked?'light':'dark'));
 
         // ПЕРЕЗАГРУЗКА
-        function reloadApp() {
-            if (Telegram?.WebApp?.restart) {
-                Telegram.WebApp.restart();
-            } else {
-                location.reload();
-            }
-        }
+        function reloadApp(){Telegram?.WebApp?.restart?Telegram.WebApp.restart():location.reload();}
 
         // НАВИГАЦИЯ
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            const page = document.getElementById(pageId);
-            if (page) page.classList.add('active');
-
-            document.querySelectorAll('.nav-item').forEach(item => {
-                item.classList.remove('active');
-                if (item.getAttribute('data-page') === pageId) {
-                    item.classList.add('active');
-                }
-            });
-
-            if (Telegram?.WebApp?.BackButton) {
-                if (['subscription-page', 'profile-page'].includes(pageId)) {
-                    Telegram.WebApp.BackButton.hide();
-                } else {
-                    Telegram.WebApp.BackButton.show();
-                    Telegram.WebApp.BackButton.onClick(() => showPage('subscription-page'));
-                }
+        function showPage(id){
+            document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.page===id));
+            if(Telegram?.WebApp?.BackButton){
+                ['subscription-page','profile-page','menu-page'].includes(id)?Telegram.WebApp.BackButton.hide():
+                (Telegram.WebApp.BackButton.show(),Telegram.WebApp.BackButton.onClick(()=>showPage('subscription-page')));
             }
-
-            if (pageId === 'buy-page' || pageId === 'extend-page') {
-                initBuyPage(pageId);
-            }
+            if(id==='buy-page'||id==='extend-page') initBuyPage(id);
         }
-
-        document.querySelectorAll('.nav-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const page = item.getAttribute('data-page');
-                showPage(page);
-            });
-        });
+        document.querySelectorAll('.nav-item').forEach(i=>i.addEventListener('click',()=>showPage(i.dataset.page)));
 
         // ПЕРЕХОД
-        function goToLinkAndClose(url) {
-            window.location.href = url;
-            setTimeout(() => {
-                if (Telegram?.WebApp?.close) {
-                    Telegram.WebApp.close();
-                }
-            }, 300);
+        function goToLinkAndClose(url){
+            window.location.href=url;
+            setTimeout(()=>{Telegram?.WebApp?.close&&Telegram.WebApp.close();},300);
         }
 
-        // МОДАЛЬНОЕ ОКНО
-        function showChangeTariffModal() {
-            document.getElementById('change-tariff-modal').classList.add('active');
+        // МОДАЛЬ
+        function showChangeTariffModal(){document.getElementById('change-tariff-modal').classList.add('active');}
+        function closeModal(){document.getElementById('change-tariff-modal').classList.remove('active');}
+
+        // FAQ
+        function toggleFaq(el){
+            const ans=el.nextElementSibling,open=ans.classList.contains('open');
+            document.querySelectorAll('.faq-answer').forEach(a=>a.classList.remove('open'));
+            document.querySelectorAll('.faq-question').forEach(q=>q.classList.remove('active'));
+            if(!open){ans.classList.add('open');el.classList.add('active');}
         }
 
-        function closeModal() {
-            document.getElementById('change-tariff-modal').classList.remove('active');
-        }
-
-        // АККОРДЕОН FAQ
-        function toggleFaq(element) {
-            const answer = element.nextElementSibling;
-            const isOpen = answer.classList.contains('open');
-
-            document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
-            document.querySelectorAll('.faq-question').forEach(q => q.classList.remove('active'));
-
-            if (!isOpen) {
-                answer.classList.add('open');
-                element.classList.add('active');
-            }
-        }
-
-        // ДАННЫЕ ПО ТАРИФАМ
-        const tariffData = {
-            personal: { devices: 3, speed: 'Скорость до 10 Гбит/с', traffic: 'Безлимит трафик', icon: 'fa-user' },
-            family: { devices: 6, speed: 'Скорость до 10 Гбит/с', traffic: 'Безлимит трафик', icon: 'fa-users' },
-            forever: { devices: 'от 3 до 6', speed: 'Скорость до 25 Гбит/с', traffic: 'Безлимит трафик', icon: 'fa-infinity' }
+        // ТАРИФЫ
+        const tariffData={
+            personal:{devices:3,speed:'Скорость до 25 Гбит/с',traffic:'Безлимит трафик',icon:'fa-user'},
+            family:{devices:6,speed:'Скорость до 25 Гбит/с',traffic:'Безлимит трафик',icon:'fa-users'},
+            forever:{devices:'от 3 до 6',speed:'Скорость до 25 Гбит/с',traffic:'Безлимит трафик',icon:'fa-infinity'}
         };
-
-        const tariffPrices = {
-            personal: [
-                { days: 30, price: 100 },
-                { days: 60, price: 200 },
-                { days: 90, price: 300 },
-                { days: 180, price: 600 }
-            ],
-            family: [
-                { days: 30, price: 200 },
-                { days: 60, price: 400 },
-                { days: 90, price: 600 },
-                { days: 180, price: 1200 }
-            ],
-            forever: [
-                { devices: 3, price: 4000 },
-                { devices: 4, price: 4500 },
-                { devices: 5, price: 5000 },
-                { devices: 6, price: 5500 }
-            ]
+        const tariffPrices={
+            personal:[{days:30,price:100},{days:60,price:200},{days:90,price:300},{days:180,price:600}],
+            family:[{days:30,price:200},{days:60,price:400},{days:90,price:600},{days:180,price:1200}],
+            forever:[{devices:3,price:4000},{devices:4,price:4500},{devices:5,price:5000},{devices:6,price:5500}]
         };
+        const selection={'buy-page':{tariff:null,duration:null},'extend-page':{tariff:null,duration:null}};
 
-        // Хранилище выбора для каждой страницы
-        const selection = {
-            'buy-page': { tariff: null, duration: null },
-            'extend-page': { tariff: null, duration: null }
-        };
-
-        function initBuyPage(pageId) {
-            // Сброс выбора
-            selection[pageId] = { tariff: null, duration: null };
-
-            // Выбираем "Личный" по умолчанию
-            const defaultBtn = document.querySelector(`#${pageId} .tariff-btn[data-tariff="personal"]`);
-            if (defaultBtn) {
-                selectTariff(defaultBtn, pageId);
-            }
+        function initBuyPage(pageId){
+            selection[pageId]={tariff:null,duration:null};
+            const def=document.querySelector(`#${pageId} .tariff-btn[data-tariff="personal"]`);
+            def&&selectTariff(def,pageId);
         }
-
-        function selectTariff(btn, pageId) {
-            const isBuy = pageId === 'buy-page';
-            const prefix = isBuy ? 'buy' : 'extend';
-
-            // Снимаем выделение
-            document.querySelectorAll(`#${pageId} .tariff-btn`).forEach(b => b.classList.remove('selected'));
+        function selectTariff(btn,pageId){
+            const isBuy=pageId==='buy-page',prefix=isBuy?'buy':'extend';
+            document.querySelectorAll(`#${pageId} .tariff-btn`).forEach(b=>b.classList.remove('selected'));
             btn.classList.add('selected');
-
-            const tariff = btn.getAttribute('data-tariff');
-            selection[pageId].tariff = tariff;
-            selection[pageId].duration = null;
-
-            const features = tariffData[tariff];
-            const featuresEl = document.getElementById(`tariff-features-${prefix}`);
-            featuresEl.innerHTML = `
-                <div class="feature-item"><i class="fas ${features.icon}"></i><span>${features.devices} ${tariff === 'forever' ? '' : 'устройства'}</span></div>
-                <div class="feature-item"><i class="fas fa-tachometer-alt"></i><span>${features.speed}</span></div>
-                <div class="feature-item"><i class="fas fa-infinity"></i><span>${features.traffic}</span></div>
-            `;
-
-            const optionsContainer = document.getElementById(`duration-options-${prefix}`);
-            optionsContainer.innerHTML = '';
-
-            const isForever = tariff === 'forever';
-            document.querySelector(`#${pageId} .duration-title`).textContent = isForever
-                ? (isBuy ? 'Выберите кол-во устройств' : 'Выберите кол-во устройств')
-                : (isBuy ? 'Выберите срок подписки' : 'Выберите срок продления');
-
-            const prices = tariffPrices[tariff];
-            prices.forEach(item => {
-                const opt = document.createElement('div');
-                opt.className = 'duration-option';
-                const label = isForever ? `${item.devices} устройства` : `${item.days} дней`;
-                const value = isForever ? item.devices : item.days;
-                opt.innerHTML = `<span>${label}</span><span class="price">${item.price} ₽</span>`;
-                opt.onclick = () => {
-                    document.querySelectorAll(`#${pageId} .duration-option`).forEach(o => o.classList.remove('selected'));
+            const t=btn.dataset.tariff; selection[pageId].tariff=t; selection[pageId].duration=null;
+            const f=tariffData[t],fe=document.getElementById(`tariff-features-${prefix}`);
+            fe.innerHTML=`
+                <div class="feature-item"><i class="fas ${f.icon}"></i><span>${f.devices} ${t==='forever'?'':'устройства'}</span></div>
+                <div class="feature-item"><i class="fas fa-tachometer-alt"></i><span>${f.speed}</span></div>
+                <div class="feature-item"><i class="fas fa-infinity"></i><span>${f.traffic}</span></div>`;
+            const oc=document.getElementById(`duration-options-${prefix}`); oc.innerHTML='';
+            const forever=t==='forever';
+            document.querySelector(`#${pageId} .duration-title`).textContent=forever?
+                (isBuy?'Выберите кол-во устройств':'Выберите кол-во устройств'):
+                (isBuy?'Выберите срок подписки':'Выберите срок продления');
+            tariffPrices[t].forEach(it=>{
+                const opt=document.createElement('div'); opt.className='duration-option';
+                const label=forever?`${it.devices} устройства`:`${it.days} дней`;
+                const val=forever?it.devices:it.days;
+                opt.innerHTML=`<span>${label}</span><span class="price">${it.price} ₽</span>`;
+                opt.onclick=()=>{
+                    document.querySelectorAll(`#${pageId} .duration-option`).forEach(o=>o.classList.remove('selected'));
                     opt.classList.add('selected');
-                    selection[pageId].duration = { ...item, value };
+                    selection[pageId].duration={...it,value:val};
                     updateBuyButton(pageId);
                 };
-                optionsContainer.appendChild(opt);
+                oc.appendChild(opt);
             });
-
             updateBuyButton(pageId);
         }
-
-        function updateBuyButton(pageId) {
-            const isBuy = pageId === 'buy-page';
-            const prefix = isBuy ? 'buy' : 'extend';
-            const btn = document.getElementById(`buy-full-button-${prefix}`);
-            const sel = selection[pageId];
-
-            if (sel.tariff && sel.duration) {
+        function updateBuyButton(pageId){
+            const isBuy=pageId==='buy-page',prefix=isBuy?'buy':'extend';
+            const btn=document.getElementById(`buy-full-button-${prefix}`),sel=selection[pageId];
+            if(sel.tariff&&sel.duration){
                 btn.classList.remove('disabled');
-                const suffix = sel.tariff === 'forever' ? sel.duration.value : sel.duration.days;
-                const cmd = isBuy ? 'buy' : 'extend';
-                const action = isBuy ? 'Купить' : 'Продлить';
-                btn.innerHTML = `<i class="fas fa-${isBuy ? 'shopping-cart' : 'clock'}"></i> ${action} за ${sel.duration.price} ₽`;
-                btn.onclick = () => goToLinkAndClose(`https://t.me/on1xVPN_bot?start=${cmd}_${sel.tariff}_${suffix}`);
-            } else {
-                btn.classList.add('disabled');
-                btn.onclick = null;
-
-                let placeholder = '';
-                if (!sel.tariff) {
-                    placeholder = 'Выберите тариф';
-                } else if (sel.tariff === 'forever') {
-                    placeholder = 'Выберите кол-во устройств';
-                } else {
-                    placeholder = isBuy ? 'Выберите срок подписки' : 'Выберите срок продления';
-                }
-
-                btn.innerHTML = `<i class="fas fa-${isBuy ? 'shopping-cart' : 'clock'}"></i> ${placeholder}`;
+                const suf=sel.tariff==='forever'?sel.duration.value:sel.duration.days;
+                const cmd=isBuy?'buy':'extend',act=isBuy?'Купить':'Продлить';
+                btn.innerHTML=`<i class="fas fa-${isBuy?'shopping-cart':'clock'}"></i> ${act} за ${sel.duration.price} ₽`;
+                btn.onclick=()=>goToLinkAndClose(`https://t.me/on1xVPN_bot?start=${cmd}_${sel.tariff}_${suf}`);
+            }else{
+                btn.classList.add('disabled'); btn.onclick=null;
+                let ph=!sel.tariff?'Выберите тариф':(sel.tariff==='forever'?'Выберите кол-во устройств':
+                    (isBuy?'Выберите срок подписки':'Выберите срок продления'));
+                btn.innerHTML=`<i class="fas fa-${isBuy?'shopping-cart':'clock'}"></i> ${ph}`;
             }
         }
 
-        // ЗАГРУЗКА ДАННЫХ
-        let isDataLoaded = false;
-        function loadUserData() {
-            if (isDataLoaded) return;
-            isDataLoaded = true;
-
-            const container = document.getElementById('subscriptions-container');
-            const balanceEl = document.getElementById('balance-value');
-
-            if (!window.Telegram?.WebApp?.initDataUnsafe?.user) {
-                container.innerHTML = `<div style="color:#dc3545;padding:30px 20px;text-align:center;background:var(--card-bg);border-radius:18px;border:1px solid var(--border-color);margin-top:16px;">Запустите приложение в <strong>Telegram</strong></div>`;
-                balanceEl.textContent = '—';
-                return;
-            }
-
-            container.innerHTML = `<div class="loading-placeholder"><i class="fas fa-spinner fa-spin"></i> Загружаем подписку...</div>`;
-
-            const u = Telegram.WebApp.initDataUnsafe.user;
-            const userId = u.id;
-            const avatarUrl = u.photo_url || 'https://sun9-8.userapi.com/s/v1/ig2/YBkIITuiQ13e1vw3WhNGJekU_fMB3jXEeTjqLb-EAnydjnDmqCVu7sATDepkrUUo6UXWQ4x74BtgfBrgdhWUZZlN.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640&from=bu&cs=640x0';
-            const greeting = `Добро пожаловать, ${u.first_name}${u.last_name ? ' ' + u.last_name : ''}`;
-
-            ['sub', 'prof'].forEach(suffix => {
-                document.getElementById(`user-avatar-${suffix}`).src = avatarUrl;
-                document.getElementById(`user-greeting-${suffix}`).textContent = greeting;
-                document.getElementById(`user-id-${suffix}`).textContent = `ID: ${userId}`;
+        // ПОЛЬЗОВАТЕЛЬ + БАЛАНС
+        let loaded=false;
+        function loadUserData(){
+            if(loaded) return; loaded=true;
+            if(!Telegram?.WebApp?.initDataUnsafe?.user) return;
+            const u=Telegram.WebApp.initDataUnsafe.user;
+            const uid=u.id, avatar=u.photo_url||'https://sun9-8.userapi.com/s/v1/ig2/YBkIITuiQ13e1vw3WhNGJekU_fMB3jXEeTjqLb-EAnydjnDmqCVu7sATDepkrUUo6UXWQ4x74BtgfBrgdhWUZZlN.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640&from=bu&cs=640x0';
+            const greet=`Добро пожаловать, ${u.first_name}${u.last_name?' '+u.last_name:''}`;
+            ['sub','prof','menu'].forEach(s=>{
+                const el=document.getElementById(`user-avatar-${s}`);
+                if(el) el.src=avatar;
+                const g=document.getElementById(`user-greeting-${s}`);
+                if(g) g.textContent=greet;
+                const id=document.getElementById(`user-id-${s}`);
+                if(id) id.textContent=`ID: ${uid}`;
             });
 
-            const API_URL = 'https://script.google.com/macros/s/AKfycbxSmUasXhD9sp6T0QUEgKq_on2rRhDDDtzT5aKGn8J-s73Wm-bLvryq0Q8XgzlBLObE/exec';
-            const url = `${API_URL}?id=${userId}`;
-
-            fetch(url)
-                .then(r => r.ok ? r.json() : Promise.reject())
-                .then(rawData => {
-                    container.innerHTML = '';
-                    const subscriptions = Array.isArray(rawData) ? rawData : [rawData];
-                    let totalBalance = 0;
-
-                    subscriptions.forEach(data => {
-                        if (data.balance) totalBalance += Number(data.balance);
-                        const block = createSubscriptionBlock(data);
-                        container.appendChild(block);
-                    });
-
-                    balanceEl.textContent = `${totalBalance} RUB`;
+            const API_URL='https://script.google.com/macros/s/AKfycbxSmUasXhD9sp6T0QUEgKq_on2rRhDDDtzT5aKGn8J-s73Wm-bLvryq0Q8XgzlBLObE/exec';
+            fetch(`${API_URL}?id=${uid}`)
+                .then(r=>r.ok?r.json():Promise.reject())
+                .then(d=>{
+                    const bal=Number(d.balance||0);
+                    document.getElementById('balance-value').textContent=`${bal.toFixed(2)} RUB`;
                 })
-                .catch(() => {
-                    container.innerHTML = `<div style="color:#dc3545;padding:30px 20px;text-align:center;background:var(--card-bg);border-radius:18px;border:1px solid var(--border-color);">Ошибка загрузки.<br><a href="#" onclick="location.reload(); return false;" style="color:var(--primary-color);text-decoration:underline;">Обновить</a></div>`;
-                    balanceEl.textContent = '—';
-                });
+                .catch(()=>{document.getElementById('balance-value').textContent='0.00 RUB';});
         }
 
-        function createSubscriptionBlock(data) {
-            const block = document.createElement('div');
-            block.className = 'subscription-block';
-            const isNoSub = !data.key_1 || data.not_found;
-
-            const statusHtml = isNoSub
-                ? `<span class="status-chip status-none">Нет</span>`
-                : (data.key_status === 'active'
-                    ? `<span class="status-chip status-active">Активна</span>`
-                    : `<span class="status-chip status-expired">Истекла</span>`);
-
-            let buttonsHtml = '';
-            if (isNoSub) {
-                buttonsHtml = `<a class="tg-button single-button" onclick="showPage('buy-page')"><i class="fas fa-shopping-cart"></i> Купить</a>`;
-            } else {
-                buttonsHtml = `
-                    <div class="action-buttons-row">
-                        <a class="tg-button" onclick="showChangeTariffModal()"><i class="fas fa-exchange-alt"></i> Сменить тариф</a>
-                        <a class="tg-button" onclick="showPage('extend-page')"><i class="fas fa-clock"></i> Продлить</a>
-                    </div>`;
-            }
-
-            block.innerHTML = `
-                <div class="info-row"><span class="info-label">Тариф:</span><span class="info-value">${isNoSub ? '—' : (data.tariff || 'Неизвестно')}</span></div>
-                <div class="info-row"><span class="info-label">Статус:</span><span>${statusHtml}</span></div>
-                <div class="key-input-container">
-                    <input type="text" class="key-input" value="${isNoSub ? 'У вас нет подписки' : data.key_1}" readonly ${isNoSub ? 'style="color:#dc3545"' : ''}>
-                    ${isNoSub ? '' : `<button class="copy-key-button" onclick="copyText('${data.key_1}', this)"><i class="fas fa-copy"></i></button>`}
-                </div>
-                ${buttonsHtml}
-            `;
-
-            return block;
-        }
-
-        function copyText(text, btn) {
-            navigator.clipboard.writeText(text).then(() => {
-                const icon = btn.querySelector('i');
-                icon.classList.replace('fa-copy', 'fa-check');
-                setTimeout(() => icon.classList.replace('fa-check', 'fa-copy'), 1000);
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            if (Telegram?.WebApp) {
-                Telegram.WebApp.ready();
-                Telegram.WebApp.disableVerticalSwipes?.();
-            }
+        document.addEventListener('DOMContentLoaded',()=>{
+            Telegram?.WebApp?.ready();
+            Telegram?.WebApp?.disableVerticalSwipes?.();
             loadUserData();
         });
     </script>
 </body>
 </html>
-
