@@ -127,7 +127,22 @@
         .balance-value { font-size: 1.8em; font-weight: 700; color: var(--text-color); margin-bottom: 16px; }
 
         .balance-actions { display: flex; gap: 10px; }
-        .balance-btn { flex: 1; padding: 12px 0; background: var(--primary-color); color: white; font-weight: 500; font-size: 0.95em; text-align: center; border-radius: 8px; cursor: pointer; transition: background 0.2s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .balance-btn { 
+            flex: 1; 
+            padding: 12px 0; 
+            background: var(--primary-color); 
+            color: white; 
+            font-weight: 500; 
+            font-size: 0.95em; 
+            text-align: center; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            transition: background 0.2s; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 8px; 
+        }
         .balance-btn:hover { background: #0066aa; }
 
         .profile-menu { display: flex; flex-direction: column; gap: 8px; margin-top: 20px; }
@@ -741,7 +756,31 @@
     </div>
 
     <script>
-        // ТЕМА
+        // === КЭШИРОВАНИЕ ===
+        const CACHE_KEY = (userId) => `on1x_sub_${userId}`;
+        const CACHE_TTL = 5 * 60 * 1000;
+
+        function getCachedData(userId) {
+            const cached = localStorage.getItem(CACHE_KEY(userId));
+            if (!cached) return null;
+            const { data, timestamp } = JSON.parse(cached);
+            if (Date.now() - timestamp > CACHE_TTL) {
+                localStorage.removeItem(CACHE_KEY(userId));
+                return null;
+            }
+            return data;
+        }
+
+        function setCachedData(userId, data) {
+            const payload = { data, timestamp: Date.now() };
+            try {
+                localStorage.setItem(CACHE_KEY(userId), JSON.stringify(payload));
+            } catch (e) {
+                console.warn('Кэш не сохранён:', e);
+            }
+        }
+
+        // === ТЕМА ===
         const themeToggle = document.getElementById('theme-toggle');
         const body = document.body;
 
@@ -758,7 +797,7 @@
             applyTheme(themeToggle.checked ? 'light' : 'dark');
         });
 
-        // ПЕРЕЗАГРУЗКА
+        // === ПЕРЕЗАГРУЗКА ===
         function reloadApp() {
             if (Telegram?.WebApp?.restart) {
                 Telegram.WebApp.restart();
@@ -767,7 +806,7 @@
             }
         }
 
-        // НАВИГАЦИЯ
+        // === НАВИГАЦИЯ ===
         function showPage(pageId) {
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             const page = document.getElementById(pageId);
@@ -801,7 +840,7 @@
             });
         });
 
-        // ПЕРЕХОД
+        // === ПЕРЕХОД ПО ССЫЛКЕ ===
         function goToLinkAndClose(url) {
             window.location.href = url;
             setTimeout(() => {
@@ -811,7 +850,7 @@
             }, 300);
         }
 
-        // МОДАЛЬНОЕ ОКНО
+        // === МОДАЛЬНОЕ ОКНО ===
         function showChangeTariffModal() {
             document.getElementById('change-tariff-modal').classList.add('active');
         }
@@ -820,7 +859,7 @@
             document.getElementById('change-tariff-modal').classList.remove('active');
         }
 
-        // АККОРДЕОН FAQ
+        // === FAQ ===
         function toggleFaq(element) {
             const answer = element.nextElementSibling;
             const isOpen = answer.classList.contains('open');
@@ -834,7 +873,7 @@
             }
         }
 
-        // ДАННЫЕ ПО ТАРИФАМ
+        // === ТАРИФЫ ===
         const tariffData = {
             personal: { devices: 3, speed: 'Скорость до 10 Гбит/с', traffic: 'Безлимит трафик', icon: 'fa-user' },
             family: { devices: 6, speed: 'Скорость до 10 Гбит/с', traffic: 'Безлимит трафик', icon: 'fa-users' },
@@ -862,7 +901,6 @@
             ]
         };
 
-        // Хранилище выбора для каждой страницы
         const selection = {
             'buy-page': { tariff: null, duration: null },
             'extend-page': { tariff: null, duration: null }
@@ -952,35 +990,7 @@
             }
         }
 
-        // КЭШИРОВАНИЕ В localStorage
-        const CACHE_KEY = (userId) => `on1x_sub_${userId}`;
-        const CACHE_TTL = 5 * 60 * 1000; // 5 минут
-
-        function getCachedData(userId) {
-            const cached = localStorage.getItem(CACHE_KEY(userId));
-            if (!cached) return null;
-
-            const { data, timestamp } = JSON.parse(cached);
-            if (Date.now() - timestamp > CACHE_TTL) {
-                localStorage.removeItem(CACHE_KEY(userId));
-                return null;
-            }
-            return data;
-        }
-
-        function setCachedData(userId, data) {
-            const payload = {
-                data,
-                timestamp: Date.now()
-            };
-            try {
-                localStorage.setItem(CACHE_KEY(userId), JSON.stringify(payload));
-            } catch (e) {
-                console.warn('Не удалось сохранить кэш:', e);
-            }
-        }
-
-        // ЗАГРУЗКА ДАННЫХ
+        // === ЗАГРУЗКА ДАННЫХ ===
         let isDataLoaded = false;
         function loadUserData() {
             if (isDataLoaded) return;
@@ -1010,22 +1020,27 @@
 
             const cachedData = getCachedData(userId);
             if (cachedData) {
-                console.log('Подписка загружена из кэша');
+                console.log('Подписка из кэша');
                 renderSubscriptionData(cachedData, container, balanceEl);
+                fetchDataFromServer(userId, container, balanceEl);
                 return;
             }
 
+            fetchDataFromServer(userId, container, balanceEl);
+        }
+
+        function fetchDataFromServer(userId, container, balanceEl) {
             const API_URL = 'https://script.google.com/macros/s/AKfycbxSmUasXhD9sp6T0QUEgKq_on2rRhDDDtzT5aKGn8J-s73Wm-bLvryq0Q8XgzlBLObE/exec';
             const url = `${API_URL}?id=${userId}`;
 
-            fetch(url)
+            fetch(url, { cache: 'no-store' })
                 .then(r => r.ok ? r.json() : Promise.reject(new Error('Network error')))
                 .then(rawData => {
                     setCachedData(userId, rawData);
                     renderSubscriptionData(rawData, container, balanceEl);
                 })
                 .catch(err => {
-                    console.error('Ошибка загрузки:', err);
+                    console.error('Ошибка:', err);
                     container.innerHTML = `<div style="color:#dc3545;padding:30px 20px;text-align:center;background:var(--card-bg);border-radius:18px;border:1px solid var(--border-color);">Ошибка загрузки.<br><a href="#" onclick="location.reload(); return false;" style="color:var(--primary-color);text-decoration:underline;">Обновить</a></div>`;
                     balanceEl.textContent = '—';
                 });
