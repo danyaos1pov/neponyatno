@@ -599,7 +599,7 @@
                 if(id) id.textContent=`ID: ${uid}`;
             });
 
-            const API_URL='https://script.google.com/macros/s/AKfycbxSmUasXhD9sp6T0QUEgKq_on2rRhDDDtzT5aKGn8J-s73Wm-bLvryq0Q8XgzlBLObE/exec';
+            const API_URL='https://script.google.com/macros/s/AKfycbw02X1b1uJXdqTY7u5IUCfmDjwuqLwd4tBkgbwq8DCZXlsnX5swXKlgarpwm1JsBSCV/exec';
             fetch(`${API_URL}?id=${uid}`)
                 .then(r=>r.ok?r.json():Promise.reject())
                 .then(d=>{
@@ -617,3 +617,4 @@
     </script>
 </body>
 </html>
+
