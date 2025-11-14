@@ -13,6 +13,8 @@
             --nav-border:rgba(255,255,255,.15);--nav-active:rgba(36,129,204,.25);--hover-bg:rgba(255,255,255,.05);
             --reload-bg:#161b22;--reload-text:#b0b8c2;--reload-border:rgba(255,255,255,.05);
             --reload-hover-bg:rgba(255,255,255,.05);--reload-hover-text:#e6edf3;
+            --action-btn-color: #0077ff;
+            --menu-btn-dark-bg: #191919;
         }
         [data-theme="light"]{
             --primary-color:#0077cc;--bg-dark:#f8f9fa;--card-bg:#ffffff;--text-color:#1a1a1a;
@@ -20,6 +22,7 @@
             --nav-border:rgba(0,0,0,.1);--nav-active:rgba(0,119,204,.15);--hover-bg:rgba(0,0,0,.05);
             --reload-bg:#ffffff;--reload-text:#555555;--reload-border:#e0e0e0;
             --reload-hover-bg:rgba(0,0,0,.05);--reload-hover-text:#1a1a1a;
+            --action-btn-color: #0077ff;
         }
         *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;}
         body{background:var(--bg-dark);color:var(--text-color);min-height:100vh;overflow-x:hidden;padding-bottom:90px;transition:all .3s;}
@@ -47,9 +50,9 @@
         .block-title{font-size:1.1em;font-weight:600;color:var(--text-color);margin-bottom:14px;text-align:center;}
         .action-buttons-row{display:flex;gap:8px;margin-bottom:12px;}
         .tg-button{flex:1;display:flex;align-items:center;justify-content:center;gap:8px;padding:13px 0;
-            background:var(--primary-color);color:#fff;font-weight:500;font-size:1em;border-radius:8px;
+            background:var(--action-btn-color);color:#fff;font-weight:500;font-size:1em;border-radius:8px;
             cursor:pointer;transition:.2s;}
-        .tg-button:hover{background:#0066aa;}
+        .tg-button:hover{background:#005edd;}
         .tg-button.single-button{margin-top:12px;}
         .profile-menu{display:flex;flex-direction:column;gap:8px;}
         .profile-menu-btn{display:flex;align-items:center;gap:12px;padding:14px 16px;background:var(--card-bg);
@@ -70,10 +73,10 @@
         .balance-label{font-size:.9em;color:var(--text-secondary);margin-bottom:6px;}
         .balance-value{font-size:1.8em;font-weight:700;color:var(--text-color);margin-bottom:16px;}
         .balance-actions{display:flex;gap:10px;}
-        .balance-btn{flex:1;padding:12px 0;background:var(--primary-color);color:#fff;font-weight:500;
+        .balance-btn{flex:1;padding:12px 0;background:var(--action-btn-color);color:#fff;font-weight:500;
             font-size:.95em;border-radius:8px;cursor:pointer;transition:.2s;display:flex;align-items:center;
             justify-content:center;gap:8px;}
-        .balance-btn:hover{background:#0066aa;}
+        .balance-btn:hover{background:#005edd;}
         .app-version{margin-top:30px;font-size:.8em;color:var(--text-secondary);text-align:center;}
         .bottom-nav{position:fixed;bottom:16px;left:16px;right:16px;background:var(--nav-bg);
             border:1px solid var(--nav-border);border-radius:20px;overflow:hidden;display:flex;
@@ -136,24 +139,22 @@
         .duration-option.selected{border-color:var(--primary-color);background:var(--nav-active);
             color:var(--primary-color);font-weight:700;}
         .duration-option .price{color:var(--primary-color);font-weight:700;}
-        .buy-full-button{width:100%;padding:16px 0;background:var(--primary-color);color:#fff;
+        .buy-full-button{width:100%;padding:16px 0;background:var(--action-btn-color);color:#fff;
             font-weight:600;font-size:1.1em;border-radius:12px;cursor:pointer;transition:.2s;
             display:flex;align-items:center;justify-content:center;gap:8px;}
         .buy-full-button.disabled{background:#555;opacity:.6;pointer-events:none;}
-        .buy-full-button:not(.disabled):hover{background:#0066aa;}
+        .buy-full-button:not(.disabled):hover{background:#005edd;}
         .modal-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.7);
             z-index:2000;display:flex;align-items:center;justify-content:center;opacity:0;
             pointer-events:none;transition:opacity .3s;}
         .modal-overlay.active{opacity:1;pointer-events:auto;}
-        .modal{background:var(--card-bg);border-radius:18px;padding:24px;max-width:90%;width:380px;
-            text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.3);border:1px solid var(--border-color);}
+        .modal{background:var(--card-bg);border-radius:18px;padding:24px;max-width:90%;width:100%;
+            max-width:380px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.3);border:1px solid var(--border-color);}
         .modal h3{font-size:1.2em;margin-bottom:12px;color:var(--text-color);}
         .modal p{font-size:.95em;color:var(--text-secondary);line-height:1.5;margin-bottom:20px;}
         .modal .close-btn{background:var(--primary-color);color:#fff;border:none;padding:12px 24px;
             border-radius:12px;font-weight:600;cursor:pointer;}
         .modal .close-btn:hover{background:#0066aa;}
-
-        /* НОВЫЙ БЛОК: Новости и подписка */
         .news-block{
             background:var(--card-bg);border-radius:18px;padding:20px 18px;
             box-shadow:0 6px 16px rgba(0,0,0,.15);border:1px solid var(--border-color);
@@ -164,10 +165,22 @@
         }
         .subscribe-btn{
             display:inline-flex;align-items:center;justify-content:center;gap:8px;
-            padding:13px 0;background:var(--primary-color);color:#fff;font-weight:500;
+            padding:13px 0;background:var(--action-btn-color);color:#fff;font-weight:500;
             font-size:1em;border-radius:8px;cursor:pointer;transition:.2s;width:100%;
         }
-        .subscribe-btn:hover{background:#0066aa;}
+        .subscribe-btn:hover{background:#005edd;}
+
+        /* === ПРАВКА 2: Меню-кнопки в тёмной теме === */
+        body[data-theme="dark"] .profile-menu-btn,
+        body[data-theme="dark"] .reload-btn,
+        body[data-theme="dark"] .reload-btn.full {
+            background: var(--menu-btn-dark-bg) !important;
+            border-color: rgba(255,255,255,.1) !important;
+        }
+        body[data-theme="dark"] .profile-menu-btn:hover,
+        body[data-theme="dark"] .reload-btn:hover {
+            background: rgba(255, 255, 255, 0.08) !important;
+        }
     </style>
 </head>
 <body data-theme="dark">
@@ -627,7 +640,7 @@
         function loadUserData(){
             if(loaded) return; loaded=true;
             if(!Telegram?.WebApp?.initDataUnsafe?.user) return;
-            const u=Telegram.WebApp.initDataUnsafe.user;
+            const u=Telegram.WebApp.initDataorUnsafe.user;
             const uid=u.id, avatar=u.photo_url||'https://sun9-8.userapi.com/s/v1/ig2/YBkIITuiQ13e1vw3WhNGJekU_fMB3jXEeTjqLb-EAnydjnDmqCVu7sATDepkrUUo6UXWQ4x74BtgfBrgdhWUZZlN.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640&from=bu&cs=640x0';
             const greet=`Добро пожаловать, ${u.first_name}${u.last_name?' '+u.last_name:''}`;
             ['sub','prof','menu'].forEach(s=>{
