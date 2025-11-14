@@ -9,15 +9,19 @@
     <style>
         :root{
             --primary-color:#2481cc;--bg-dark:#0d1117;--card-bg:#161b22;--text-color:#e6edf3;
-            --text-secondary:#b0b8c2;--border-color:rgba(255,255,255,.05);--nav-bg:rgba(10,14,19,.9);
-            --nav-border:rgba(255,255,255,.15);--nav-active:rgba(36,129,204,.25);--hover-bg:rgba(255,255,255,.05);
+            --text-secondary:#b0b8c2;--border-color:rgba(255,255,255,.05);
+            --nav-bg-opacity:rgba(10,14,19,.7); /* 70% непрозрачность */
+            --nav-border:rgba(255,255,255,.1);
+            --nav-active:rgba(36,129,204,.25);--hover-bg:rgba(255,255,255,.05);
             --reload-bg:#161b22;--reload-text:#b0b8c2;--reload-border:rgba(255,255,255,.05);
             --reload-hover-bg:rgba(255,255,255,.05);--reload-hover-text:#e6edf3;
         }
         [data-theme="light"]{
             --primary-color:#0077cc;--bg-dark:#f8f9fa;--card-bg:#ffffff;--text-color:#1a1a1a;
-            --text-secondary:#555555;--border-color:#e0e0e0;--nav-bg:rgba(255,255,255,.95);
-            --nav-border:rgba(0,0,0,.1);--nav-active:rgba(0,119,204,.15);--hover-bg:rgba(0,0,0,.05);
+            --text-secondary:#555555;--border-color:#e0e0e0;
+            --nav-bg-opacity:rgba(255,255,255,.7); /* 70% для светлой */
+            --nav-border:rgba(0,0,0,.1);
+            --nav-active:rgba(0,119,204,.15);--hover-bg:rgba(0,0,0,.05);
             --reload-bg:#ffffff;--reload-text:#555555;--reload-border:#e0e0e0;
             --reload-hover-bg:rgba(0,0,0,.05);--reload-hover-text:#1a1a1a;
         }
@@ -41,7 +45,6 @@
             border:1px solid var(--border-color);}
         .user-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;}
         .user-greeting{font-size:1.1em;font-weight:600;color:var(--text-color);margin-bottom:3px;}
-:;}
         .user-id{font-size:.85em;color:var(--text-secondary);}
         .subscription-block{background:var(--card-bg);border-radius:18px;padding:20px 18px;
             box-shadow:0 6px 16px rgba(0,0,0,.15);border:1px solid var(--border-color);margin-bottom:16px;}
@@ -76,17 +79,28 @@
             justify-content:center;gap:8px;}
         .balance-btn:hover{background:#0066aa;}
         .app-version{margin-top:30px;font-size:.8em;color:var(--text-secondary);text-align:center;}
-        .bottom-nav{position:fixed;bottom:16px;left:16px;right:16px;background:var(--nav-bg);
-            border:1px solid var(--nav-border);border-radius:20px;overflow:hidden;display:flex;
-            padding:8px 12px;gap:8px;z-index:1000;backdrop-filter:blur(16px);height:72px;
-            box-shadow:0 6px 20px rgba(0,0,0,.35);}
-        .nav-item{flex:1;padding:10px 0;color:#8b949e;font-size:.8em;font-weight:600;text-align:center;
+
+        /* НИЖНЕЕ МЕНЮ — ВИДНОЕ, НО ПРОЗРАЧНОЕ С РАЗМЫТИЕМ */
+        .bottom-nav{
+            position:fixed;bottom:16px;left:16px;right:16px;
+            background:var(--nav-bg-opacity);
+            border:1px solid var(--nav-border);
+            border-radius:20px;overflow:hidden;display:flex;
+            padding:8px 12px;gap:8px;z-index:1000;
+            backdrop-filter:blur(16px);
+            -webkit-backdrop-filter:blur(16px);
+            height:72px;
+        }
+        .nav-item{
+            flex:1;padding:10px 0;color:var(--text-secondary);font-size:.8em;font-weight:600;text-align:center;
             border-radius:12px;cursor:pointer;transition:.25s;display:flex;flex-direction:column;
-            align-items:center;gap:4px;}
+            align-items:center;gap:4px;
+        }
         .nav-item i{font-size:1.35em;transition:transform .2s;}
         .nav-item.active{color:var(--primary-color);background:var(--nav-active);font-weight:700;}
         .nav-item.active i{transform:scale(1.15);}
         .nav-item:hover:not(.active){background:var(--hover-bg);}
+
         .settings-block{background:var(--card-bg);border-radius:18px;padding:20px;margin:20px 0;
             box-shadow:0 6px 16px rgba(0,0,0,.15);border:1px solid var(--border-color);}
         .setting-item{display:flex;align-items:center;justify-content:space-between;padding:14px 0;
@@ -315,7 +329,6 @@
             </div>
 
             <div class="profile-menu">
-                <!-- ПЕРЕСТАВЛЕННЫЕ КНОПКИ -->
                 <div class="profile-menu-btn">
                     <i class="fas fa-download"></i>
                     <div class="btn-text">Установить приложение</div>
@@ -539,9 +552,8 @@
             Telegram?.WebApp?.restart ? Telegram.WebApp.restart() : location.reload();
         }
 
-        // НАВИГАЦИЯ С ПАМЯТЬЮ "ОТКУДА ПРИШЛИ"
+        // НАВИГАЦИЯ
         let lastMainPage = 'subscription-page';
-
         function showPage(id, from = null) {
             if (from) lastMainPage = from;
             document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -584,8 +596,8 @@
 
         // ТАРИФЫ
         const tariffData = {
-            personal: { devices: 3, speed: 'Скорость до 25 Гбит/с', traffic: 'Безлимит трафик', icon: 'fa-user' },
-            family: { devices: 6, speed: 'Скорость до 25 Гбит/с', traffic: 'Безлимит трафик', icon: 'fa-users' },
+            personal: { devices: 3, speed: 'Скорость до 10 Гбит/с', traffic: 'Безлимит трафик', icon: 'fa-user' },
+            family: { devices: 6, speed: 'Скорость до 10 Гбит/с', traffic: 'Безлимит трафик', icon: 'fa-users' },
             forever: { devices: 'от 3 до 6', speed: 'Скорость до 25 Гбит/с', traffic: 'Безлимит трафик', icon: 'fa-users-cog' }
         };
         const tariffPrices = {
@@ -608,7 +620,6 @@
             const t = btn.dataset.tariff; selection[pageId].tariff = t; selection[pageId].duration = null;
             const f = tariffData[t], fe = document.getElementById(`tariff-features-${prefix}`);
 
-            // Исправлено: добавлен суффикс "устройства" для Личного и Семейного
             const devicesText = t === 'forever' ? f.devices : `${f.devices} устройства`;
 
             fe.innerHTML = `
@@ -654,7 +665,7 @@
             }
         }
 
-        // ПОЛЬЗОВАТЕЛЬ + БАЛАНС
+        // ПОЛЬЗОВАТЕЛЬ + БАЛАНС — ФОРМАТ 250,6 RUB
         let loaded = false;
         function loadUserData() {
             if (loaded) return; loaded = true;
@@ -676,9 +687,12 @@
                 .then(r => r.ok ? r.json() : Promise.reject())
                 .then(d => {
                     const bal = Number(d.balance || 0);
-                    document.getElementById('balance-value').textContent = `${bal.toFixed(2)} RUB`;
+                    const formatted = bal % 1 === 0 ? bal.toFixed(0) : bal.toFixed(1).replace(/\.0$/, '');
+                    document.getElementById('balance-value').textContent = `${formatted.replace('.', ',')} RUB`;
                 })
-                .catch(() => { document.getElementById('balance-value').textContent = '0.00 RUB'; });
+                .catch(() => {
+                    document.getElementById('balance-value').textContent = '0 RUB';
+                });
         }
 
         document.addEventListener('DOMContentLoaded', () => {
