@@ -21,7 +21,7 @@
         [data-theme="light"]{
             --primary-color:#0077cc;--bg-dark:#f8f9fa;--card-bg:#ffffff;--text-color:#1a1a1a;
             --text-secondary:#555555;--border-color:#e0e0e0;
-            --nav-bg-opacity:rgba(255,255,255,.7);
+            --nav-bg-opacity:rgba(240,240,240,.95); /* ← КОНТРАСТНЫЙ ФОН ДЛЯ СВЕТЛОЙ ТЕМЫ */
             --nav-border:rgba(0,0,0,.1);
             --nav-active:rgba(0,119,204,.15);--hover-bg:rgba(0,0,0,.05);
             --reload-bg:#ffffff;--reload-text:#555555;--reload-border:#e0e0e0;
@@ -261,7 +261,7 @@
             color:var(--updating-color);
         }
 
-        /* === НОВАЯ СТРАНИЦА: УСТАНОВКА ПРИЛОЖЕНИЯ === */
+        /* УСТАНОВКА ПРИЛОЖЕНИЯ */
         .device-selector {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -423,7 +423,7 @@
                     </div>
                 </div>
                 <div class="tg-button single-button" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=c_2293355')">
-                    <i class="fas fa-gift"></i> Тестовый период
+                        <i class="fas fa-gift"></i> Тестовый период
                 </div>
             </div>
 
@@ -509,7 +509,7 @@
             </div>
 
             <div class="profile-menu">
-                <div class="profile-menu-btn" onclick="showPage('install-page')">
+                <div class="profile- menu-btn" onclick="showPage('install-page')">
                     <i class="fas fa-mobile-alt"></i><div class="btn-text">Установить приложение</div>
                 </div>
                 <div class="profile-menu-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=f_5371698')">
@@ -755,7 +755,7 @@
         </div>
     </div>
 
-    <!-- НОВАЯ СТРАНИЦА: УСТАНОВКА ПРИЛОЖЕНИЯ -->
+    <!-- УСТАНОВКА ПРИЛОЖЕНИЯ -->
     <div id="install-page" class="page">
         <div class="main-content">
             <div class="header">
