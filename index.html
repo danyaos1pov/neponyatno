@@ -41,6 +41,7 @@
             border:1px solid var(--border-color);}
         .user-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;}
         .user-greeting{font-size:1.1em;font-weight:600;color:var(--text-color);margin-bottom:3px;}
+:;}
         .user-id{font-size:.85em;color:var(--text-secondary);}
         .subscription-block{background:var(--card-bg);border-radius:18px;padding:20px 18px;
             box-shadow:0 6px 16px rgba(0,0,0,.15);border:1px solid var(--border-color);margin-bottom:16px;}
@@ -116,13 +117,36 @@
             padding:18px;margin:20px 0;box-shadow:0 6px 16px rgba(0,0,0,.15);border:1px solid var(--border-color);}
         .tariff-title,.duration-title{text-align:center;font-size:1.1em;font-weight:600;
             color:var(--text-color);margin-bottom:16px;}
-        .tariff-buttons{display:flex;gap:12px;margin-bottom:16px;}
-        .tariff-btn{flex:1;padding:14px 0;background:var(--card-bg);border:2px solid var(--border-color);
-            border-radius:12px;font-size:1em;font-weight:600;color:var(--text-color);text-align:center;
-            cursor:pointer;transition:.2s;box-shadow:0 2px 8px rgba(0,0,0,.1);}
-        .tariff-btn:hover{background:var(--hover-bg);border-color:var(--text-secondary);}
-        .tariff-btn.selected{border-color:var(--primary-color);background:var(--nav-active);
-            color:var(--primary-color);font-weight:700;}
+
+        /* ТАРИФЫ — ЕДИНЫЙ БЛОК БЕЗ РАЗДЕЛИТЕЛЕЙ */
+        .tariff-buttons{
+            display:flex;
+            margin-bottom:16px;
+            border-radius:12px;
+            overflow:hidden;
+            border:2px solid var(--border-color);
+        }
+        .tariff-btn{
+            flex:1;
+            padding:14px 0;
+            background:var(--card-bg);
+            border:none !important;
+            font-size:1em;
+            font-weight:600;
+            color:var(--text-color);
+            text-align:center;
+            cursor:pointer;
+            transition:background .2s;
+        }
+        .tariff-btn:hover{
+            background:var(--hover-bg);
+        }
+        .tariff-btn.selected{
+            background:var(--nav-active);
+            color:var(--primary-color);
+            font-weight:700;
+        }
+
         .tariff-features-row{display:flex;justify-content:space-around;gap:12px;font-size:.9em;
             color:var(--text-secondary);padding:12px 0;border-top:1px solid var(--border-color);}
         .feature-item{display:flex;flex-direction:column;align-items:center;gap:6px;flex:1;}
@@ -135,7 +159,7 @@
         .duration-option:hover{background:var(--hover-bg);border-color:var(--text-secondary);}
         .duration-option.selected{border-color:var(--primary-color);background:var(--nav-active);
             color:var(--primary-color);font-weight:700;}
-        .duration-option .price{color:var(--primary-color);font-weight:700;}
+        .duration-option .price{color:#fff !important; font-weight:700;}
         .buy-full-button{width:100%;padding:16px 0;background:var(--primary-color);color:#fff;
             font-weight:600;font-size:1.1em;border-radius:12px;cursor:pointer;transition:.2s;
             display:flex;align-items:center;justify-content:center;gap:8px;}
@@ -153,7 +177,6 @@
             border-radius:12px;font-weight:600;cursor:pointer;}
         .modal .close-btn:hover{background:#0066aa;}
 
-        /* НОВЫЙ БЛОК: Новости и подписка */
         .news-block{
             background:var(--card-bg);border-radius:18px;padding:20px 18px;
             box-shadow:0 6px 16px rgba(0,0,0,.15);border:1px solid var(--border-color);
@@ -292,25 +315,26 @@
             </div>
 
             <div class="profile-menu">
-                <div class="profile-menu-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=f_5371698')">
-                    <i class="fas fa-user-plus"></i>
-                    <div class="btn-text">Пригласить друзей</div>
-                </div>
+                <!-- ПЕРЕСТАВЛЕННЫЕ КНОПКИ -->
                 <div class="profile-menu-btn">
                     <i class="fas fa-download"></i>
                     <div class="btn-text">Установить приложение</div>
+                </div>
+                <div class="profile-menu-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=f_5371698')">
+                    <i class="fas fa-user-plus"></i>
+                    <div class="btn-text">Пригласить друзей</div>
                 </div>
                 <div class="profile-menu-btn" onclick="showPage('faq-page', 'menu-page')">
                     <i class="fas fa-question-circle"></i>
                     <div class="btn-text">FAQ</div>
                 </div>
-                <div class="profile-menu-btn">
-                    <i class="fas fa-server"></i>
-                    <div class="btn-text">Статус систем</div>
-                </div>
                 <div class="profile-menu-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_admin')">
                     <i class="fas fa-headset"></i>
                     <div class="btn-text">Поддержка</div>
+                </div>
+                <div class="profile-menu-btn">
+                    <i class="fas fa-server"></i>
+                    <div class="btn-text">Статус систем</div>
                 </div>
                 <div class="profile-menu-btn" onclick="showPage('settings-page', 'menu-page')">
                     <i class="fas fa-cog"></i>
@@ -501,156 +525,163 @@
 
     <script>
         // ТЕМА
-        const themeToggle=document.getElementById('theme-toggle'),body=document.body;
-        function applyTheme(t){
-            body.setAttribute('data-theme',t);
-            themeToggle.checked=t==='light';
-            localStorage.setItem('on1x-theme',t);
+        const themeToggle = document.getElementById('theme-toggle'), body = document.body;
+        function applyTheme(t) {
+            body.setAttribute('data-theme', t);
+            themeToggle.checked = t === 'light';
+            localStorage.setItem('on1x-theme', t);
         }
-        applyTheme(localStorage.getItem('on1x-theme')||'dark');
-        themeToggle.addEventListener('change',()=>applyTheme(themeToggle.checked?'light':'dark'));
+        applyTheme(localStorage.getItem('on1x-theme') || 'dark');
+        themeToggle.addEventListener('change', () => applyTheme(themeToggle.checked ? 'light' : 'dark'));
 
         // ПЕРЕЗАГРУЗКА
-        function reloadApp(){Telegram?.WebApp?.restart?Telegram.WebApp.restart():location.reload();}
+        function reloadApp() {
+            Telegram?.WebApp?.restart ? Telegram.WebApp.restart() : location.reload();
+        }
 
         // НАВИГАЦИЯ С ПАМЯТЬЮ "ОТКУДА ПРИШЛИ"
-        let lastMainPage = 'subscription-page'; // по умолчанию
+        let lastMainPage = 'subscription-page';
 
-        function showPage(id, from = null){
+        function showPage(id, from = null) {
             if (from) lastMainPage = from;
-            
-            document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
             document.getElementById(id).classList.add('active');
-            document.querySelectorAll('.nav-item').forEach(n=>n.classList.toggle('active',n.dataset.page===id));
+            document.querySelectorAll('.nav-item').forEach(n => n.classList.toggle('active', n.dataset.page === id));
 
-            if(Telegram?.WebApp?.BackButton){
-                const mainPages = ['subscription-page','profile-page','menu-page'];
-                if(mainPages.includes(id)){
+            if (Telegram?.WebApp?.BackButton) {
+                const mainPages = ['subscription-page', 'profile-page', 'menu-page'];
+                if (mainPages.includes(id)) {
                     Telegram.WebApp.BackButton.hide();
                 } else {
                     Telegram.WebApp.BackButton.show();
                     Telegram.WebApp.BackButton.onClick(() => showPage(lastMainPage));
                 }
             }
-            if(id==='buy-page'||id==='extend-page') initBuyPage(id);
+            if (id === 'buy-page' || id === 'extend-page') initBuyPage(id);
         }
-        document.querySelectorAll('.nav-item').forEach(i=>i.addEventListener('click',()=>{
+        document.querySelectorAll('.nav-item').forEach(i => i.addEventListener('click', () => {
             lastMainPage = i.dataset.page;
             showPage(i.dataset.page);
         }));
 
         // ПЕРЕХОД
-        function goToLinkAndClose(url){
-            window.location.href=url;
-            setTimeout(()=>{Telegram?.WebApp?.close&&Telegram.WebApp.close();},300);
+        function goToLinkAndClose(url) {
+            window.location.href = url;
+            setTimeout(() => { Telegram?.WebApp?.close && Telegram.WebApp.close(); }, 300);
         }
 
         // МОДАЛЬ
-        function showChangeTariffModal(){document.getElementById('change-tariff-modal').classList.add('active');}
-        function closeModal(){document.getElementById('change-tariff-modal').classList.remove('active');}
+        function showChangeTariffModal() { document.getElementById('change-tariff-modal').classList.add('active'); }
+        function closeModal() { document.getElementById('change-tariff-modal').classList.remove('active'); }
 
         // FAQ
-        function toggleFaq(el){
-            const ans=el.nextElementSibling,open=ans.classList.contains('open');
-            document.querySelectorAll('.faq-answer').forEach(a=>a.classList.remove('open'));
-            document.querySelectorAll('.faq-question').forEach(q=>q.classList.remove('active'));
-            if(!open){ans.classList.add('open');el.classList.add('active');}
+        function toggleFaq(el) {
+            const ans = el.nextElementSibling, open = ans.classList.contains('open');
+            document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+            document.querySelectorAll('.faq-question').forEach(q => q.classList.remove('active'));
+            if (!open) { ans.classList.add('open'); el.classList.add('active'); }
         }
 
         // ТАРИФЫ
-        const tariffData={
-            personal:{devices:3,speed:'Скорость до 10 Гбит/с',traffic:'Безлимит трафик',icon:'fa-user'},
-            family:{devices:6,speed:'Скорость до 10 Гбит/с',traffic:'Безлимит трафик',icon:'fa-users'},
-            forever:{devices:'от 3 до 6',speed:'Скорость до 25 Гбит/с',traffic:'Безлимит трафик',icon:'fa-infinity'}
+        const tariffData = {
+            personal: { devices: 3, speed: 'Скорость до 25 Гбит/с', traffic: 'Безлимит трафик', icon: 'fa-user' },
+            family: { devices: 6, speed: 'Скорость до 25 Гбит/с', traffic: 'Безлимит трафик', icon: 'fa-users' },
+            forever: { devices: 'от 3 до 6', speed: 'Скорость до 25 Гбит/с', traffic: 'Безлимит трафик', icon: 'fa-users-cog' }
         };
-        const tariffPrices={
-            personal:[{days:30,price:100},{days:60,price:200},{days:90,price:300},{days:180,price:600}],
-            family:[{days:30,price:200},{days:60,price:400},{days:90,price:600},{days:180,price:1200}],
-            forever:[{devices:3,price:4000},{devices:4,price:4500},{devices:5,price:5000},{devices:6,price:5500}]
+        const tariffPrices = {
+            personal: [{ days: 30, price: 100 }, { days: 60, price: 200 }, { days: 90, price: 300 }, { days: 180, price: 600 }],
+            family: [{ days: 30, price: 200 }, { days: 60, price: 400 }, { days: 90, price: 600 }, { days: 180, price: 1200 }],
+            forever: [{ devices: 3, price: 4000 }, { devices: 4, price: 4500 }, { devices: 5, price: 5000 }, { devices: 6, price: 5500 }]
         };
-        const selection={'buy-page':{tariff:null,duration:null},'extend-page':{tariff:null,duration:null}};
+        const selection = { 'buy-page': { tariff: null, duration: null }, 'extend-page': { tariff: null, duration: null } };
 
-        function initBuyPage(pageId){
-            selection[pageId]={tariff:null,duration:null};
-            const def=document.querySelector(`#${pageId} .tariff-btn[data-tariff="personal"]`);
-            def&&selectTariff(def,pageId);
+        function initBuyPage(pageId) {
+            selection[pageId] = { tariff: null, duration: null };
+            const def = document.querySelector(`#${pageId} .tariff-btn[data-tariff="personal"]`);
+            def && selectTariff(def, pageId);
         }
-        function selectTariff(btn,pageId){
-            const isBuy=pageId==='buy-page',prefix=isBuy?'buy':'extend';
-            document.querySelectorAll(`#${pageId} .tariff-btn`).forEach(b=>b.classList.remove('selected'));
+
+        function selectTariff(btn, pageId) {
+            const isBuy = pageId === 'buy-page', prefix = isBuy ? 'buy' : 'extend';
+            document.querySelectorAll(`#${pageId} .tariff-btn`).forEach(b => b.classList.remove('selected'));
             btn.classList.add('selected');
-            const t=btn.dataset.tariff; selection[pageId].tariff=t; selection[pageId].duration=null;
-            const f=tariffData[t],fe=document.getElementById(`tariff-features-${prefix}`);
-            fe.innerHTML=`
-                <div class="feature-item"><i class="fas ${f.icon}"></i><span>${f.devices} ${t==='forever'?'':'устройства'}</span></div>
+            const t = btn.dataset.tariff; selection[pageId].tariff = t; selection[pageId].duration = null;
+            const f = tariffData[t], fe = document.getElementById(`tariff-features-${prefix}`);
+
+            // Исправлено: добавлен суффикс "устройства" для Личного и Семейного
+            const devicesText = t === 'forever' ? f.devices : `${f.devices} устройства`;
+
+            fe.innerHTML = `
+                <div class="feature-item"><i class="fas ${f.icon}"></i><span>${devicesText}</span></div>
                 <div class="feature-item"><i class="fas fa-tachometer-alt"></i><span>${f.speed}</span></div>
                 <div class="feature-item"><i class="fas fa-infinity"></i><span>${f.traffic}</span></div>`;
-            const oc=document.getElementById(`duration-options-${prefix}`); oc.innerHTML='';
-            const forever=t==='forever';
-            document.querySelector(`#${pageId} .duration-title`).textContent=forever?
-                (isBuy?'Выберите кол-во устройств':'Выберите кол-во устройств'):
-                (isBuy?'Выберите срок подписки':'Выберите срок продления');
-            tariffPrices[t].forEach(it=>{
-                const opt=document.createElement('div'); opt.className='duration-option';
-                const label=forever?`${it.devices} устройства`:`${it.days} дней`;
-                const val=forever?it.devices:it.days;
-                opt.innerHTML=`<span>${label}</span><span class="price">${it.price} ₽</span>`;
-                opt.onclick=()=>{
-                    document.querySelectorAll(`#${pageId} .duration-option`).forEach(o=>o.classList.remove('selected'));
+            
+            const oc = document.getElementById(`duration-options-${prefix}`); oc.innerHTML = '';
+            const forever = t === 'forever';
+            document.querySelector(`#${pageId} .duration-title`).textContent = forever ?
+                (isBuy ? 'Выберите кол-во устройств' : 'Выберите кол-во устройств') :
+                (isBuy ? 'Выберите срок подписки' : 'Выберите срок продления');
+            tariffPrices[t].forEach(it => {
+                const opt = document.createElement('div'); opt.className = 'duration-option';
+                const label = forever ? `${it.devices} устройства` : `${it.days} дней`;
+                const val = forever ? it.devices : it.days;
+                opt.innerHTML = `<span>${label}</span><span class="price">${it.price} ₽</span>`;
+                opt.onclick = () => {
+                    document.querySelectorAll(`#${pageId} .duration-option`).forEach(o => o.classList.remove('selected'));
                     opt.classList.add('selected');
-                    selection[pageId].duration={...it,value:val};
+                    selection[pageId].duration = { ...it, value: val };
                     updateBuyButton(pageId);
                 };
                 oc.appendChild(opt);
             });
             updateBuyButton(pageId);
         }
-        function updateBuyButton(pageId){
-            const isBuy=pageId==='buy-page',prefix=isBuy?'buy':'extend';
-            const btn=document.getElementById(`buy-full-button-${prefix}`),sel=selection[pageId];
-            if(sel.tariff&&sel.duration){
+
+        function updateBuyButton(pageId) {
+            const isBuy = pageId === 'buy-page', prefix = isBuy ? 'buy' : 'extend';
+            const btn = document.getElementById(`buy-full-button-${prefix}`), sel = selection[pageId];
+            if (sel.tariff && sel.duration) {
                 btn.classList.remove('disabled');
-                const suf=sel.tariff==='forever'?sel.duration.value:sel.duration.days;
-                const cmd=isBuy?'buy':'extend',act=isBuy?'Купить':'Продлить';
-                btn.innerHTML=`<i class="fas fa-${isBuy?'shopping-cart':'clock'}"></i> ${act} за ${sel.duration.price} ₽`;
-                btn.onclick=()=>goToLinkAndClose(`https://t.me/on1xVPN_bot?start=${cmd}_${sel.tariff}_${suf}`);
-            }else{
-                btn.classList.add('disabled'); btn.onclick=null;
-                let ph=!sel.tariff?'Выберите тариф':(sel.tariff==='forever'?'Выберите кол-во устройств':
-                    (isBuy?'Выберите срок подписки':'Выберите срок продления'));
-                btn.innerHTML=`<i class="fas fa-${isBuy?'shopping-cart':'clock'}"></i> ${ph}`;
+                const suf = sel.tariff === 'forever' ? sel.duration.value : sel.duration.days;
+                const cmd = isBuy ? 'buy' : 'extend', act = isBuy ? 'Купить' : 'Продлить';
+                btn.innerHTML = `<i class="fas fa-${isBuy ? 'shopping-cart' : 'clock'}"></i> ${act} за ${sel.duration.price} ₽`;
+                btn.onclick = () => goToLinkAndClose(`https://t.me/on1xVPN_bot?start=${cmd}_${sel.tariff}_${suf}`);
+            } else {
+                btn.classList.add('disabled'); btn.onclick = null;
+                let ph = !sel.tariff ? 'Выберите тариф' : (sel.tariff === 'forever' ? 'Выберите кол-во устройств' :
+                    (isBuy ? 'Выберите срок подписки' : 'Выберите срок продления'));
+                btn.innerHTML = `<i class="fas fa-${isBuy ? 'shopping-cart' : 'clock'}"></i> ${ph}`;
             }
         }
 
         // ПОЛЬЗОВАТЕЛЬ + БАЛАНС
-        let loaded=false;
-        function loadUserData(){
-            if(loaded) return; loaded=true;
-            if(!Telegram?.WebApp?.initDataUnsafe?.user) return;
-            const u=Telegram.WebApp.initDataUnsafe.user;
-            const uid=u.id, avatar=u.photo_url||'https://sun9-8.userapi.com/s/v1/ig2/YBkIITuiQ13e1vw3WhNGJekU_fMB3jXEeTjqLb-EAnydjnDmqCVu7sATDepkrUUo6UXWQ4x74BtgfBrgdhWUZZlN.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640&from=bu&cs=640x0';
-            const greet=`Добро пожаловать, ${u.first_name}${u.last_name?' '+u.last_name:''}`;
-            ['sub','prof','menu'].forEach(s=>{
-                const el=document.getElementById(`user-avatar-${s}`);
-                if(el) el.src=avatar;
-                const g=document.getElementById(`user-greeting-${s}`);
-                if(g) g.textContent=greet;
-                const id=document.getElementById(`user-id-${s}`);
-                if(id) id.textContent=`ID: ${uid}`;
+        let loaded = false;
+        function loadUserData() {
+            if (loaded) return; loaded = true;
+            if (!Telegram?.WebApp?.initDataUnsafe?.user) return;
+            const u = Telegram.WebApp.initDataUnsafe.user;
+            const uid = u.id, avatar = u.photo_url || 'https://sun9-8.userapi.com/s/v1/ig2/YBkIITuiQ13e1vw3WhNGJekU_fMB3jXEeTjqLb-EAnydjnDmqCVu7sATDepkrUUo6UXWQ4x74BtgfBrgdhWUZZlN.jpg?quality=95&as=32x32,48x48,72x72,108x108,160x160,240x240,360x360,480x480,540x540,640x640&from=bu&cs=640x0';
+            const greet = `Добро пожаловать, ${u.first_name}${u.last_name ? ' ' + u.last_name : ''}`;
+            ['sub', 'prof', 'menu'].forEach(s => {
+                const el = document.getElementById(`user-avatar-${s}`);
+                if (el) el.src = avatar;
+                const g = document.getElementById(`user-greeting-${s}`);
+                if (g) g.textContent = greet;
+                const id = document.getElementById(`user-id-${s}`);
+                if (id) id.textContent = `ID: ${uid}`;
             });
 
-            // ВСТАВЛЕНА ТВОЯ ССЫЛКА ИЗ APP SCRIPTS
-            const API_URL='https://script.google.com/macros/s/AKfycbw02X1b1uJXdqTY7u5IUCfmDjwuqLwd4tBkgbwq8DCZXlsnX5swXKlgarpwm1JsBSCV/exec';
+            const API_URL = 'https://script.google.com/macros/s/AKfycbw02X1b1uJXdqTY7u5IUCfmDjwuqLwd4tBkgbwq8DCZXlsnX5swXKlgarpwm1JsBSCV/exec';
             fetch(`${API_URL}?id=${uid}`)
-                .then(r=>r.ok?r.json():Promise.reject())
-                .then(d=>{
-                    const bal=Number(d.balance||0);
-                    document.getElementById('balance-value').textContent=`${bal.toFixed(2)} RUB`;
+                .then(r => r.ok ? r.json() : Promise.reject())
+                .then(d => {
+                    const bal = Number(d.balance || 0);
+                    document.getElementById('balance-value').textContent = `${bal.toFixed(2)} RUB`;
                 })
-                .catch(()=>{document.getElementById('balance-value').textContent='0.00 RUB';});
+                .catch(() => { document.getElementById('balance-value').textContent = '0.00 RUB'; });
         }
 
-        document.addEventListener('DOMContentLoaded',()=>{
+        document.addEventListener('DOMContentLoaded', () => {
             Telegram?.WebApp?.ready();
             Telegram?.WebApp?.disableVerticalSwipes?.();
             loadUserData();
