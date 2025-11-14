@@ -21,7 +21,7 @@
         [data-theme="light"]{
             --primary-color:#0077cc;--bg-dark:#f8f9fa;--card-bg:#ffffff;--text-color:#1a1a1a;
             --text-secondary:#555555;--border-color:#e0e0e0;
-            --nav-bg-opacity:rgba(240,240,240,.95);
+            --nav-bg-opacity:rgba(240,240,240,.7);
             --nav-border:rgba(0,0,0,.1);
             --nav-active:rgba(0,119,204,.15);--hover-bg:rgba(0,0,0,.05);
             --reload-bg:#ffffff;--reload-text:#555555;--reload-border:#e0e0e0;
@@ -45,7 +45,7 @@
             box-shadow:0 2px 8px rgba(0,0,0,.1);transition:.2s;}
         .settings-icon:hover{background:var(--hover-bg);transform:translateY(-50%) scale(1.1);}
         .user-profile{display:flex;align-items:center;gap:12px;margin:10px auto 20px;max-width:500px;
-            padding:15px;background:var(--card-bg);border-radius:15px;box-shadow:0 4px 10px rgba(0,0,0,.15);
+            padding:15px;background:var(--card-bg);border-radius:15px;box-shadow:1px 4px 10px rgba(0,0,0,.15);
             border:1px solid var(--border-color);}
         .user-avatar{width:40px;height:40px;border-radius:50%;object-fit:cover;}
         .user-greeting{font-size:1.1em;font-weight:600;color:var(--text-color);margin-bottom:3px;}
@@ -83,7 +83,7 @@
             justify-content:center;gap:8px;}
         .balance-btn:hover{background:#0066aa;}
 
-        /* НИЖНЕЕ МЕНЮ — ПРОЗРАЧНОСТЬ В ОБЕИХ ТЕМАХ */
+        /* НИЖНЕЕ МЕНЮ — ОДИНАКОВАЯ ПРОЗРАЧНОСТЬ И BLUR */
         .bottom-nav{
             position:fixed;bottom:16px;left:25px;right:25px;
             background:var(--nav-bg-opacity);
@@ -93,11 +93,6 @@
             backdrop-filter:blur(16px);
             -webkit-backdrop-filter:blur(16px);
             height:72px;
-        }
-        [data-theme="light"] .bottom-nav{
-            background:rgba(240,240,240,.95);
-            backdrop-filter:blur(16px);
-            -webkit-backdrop-filter:blur(16px);
         }
 
         .nav-item{
