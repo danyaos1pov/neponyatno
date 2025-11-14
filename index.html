@@ -16,7 +16,7 @@
             --reload-bg:#161b22;--reload-text:#b0b8c2;--reload-border:rgba(255,255,255,.05);
             --reload-hover-bg:rgba(255,255,255,.05);--reload-hover-text:#e6edf3;
             --updating-color:#8b949e;
-            --price-color:#fff; /* по умолчанию белый */
+            --price-color:#fff;
         }
         [data-theme="light"]{
             --primary-color:#0077cc;--bg-dark:#f8f9fa;--card-bg:#ffffff;--text-color:#1a1a1a;
@@ -27,7 +27,7 @@
             --reload-bg:#ffffff;--reload-text:#555555;--reload-border:#e0e0e0;
             --reload-hover-bg:rgba(0,0,0,.05);--reload-hover-text:#1a1a1a;
             --updating-color:#888888;
-            --price-color:#1a1a1a; /* ЧЁРНЫЙ в светлой теме */
+            --price-color:#1a1a1a;
         }
         *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;}
         body{background:var(--bg-dark);color:var(--text-color);min-height:100vh;overflow-x:hidden;padding-bottom:90px;transition:all .3s;}
@@ -260,6 +260,134 @@
         .status-item.updating .status-indicator i{
             color:var(--updating-color);
         }
+
+        /* === НОВАЯ СТРАНИЦА: УСТАНОВКА ПРИЛОЖЕНИЯ === */
+        .device-selector {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            margin: 20px 0;
+        }
+        .device-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 16px 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all .2s;
+            font-size: .95em;
+            color: var(--text-color);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+        }
+        .device-btn i {
+            font-size: 1.6em;
+            color: var(--primary-color);
+        }
+        .device-btn:hover {
+            background: var(--hover-bg);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,.1);
+        }
+        .device-btn.active {
+            border-color: var(--primary-color);
+            background: var(--nav-active);
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        .device-instruction {
+            margin-top: 20px;
+            min-height: 200px;
+        }
+        .instruction-content {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 20px;
+            line-height: 1.7;
+            font-size: .95em;
+            color: var(--text-secondary);
+        }
+        .instruction-content h4 {
+            color: var(--text-color);
+            font-size: 1.2em;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .instruction-content ol {
+            padding-left: 20px;
+            margin: 12px 0;
+        }
+        .instruction-content li {
+            margin: 8px 0;
+        }
+        .instruction-content a {
+            color: var(--primary-color);
+            text-decoration: none;
+        }
+        .instruction-placeholder {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-secondary);
+            font-size: 1.1em;
+        }
+        .instruction-placeholder i {
+            font-size: 2.5em;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            opacity: .5;
+        }
+        .download-faq-btn {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 16px;
+            background: var(--card-bg);
+            color: var(--text-color);
+            font-size: 1em;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: .2s;
+            border: 1px solid var(--border-color);
+            margin-top: 16px;
+            text-decoration: none;
+        }
+        .download-faq-btn i {
+            font-size: 1.2em;
+            color: var(--primary-color);
+            width: 24px;
+            text-align: center;
+        }
+        .download-faq-btn .btn-text {
+            flex: 1;
+            text-align: center;
+            margin-left: -18px;
+        }
+        .download-faq-btn:hover {
+            background: var(--hover-bg);
+        }
+        .note {
+            margin-top: 16px;
+            padding: 12px;
+            background: rgba(255,255,255,.05);
+            border-radius: 10px;
+            font-size: .9em;
+            color: var(--text-secondary);
+        }
+        .success {
+            color: #4ade80;
+            font-weight: 600;
+            margin-top: 12px;
+        }
+        .warning {
+            color: #f87171;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body data-theme="dark">
@@ -304,16 +432,13 @@
                 <div class="block-title">Управление подпиской</div>
                 <div class="profile-menu">
                     <div class="profile-menu-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=f_5331349')">
-                        <i class="fas fa-key"></i>
-                        <div class="btn-text">Моя подписка</div>
+                        <i class="fas fa-key"></i><div class="btn-text">Моя подписка</div>
                     </div>
                     <div class="profile-menu-btn" onclick="showChangeTariffModal()">
-                        <i class="fas fa-exchange-alt"></i>
-                        <div class="btn-text">Сменить тариф</div>
+                        <i class="fas fa-exchange-alt"></i><div class="btn-text">Сменить тариф</div>
                     </div>
                     <div class="profile-menu-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=f_5098822')">
-                        <i class="fas fa-undo"></i>
-                        <div class="btn-text">Возврат подписки</div>
+                        <i class="fas fa-undo"></i><div class="btn-text">Возврат подписки</div>
                     </div>
                 </div>
             </div>
@@ -322,15 +447,15 @@
             <div class="news-block">
                 <div class="news-text">Следите за новостями, обновлениями и розыгрышами</div>
                 <div class="subscribe-btn" onclick="goToLinkAndClose('https://t.me/ON1Xvpn')">
-                    <i class="fab fa-telegram-plane"></i> Подписаться в Telegram
+                    <i class="fas fa-bell"></i> Подписаться в Telegram
                 </div>
             </div>
 
             <button class="reload-btn" onclick="reloadApp()">
-                <i class="fas fa-sync-alt"></i> Перезагрузить
+                <i class="fas fa-sync"></i> Перезагрузить
             </button>
 
-            <div class="app-version">Версия: 1.0.0</div>
+            <div class="app-version">Версия: 6.1</div>
         </div>
     </div>
 
@@ -363,7 +488,7 @@
                 </div>
             </div>
 
-            <div class="app-version">Версия: 1.0.0</div>
+            <div class="app-version">Версия: 6.1</div>
         </div>
     </div>
 
@@ -384,33 +509,27 @@
             </div>
 
             <div class="profile-menu">
-                <div class="profile-menu-btn">
-                    <i class="fas fa-download"></i>
-                    <div class="btn-text">Установить приложение</div>
+                <div class="profile-menu-btn" onclick="showPage('install-page')">
+                    <i class="fas fa-mobile-alt"></i><div class="btn-text">Установить приложение</div>
                 </div>
                 <div class="profile-menu-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=f_5371698')">
-                    <i class="fas fa-user-plus"></i>
-                    <div class="btn-text">Пригласить друзей</div>
+                    <i class="fas fa-user-friends"></i><div class="btn-text">Пригласить друзей</div>
                 </div>
-                <div class="profile-menu-btn" onclick="showPage('faq-page', 'menu-page')">
-                    <i class="fas fa-question-circle"></i>
-                    <div class="btn-text">FAQ</div>
+                <div class="profile-menu-btn" onclick="showPage('faq-page')">
+                    <i class="fas fa-question-circle"></i><div class="btn-text">FAQ</div>
                 </div>
                 <div class="profile-menu-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_admin')">
-                    <i class="fas fa-headset"></i>
-                    <div class="btn-text">Поддержка</div>
+                    <i class="fas fa-headset"></i><div class="btn-text">Поддержка</div>
                 </div>
-                <div class="profile-menu-btn" onclick="showPage('status-page', 'menu-page')">
-                    <i class="fas fa-server"></i>
-                    <div class="btn-text">Статус систем</div>
+                <div class="profile-menu-btn" onclick="showPage('status-page')">
+                    <i class="fas fa-server"></i><div class="btn-text">Статус систем</div>
                 </div>
-                <div class="profile-menu-btn" onclick="showPage('settings-page', 'menu-page')">
-                    <i class="fas fa-cog"></i>
-                    <div class="btn-text">Настройки приложения</div>
+                <div class="profile-menu-btn" onclick="showPage('settings-page')">
+                    <i class="fas fa-cog"></i><div class="btn-text">Настройки приложения</div>
                 </div>
             </div>
 
-            <div class="app-version">Версия: 1.0.0</div>
+            <div class="app-version">Версия: 6.1</div>
         </div>
     </div>
 
@@ -428,16 +547,15 @@
                     <label class="toggle-switch">
                         <input type="checkbox" id="theme-toggle">
                         <span class="slider"></span>
-                    </span>
                     </label>
                 </div>
 
                 <button class="reload-btn full" onclick="reloadApp()">
-                    <i class="fas fa-sync-alt"></i> Перезагрузить приложение
+                    <i class="fas fa-sync"></i> Перезагрузить приложение
                 </button>
             </div>
 
-            <div class="app-version">Версия: 1.0.0</div>
+            <div class="app-version">Версия: 6.1</div>
         </div>
     </div>
 
@@ -503,7 +621,7 @@
                 </div>
             </div>
 
-            <div class="app-version">Версия: 1.0.0</div>
+            <div class="app-version">Версия: 6.1</div>
         </div>
     </div>
 
@@ -533,7 +651,7 @@
                 </div>
             </div>
 
-            <div class="app-version">Версия: 1.0.0</div>
+            <div class="app-version">Версия: 6.1</div>
         </div>
     </div>
 
@@ -563,7 +681,7 @@
                 </div>
             </div>
 
-            <div class="app-version">Версия: 1.0.0</div>
+            <div class="app-version">Версия: 6.1</div>
         </div>
     </div>
 
@@ -630,10 +748,35 @@
             </div>
 
             <button class="reload-btn full" onclick="updateSystemStatus()">
-                <i class="fas fa-sync-alt"></i> Обновить
+                <i class="fas fa-sync"></i> Обновить
             </button>
 
-            <div class="app-version">Версия: 1.0.0</div>
+            <div class="app-version">Версия: 6.1</div>
+        </div>
+    </div>
+
+    <!-- НОВАЯ СТРАНИЦА: УСТАНОВКА ПРИЛОЖЕНИЯ -->
+    <div id="install-page" class="page">
+        <div class="main-content">
+            <div class="header">
+                <h1><span>ON1X</span> VPN</h1>
+                <div class="tagline">Установка приложения</div>
+            </div>
+
+            <div class="device-selector">
+                <div class="device-btn" data-device="iphone" onclick="showDeviceInstruction('iphone')"><i class="fab fa-apple"></i><span>iPhone / iPad</span></div>
+                <div class="device-btn" data-device="android" onclick="showDeviceInstruction('android')"><i class="fab fa-android"></i><span>Android</span></div>
+                <div class="device-btn" data-device="windows" onclick="showDeviceInstruction('windows')"><i class="fab fa-windows"></i><span>Windows</span></div>
+                <div class="device-btn" data-device="macos" onclick="showDeviceInstruction('macos')"><i class="fab fa-apple"></i><span>Mac OS</span></div>
+                <div class="device-btn" data-device="linux" onclick="showDeviceInstruction('linux')"><i class="fab fa-linux"></i><span>Linux</span></div>
+                <div class="device-btn" data-device="androidtv" onclick="showDeviceInstruction('androidtv')"><i class="fas fa-tv"></i><span>Android TV</span></div>
+            </div>
+
+            <div id="device-instruction" class="device-instruction">
+                <div class="instruction-placeholder"><i class="fas fa-mobile-alt"></i><p>Выберите ваше устройство</p></div>
+            </div>
+
+            <div class="app-version">Версия: 6.1</div>
         </div>
     </div>
 
@@ -642,23 +785,20 @@
         <div class="modal">
             <h3>Смена тарифа</h3>
             <p>Для того, чтобы сменить тариф, при продлении подписки необходимо выбрать другой тариф.</p>
-            <button class="close-btn" onclick="closeModal()">Понятно</button>
+            <button class="close-btn" onclick="closeModal()"><i class="fas fa-check"></i> Понятно</button>
         </div>
     </div>
 
     <!-- НИЖНЕЕ МЕНЮ -->
     <div class="bottom-nav">
-        <div class="nav-item active" data-page="subscription-page">
-            <i class="fas fa-key"></i>
-            <div>Подписка</div>
+        <div class="nav-item active" data-page="subscription-page" onclick="showPage('subscription-page')">
+            <i class="fas fa-key"></i> Подписка
         </div>
-        <div class="nav-item" data-page="profile-page">
-            <i class="fas fa-wallet"></i>
-            <div>Профиль</div>
+        <div class="nav-item" data-page="profile-page" onclick="showPage('profile-page')">
+            <i class="fas fa-wallet"></i> Профиль
         </div>
-        <div class="nav-item" data-page="menu-page">
-            <i class="fas fa-bars"></i>
-            <div>Меню</div>
+        <div class="nav-item" data-page="menu-page" onclick="showPage('menu-page')">
+            <i class="fas fa-bars"></i> Меню
         </div>
     </div>
 
@@ -696,6 +836,7 @@
                 }
             }
             if (id === 'buy-page' || id === 'extend-page') initBuyPage(id);
+            if (id === 'install-page') setTimeout(detectAndShowDevice, 100);
         }
         document.querySelectorAll('.nav-item').forEach(i => i.addEventListener('click', () => {
             lastMainPage = i.dataset.page;
@@ -720,7 +861,7 @@
             if (!open) { ans.classList.add('open'); el.classList.add('active'); }
         }
 
-        // ТАРИФЫ — ЦЕНЫ: ЧЁРНЫЙ В СВЕТЛОЙ ТЕМЕ
+        // ТАРИФЫ
         const tariffData = {
             personal: { devices: 3, speed: 'Скорость до 10 Гбит/с', traffic: 'Безлимит трафик', icon: 'fa-user' },
             family: { devices: 6, speed: 'Скорость до 10 Гбит/с', traffic: 'Безлимит трафик', icon: 'fa-users' },
@@ -837,7 +978,7 @@
                 });
         }
 
-        // СТАТУС СИСТЕМ — 2.5 сек, серый текст
+        // СТАТУС СИСТЕМ
         function updateSystemStatus() {
             const items = document.querySelectorAll('#status-page .status-item');
             items.forEach(item => {
@@ -870,6 +1011,34 @@
                     item.classList.remove('updating');
                 });
             }, 2500);
+        }
+
+        // УСТАНОВКА — ИНСТРУКЦИИ
+        const deviceInstructions = {
+            iphone: `<div class="instruction-content"><h4><i class="fab fa-apple"></i> iPhone / iPad</h4><ol><li>Скопируйте ключ (ссылка) доступа</li><li>Скачайте и установите приложение</li><li>Откройте приложение</li><li>В правом верхнем углу нажмите на "+" </li><li>Нажмите "Добавить из буфера"</li><li>Нажмите "Разрешить вставку"</li><li>Подключитесь к VPN</li></ol><div class="success">Готово! VPN настроен и готов к работе!</div><div class="note"><span class="warning">Ссылка — это ключ. Открывать ссылку не нужно!</span></div><a href="https://apps.apple.com/ru/app/v2raytun/id6476628951" target="_blank" class="download-faq-btn"><i class="fas fa-download"></i><div class="btn-text">Скачать приложение</div></a></div>`,
+            android: `<div class="instruction-content"><h4><i class="fab fa-android"></i> Android</h4><ol><li>Скопируйте ключ (ссылка) доступа</li><li>Скачайте и установите приложение</li><li>Откройте приложение</li><li>В правом верхнем углу нажмите на "+" </li><li>Теперь нажмите "Импорт из буфера обмена"</li><li>Подключитесь к VPN</li></ol><div class="success">Готово! VPN настроен и готов к работе!</div><div class="note"><span class="warning">Ссылка — это ключ. Открывать ссылку не нужно!</span></div><a href="https://play.google.com/store/apps/details?id=com.v2raytun.android" target="_blank" class="download-faq-btn"><i class="fas fa-download"></i><div class="btn-text">Скачать приложение</div></a></div>`,
+            windows: `<div class="instruction-content"><h4><i class="fab fa-windows"></i> Windows</h4><ol><li>Скопируйте ключ (ссылка) доступа</li><li>Скачайте и установите приложение</li><li>Откройте приложение</li><li>В правом верхнем углу нажмите на "+" </li><li>Теперь нажмите "Импорт из буфера обмена"</li><li>Подключитесь к VPN</li></ol><div class="success">Готово! VPN настроен и готов к работе!</div><div class="note"><span class="warning">Ссылка — это ключ. Открывать ссылку не нужно!</span></div><a href="https://storage.v2raytun.com/v2RayTun_Setup.exe" target="_blank" class="download-faq-btn"><i class="fas fa-download"></i><div class="btn-text">Скачать приложение</div></a></div>`,
+            macos: `<div class="instruction-content"><h4><i class="fab fa-apple"></i> Mac OS</h4><ol><li>Скопируйте ключ (ссылка) доступа</li><li>Скачайте и установите приложение</li><li>Откройте приложение</li><li>В правом верхнем углу нажмите на "+" </li><li>Теперь нажмите "Импорт из буфера обмена"</li><li>Подключитесь к VPN</li></ol><div class="success">Готово! VPN настроен и готов к работе!</div><div class="note"><span class="warning">Ссылка — это ключ. Открывать ссылку не нужно!</span></div><a href="https://apps.apple.com/en/app/v2raytun/id6476628951" target="_blank" class="download-faq-btn"><i class="fas fa-download"></i><div class="btn-text">Скачать приложение</div></a></div>`,
+            linux: `<div class="instruction-content"><h4><i class="fab fa-linux"></i> Linux</h4><ol><li>Скопируйте ключ (ссылка) доступа</li><li>Скачайте и установите приложение</li><li>Откройте приложение</li><li>В правом верхнем углу нажмите на "+" </li><li>Теперь нажмите "Импорт из буфера обмена"</li><li>Подключитесь к VPN</li></ol><div class="success">Готово! VPN настроен и готов к работе!</div><div class="note"><span class="warning">Ссылка — это ключ. Открывать ссылку не нужно!</span></div><a href="https://github.com/hiddify/hiddify-app/releases/latest/download/Hiddify-Linux-x64.AppImage" target="_blank" class="download-faq-btn"><i class="fas fa-download"></i><div class="btn-text">Скачать приложение</div></a></div>`,
+            androidtv: `<div class="instruction-content"><h4><i class="fas fa-tv"></i> Android TV</h4><ol><li>Установите приложение V2RayTun из Google Play.</li><li>Установите и откройте приложение</li><li>Откройте раздел "Управление"</li><li>Нажмите "Импорт с телефона"</li><li>Откройте приложение на телефоне</li><li>Нажмите на кнопку с QR-Код</li><li>Отсканируйте QR-Код на телевизоре с помощью телефона</li><li>Подключитесь к VPN</li></ol><div class="success">Готово! VPN настроен и готов к работе!</div></div>`
+        };
+
+        function showDeviceInstruction(device) {
+            const container = document.getElementById('device-instruction');
+            container.innerHTML = deviceInstructions[device];
+            document.querySelectorAll('.device-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.device === device));
+            container.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+
+        function detectAndShowDevice() {
+            const ua = navigator.userAgent.toLowerCase();
+            let detected = 'android';
+            if (/iphone|ipad|ipod/.test(ua)) detected = 'iphone';
+            else if (/windows/.test(ua)) detected = 'windows';
+            else if (/macintosh/.test(ua)) detected = 'macos';
+            else if (/linux/.test(ua) && !/android/.test(ua)) detected = 'linux';
+            else if (/android.*tv|smart-tv|android tv/.test(ua)) detected = 'androidtv';
+            showDeviceInstruction(detected);
         }
 
         // Инициализация
