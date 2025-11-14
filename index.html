@@ -10,20 +10,24 @@
         :root{
             --primary-color:#2481cc;--bg-dark:#0d1117;--card-bg:#161b22;--text-color:#e6edf3;
             --text-secondary:#b0b8c2;--border-color:rgba(255,255,255,.05);
-            --nav-bg-opacity:rgba(10,14,19,.7); /* 70% непрозрачность */
+            --nav-bg-opacity:rgba(10,14,19,.7);
             --nav-border:rgba(255,255,255,.1);
             --nav-active:rgba(36,129,204,.25);--hover-bg:rgba(255,255,255,.05);
             --reload-bg:#161b22;--reload-text:#b0b8c2;--reload-border:rgba(255,255,255,.05);
             --reload-hover-bg:rgba(255,255,255,.05);--reload-hover-text:#e6edf3;
+            --updating-color:#8b949e;
+            --price-color:#fff; /* по умолчанию белый */
         }
         [data-theme="light"]{
             --primary-color:#0077cc;--bg-dark:#f8f9fa;--card-bg:#ffffff;--text-color:#1a1a1a;
             --text-secondary:#555555;--border-color:#e0e0e0;
-            --nav-bg-opacity:rgba(255,255,255,.7); /* 70% для светлой */
+            --nav-bg-opacity:rgba(255,255,255,.7);
             --nav-border:rgba(0,0,0,.1);
             --nav-active:rgba(0,119,204,.15);--hover-bg:rgba(0,0,0,.05);
             --reload-bg:#ffffff;--reload-text:#555555;--reload-border:#e0e0e0;
             --reload-hover-bg:rgba(0,0,0,.05);--reload-hover-text:#1a1a1a;
+            --updating-color:#888888;
+            --price-color:#1a1a1a; /* ЧЁРНЫЙ в светлой теме */
         }
         *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;}
         body{background:var(--bg-dark);color:var(--text-color);min-height:100vh;overflow-x:hidden;padding-bottom:90px;transition:all .3s;}
@@ -80,7 +84,7 @@
         .balance-btn:hover{background:#0066aa;}
         .app-version{margin-top:30px;font-size:.8em;color:var(--text-secondary);text-align:center;}
 
-        /* НИЖНЕЕ МЕНЮ — ВИДНОЕ, НО ПРОЗРАЧНОЕ С РАЗМЫТИЕМ */
+        /* НИЖНЕЕ МЕНЮ */
         .bottom-nav{
             position:fixed;bottom:16px;left:25px;right:25px;
             background:var(--nav-bg-opacity);
@@ -132,7 +136,7 @@
         .tariff-title,.duration-title{text-align:center;font-size:1.1em;font-weight:600;
             color:var(--text-color);margin-bottom:16px;}
 
-        /* ТАРИФЫ — ЕДИНЫЙ БЛОК БЕЗ РАЗДЕЛИТЕЛЕЙ */
+        /* ТАРИФЫ */
         .tariff-buttons{
             display:flex;
             margin-bottom:16px;
@@ -173,7 +177,10 @@
         .duration-option:hover{background:var(--hover-bg);border-color:var(--text-secondary);}
         .duration-option.selected{border-color:var(--primary-color);background:var(--nav-active);
             color:var(--primary-color);font-weight:700;}
-        .duration-option .price{color:#fff !important; font-weight:700;}
+        .duration-option .price{
+            color:var(--price-color) !important;
+            font-weight:700;
+        }
         .buy-full-button{width:100%;padding:16px 0;background:var(--primary-color);color:#fff;
             font-weight:600;font-size:1.1em;border-radius:12px;cursor:pointer;transition:.2s;
             display:flex;align-items:center;justify-content:center;gap:8px;}
@@ -205,6 +212,54 @@
             font-size:1em;border-radius:8px;cursor:pointer;transition:.2s;width:100%;
         }
         .subscribe-btn:hover{background:#0066aa;}
+
+        /* СТАТУСЫ СИСТЕМ */
+        .status-block{
+            background:var(--card-bg);
+            border-radius:18px;
+            padding:20px 18px;
+            box-shadow:0 6px 16px rgba(0,0,0,.15);
+            border:1px solid var(--border-color);
+            margin:20px 0;
+            text-align:center;
+        }
+        .status-block-title{
+            font-size:1.1em;
+            font-weight:600;
+            color:var(--text-color);
+            margin-bottom:16px;
+        }
+        .status-list{
+            display:flex;
+            flex-direction:column;
+            gap:12px;
+            padding:8px 0;
+        }
+        .status-item{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            font-size:1em;
+            color:var(--text-color);
+            padding:6px 0;
+        }
+        .status-indicator{
+            display:flex;
+            align-items:center;
+            gap:6px;
+            font-weight:600;
+            font-size:0.95em;
+        }
+        .status-indicator i{font-size:0.7em;}
+        .status-indicator.online{color:#4ade80;}
+        .status-indicator.offline{color:#f87171;}
+        .status-item.updating .status-indicator{
+            color:var(--updating-color);
+            opacity:0.7;
+        }
+        .status-item.updating .status-indicator i{
+            color:var(--updating-color);
+        }
     </style>
 </head>
 <body data-theme="dark">
@@ -345,7 +400,7 @@
                     <i class="fas fa-headset"></i>
                     <div class="btn-text">Поддержка</div>
                 </div>
-                <div class="profile-menu-btn">
+                <div class="profile-menu-btn" onclick="showPage('status-page', 'menu-page')">
                     <i class="fas fa-server"></i>
                     <div class="btn-text">Статус систем</div>
                 </div>
@@ -373,6 +428,7 @@
                     <label class="toggle-switch">
                         <input type="checkbox" id="theme-toggle">
                         <span class="slider"></span>
+                    </span>
                     </label>
                 </div>
 
@@ -511,6 +567,76 @@
         </div>
     </div>
 
+    <!-- СТРАНИЦА СТАТУС СИСТЕМ -->
+    <div id="status-page" class="page">
+        <div class="main-content">
+            <div class="header">
+                <h1><span>ON1X</span> VPN</h1>
+                <div class="tagline">Статус систем</div>
+            </div>
+
+            <!-- БЛОК 1: СИСТЕМА -->
+            <div class="status-block">
+                <div class="status-block-title">Система</div>
+                <div class="status-list">
+                    <div class="status-item" data-name="MiniApp">
+                        <span>MiniApp</span>
+                        <span class="status-indicator online"><i class="fas fa-circle"></i> Онлайн</span>
+                    </div>
+                    <div class="status-item" data-name="БОТ Telegram">
+                        <span>БОТ Telegram</span>
+                        <span class="status-indicator online"><i class="fas fa-circle"></i> Онлайн</span>
+                    </div>
+                    <div class="status-item" data-name="API Сервер">
+                        <span>API Сервер</span>
+                        <span class="status-indicator online"><i class="fas fa-circle"></i> Онлайн</span>
+                    </div>
+                    <div class="status-item" data-name="Страница подписки">
+                        <span>Страница подписки</span>
+                        <span class="status-indicator online"><i class="fas fa-circle"></i> Онлайн</span>
+                    </div>
+                    <div class="status-item" data-name="Уведомления">
+                        <span>Уведомления</span>
+                        <span class="status-indicator online"><i class="fas fa-circle"></i> Онлайн</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- БЛОК 2: СЕРВЕРА -->
+            <div class="status-block">
+                <div class="status-block-title">Сервера</div>
+                <div class="status-list">
+                    <div class="status-item" data-name="Нидерланды #1">
+                        <span>Нидерланды #1</span>
+                        <span class="status-indicator online"><i class="fas fa-circle"></i> Онлайн</span>
+                    </div>
+                    <div class="status-item" data-name="Нидерланды #2">
+                        <span>Нидерланды #2</span>
+                        <span class="status-indicator online"><i class="fas fa-circle"></i> Онлайн</span>
+                    </div>
+                    <div class="status-item" data-name="Нидерланды #3">
+                        <span>Нидерланды #3</span>
+                        <span class="status-indicator online"><i class="fas fa-circle"></i> Онлайн</span>
+                    </div>
+                    <div class="status-item" data-name="Россия">
+                        <span>Россия</span>
+                        <span class="status-indicator offline"><i class="fas fa-circle"></i> Оффлайн</span>
+                    </div>
+                    <div class="status-item" data-name="Германия">
+                        <span>Германия</span>
+                        <span class="status-indicator offline"><i class="fas fa-circle"></i> Оффлайн</span>
+                    </div>
+                </div>
+            </div>
+
+            <button class="reload-btn full" onclick="updateSystemStatus()">
+                <i class="fas fa-sync-alt"></i> Обновить
+            </button>
+
+            <div class="app-version">Версия: 1.0.0</div>
+        </div>
+    </div>
+
     <!-- МОДАЛЬНОЕ ОКНО -->
     <div id="change-tariff-modal" class="modal-overlay">
         <div class="modal">
@@ -594,16 +720,31 @@
             if (!open) { ans.classList.add('open'); el.classList.add('active'); }
         }
 
-        // ТАРИФЫ
+        // ТАРИФЫ — ЦЕНЫ: ЧЁРНЫЙ В СВЕТЛОЙ ТЕМЕ
         const tariffData = {
             personal: { devices: 3, speed: 'Скорость до 10 Гбит/с', traffic: 'Безлимит трафик', icon: 'fa-user' },
             family: { devices: 6, speed: 'Скорость до 10 Гбит/с', traffic: 'Безлимит трафик', icon: 'fa-users' },
             forever: { devices: 'от 3 до 6', speed: 'Скорость до 25 Гбит/с', traffic: 'Безлимит трафик', icon: 'fa-users-cog' }
         };
         const tariffPrices = {
-            personal: [{ days: 30, price: 100 }, { days: 60, price: 200 }, { days: 90, price: 300 }, { days: 180, price: 600 }],
-            family: [{ days: 30, price: 200 }, { days: 60, price: 400 }, { days: 90, price: 600 }, { days: 180, price: 1200 }],
-            forever: [{ devices: 3, price: 4000 }, { devices: 4, price: 4500 }, { devices: 5, price: 5000 }, { devices: 6, price: 5500 }]
+            personal: [
+                { days: 30, price: 100 },
+                { days: 60, price: 200 },
+                { days: 90, price: 300 },
+                { days: 180, price: 600 }
+            ],
+            family: [
+                { days: 30, price: 200 },
+                { days: 60, price: 400 },
+                { days: 90, price: 600 },
+                { days: 180, price: 1200 }
+            ],
+            forever: [
+                { devices: 3, price: 4000 },
+                { devices: 4, price: 4500 },
+                { devices: 5, price: 5000 },
+                { devices: 6, price: 5500 }
+            ]
         };
         const selection = { 'buy-page': { tariff: null, duration: null }, 'extend-page': { tariff: null, duration: null } };
 
@@ -632,6 +773,7 @@
             document.querySelector(`#${pageId} .duration-title`).textContent = forever ?
                 (isBuy ? 'Выберите кол-во устройств' : 'Выберите кол-во устройств') :
                 (isBuy ? 'Выберите срок подписки' : 'Выберите срок продления');
+            
             tariffPrices[t].forEach(it => {
                 const opt = document.createElement('div'); opt.className = 'duration-option';
                 const label = forever ? `${it.devices} устройства` : `${it.days} дней`;
@@ -665,7 +807,7 @@
             }
         }
 
-        // ПОЛЬЗОВАТЕЛЬ + БАЛАНС — ФОРМАТ 250,6 RUB
+        // ПОЛЬЗОВАТЕЛЬ + БАЛАНС
         let loaded = false;
         function loadUserData() {
             if (loaded) return; loaded = true;
@@ -695,6 +837,42 @@
                 });
         }
 
+        // СТАТУС СИСТЕМ — 2.5 сек, серый текст
+        function updateSystemStatus() {
+            const items = document.querySelectorAll('#status-page .status-item');
+            items.forEach(item => {
+                item.classList.add('updating');
+                const indicator = item.querySelector('.status-indicator');
+                indicator.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Проверка...';
+            });
+
+            setTimeout(() => {
+                const mockResponses = {
+                    'MiniApp': 'online',
+                    'БОТ Telegram': 'online',
+                    'API Сервер': 'online',
+                    'Страница подписки': 'online',
+                    'Уведомления': 'online',
+                    'Нидерланды #1': 'online',
+                    'Нидерланды #2': 'online',
+                    'Нидерланды #3': 'online',
+                    'Россия': 'offline',
+                    'Германия': 'offline'
+                };
+
+                items.forEach(item => {
+                    const name = item.dataset.name;
+                    const status = mockResponses[name] || 'online';
+                    const statusText = status === 'online' ? 'Онлайн' : 'Оффлайн';
+                    const indicator = item.querySelector('.status-indicator');
+                    indicator.innerHTML = `<i class="fas fa-circle"></i> ${statusText}`;
+                    indicator.className = 'status-indicator ' + status;
+                    item.classList.remove('updating');
+                });
+            }, 2500);
+        }
+
+        // Инициализация
         document.addEventListener('DOMContentLoaded', () => {
             Telegram?.WebApp?.ready();
             Telegram?.WebApp?.disableVerticalSwipes?.();
