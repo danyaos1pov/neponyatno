@@ -21,7 +21,7 @@
         [data-theme="light"]{
             --primary-color:#0077cc;--bg-dark:#f8f9fa;--card-bg:#ffffff;--text-color:#1a1a1a;
             --text-secondary:#555555;--border-color:#e0e0e0;
-            --nav-bg-opacity:rgba(240,240,240,.95); /* ← КОНТРАСТНЫЙ ФОН ДЛЯ СВЕТЛОЙ ТЕМЫ */
+            --nav-bg-opacity:rgba(240,240,240,.95);
             --nav-border:rgba(0,0,0,.1);
             --nav-active:rgba(0,119,204,.15);--hover-bg:rgba(0,0,0,.05);
             --reload-bg:#ffffff;--reload-text:#555555;--reload-border:#e0e0e0;
@@ -82,9 +82,8 @@
             font-size:.95em;border-radius:8px;cursor:pointer;transition:.2s;display:flex;align-items:center;
             justify-content:center;gap:8px;}
         .balance-btn:hover{background:#0066aa;}
-        .app-version{margin-top:30px;font-size:.8em;color:var(--text-secondary);text-align:center;}
 
-        /* НИЖНЕЕ МЕНЮ */
+        /* НИЖНЕЕ МЕНЮ — ПРОЗРАЧНОСТЬ В ОБЕИХ ТЕМАХ */
         .bottom-nav{
             position:fixed;bottom:16px;left:25px;right:25px;
             background:var(--nav-bg-opacity);
@@ -95,6 +94,12 @@
             -webkit-backdrop-filter:blur(16px);
             height:72px;
         }
+        [data-theme="light"] .bottom-nav{
+            background:rgba(240,240,240,.95);
+            backdrop-filter:blur(16px);
+            -webkit-backdrop-filter:blur(16px);
+        }
+
         .nav-item{
             flex:1;padding:10px 0;color:var(--text-secondary);font-size:.8em;font-weight:600;text-align:center;
             border-radius:12px;cursor:pointer;transition:.25s;display:flex;flex-direction:column;
@@ -388,6 +393,9 @@
             color: #f87171;
             font-weight: 600;
         }
+        .app-version{
+            margin-top:30px;font-size:.8em;color:var(--text-secondary);text-align:center;
+        }
     </style>
 </head>
 <body data-theme="dark">
@@ -411,7 +419,6 @@
                 </div>
             </div>
 
-            <!-- БЛОК: Подписка ON1X VPN -->
             <div class="subscription-block">
                 <div class="block-title">Подписка ON1X VPN</div>
                 <div class="action-buttons-row">
@@ -427,7 +434,6 @@
                 </div>
             </div>
 
-            <!-- БЛОК: Управление подпиской -->
             <div class="subscription-block">
                 <div class="block-title">Управление подпиской</div>
                 <div class="profile-menu">
@@ -443,7 +449,6 @@
                 </div>
             </div>
 
-            <!-- НОВЫЙ БЛОК: Подписка на новости -->
             <div class="news-block">
                 <div class="news-text">Следите за новостями, обновлениями и розыгрышами</div>
                 <div class="subscribe-btn" onclick="goToLinkAndClose('https://t.me/ON1Xvpn')">
@@ -455,11 +460,10 @@
                 <i class="fas fa-sync"></i> Перезагрузить
             </button>
 
-            <div class="app-version">Версия: 6.1</div>
         </div>
     </div>
 
-    <!-- ПРОФИЛЬ (ТОЛЬКО БАЛАНС) -->
+    <!-- ПРОФИЛЬ -->
     <div id="profile-page" class="page">
         <div class="main-content">
             <div class="header">
@@ -488,7 +492,6 @@
                 </div>
             </div>
 
-            <div class="app-version">Версия: 6.1</div>
         </div>
     </div>
 
@@ -509,7 +512,7 @@
             </div>
 
             <div class="profile-menu">
-                <div class="profile- menu-btn" onclick="showPage('install-page')">
+                <div class="profile-menu-btn" onclick="showPage('install-page')">
                     <i class="fas fa-mobile-alt"></i><div class="btn-text">Установить приложение</div>
                 </div>
                 <div class="profile-menu-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=f_5371698')">
@@ -529,11 +532,10 @@
                 </div>
             </div>
 
-            <div class="app-version">Версия: 6.1</div>
         </div>
     </div>
 
-    <!-- НАСТРОЙКИ -->
+    <!-- НАСТРОЙКИ — ОСТАВЛЕНА ВЕРСИЯ -->
     <div id="settings-page" class="page">
         <div class="main-content">
             <div class="header">
@@ -621,7 +623,6 @@
                 </div>
             </div>
 
-            <div class="app-version">Версия: 6.1</div>
         </div>
     </div>
 
@@ -651,7 +652,6 @@
                 </div>
             </div>
 
-            <div class="app-version">Версия: 6.1</div>
         </div>
     </div>
 
@@ -681,7 +681,6 @@
                 </div>
             </div>
 
-            <div class="app-version">Версия: 6.1</div>
         </div>
     </div>
 
@@ -693,7 +692,6 @@
                 <div class="tagline">Статус систем</div>
             </div>
 
-            <!-- БЛОК 1: СИСТЕМА -->
             <div class="status-block">
                 <div class="status-block-title">Система</div>
                 <div class="status-list">
@@ -720,7 +718,6 @@
                 </div>
             </div>
 
-            <!-- БЛОК 2: СЕРВЕРА -->
             <div class="status-block">
                 <div class="status-block-title">Сервера</div>
                 <div class="status-list">
@@ -751,7 +748,6 @@
                 <i class="fas fa-sync"></i> Обновить
             </button>
 
-            <div class="app-version">Версия: 6.1</div>
         </div>
     </div>
 
@@ -776,7 +772,6 @@
                 <div class="instruction-placeholder"><i class="fas fa-mobile-alt"></i><p>Выберите ваше устройство</p></div>
             </div>
 
-            <div class="app-version">Версия: 6.1</div>
         </div>
     </div>
 
