@@ -31,18 +31,14 @@
         }
         *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;}
         body{
-            background:var(--bg-dark);color:var(--text-color);min-height:100vh;overflow-x:hidden;
+            background:var(--bg-dark);color:var(--text-color);min-height:100vh;overflow-x:hidden;padding-bottom:90px;
             -webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;
             -webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;
-            padding-bottom: 100px; /* ДОБАВЛЕНО: отступ под меню */
         }
         a{color:inherit;text-decoration:none;}
         .page{display:none;opacity:0;transition:opacity .2s;}
         .page.active{display:block;opacity:1;}
-        .main-content{
-            padding: 20px 15px 100px !important; /* ДОБАВЛЕНО: отступ под меню */
-            max-width:600px;margin:0 auto;
-        }
+        .main-content{padding:20px 15px;max-width:600px;margin:0 auto;}
         .header{margin:20px auto 8px;text-align:center;position:relative;}
         .header h1{font-size:2.5em;color:var(--primary-color);margin:0;line-height:1.1;}
         .header h1 span{color:var(--text-color);}
@@ -90,47 +86,15 @@
             font-size:.95em;border-radius:8px;cursor:pointer;display:flex;align-items:center;
             justify-content:center;gap:8px;}
 
-        /* НОВЫЕ СТИЛИ ДЛЯ ПРОФИЛЯ */
-        .subscription-input-block{
-            background:var(--card-bg);border-radius:18px;padding:20px 18px;
-            box-shadow:0 6px 16px rgba(0,0,0,.15);border:1px solid var(--border-color);
-            margin:20px 0;text-align:center;
-        }
-        .subscription-input-label{
-            font-size:1.1em;font-weight:600;color:var(--text-color);margin-bottom:12px;display:block;
-        }
-        .subscription-input{
-            width:100%;padding:14px 16px;background:var(--secondary-btn-bg);color:var(--secondary-btn-text);
-            border:1px solid var(--border-color);border-radius:12px;font-size:1em;margin-bottom:16px;
-            outline:none;transition:border-color .2s;
-            -webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;user-select:text;
-        }
-        .subscription-input:focus{border-color:var(--primary-color);}
-        .subscription-app-buttons{display:flex;gap:10px;}
-        .subscription-app-btn{
-            flex:1;padding:14px 0;background:var(--primary-color);color:#fff;font-weight:500;
-            font-size:1em;border-radius:8px;cursor:pointer;display:flex;align-items:center;
-            justify-content:center;gap:8px;
-        }
-
-        /* НИЖНЕЕ МЕНЮ — ИСПРАВЛЕНО */
+        /* НИЖНЕЕ МЕНЮ */
         .bottom-nav{
-            position: fixed !important;
-            bottom: 16px !important;
-            left: 30px !important;
-            right: 30px !important;
-            background: var(--nav-bg-opacity) !important;
-            border: 1px solid var(--nav-border) !important;
-            border-radius: 20px !important;
-            overflow: hidden !important;
-            display: flex !important;
-            padding: 8px 12px !important;
-            gap: 8px !important;
-            z-index: 1000 !important;
-            backdrop-filter: blur(16px) !important;
-            -webkit-backdrop-filter: blur(16px) !important;
-            height: 72px !important;
-            box-shadow: 0 4px 12px rgba(0,0,0,.15) !important;
+            position:fixed;bottom:16px;left:30px;right:30px;
+            background:var(--nav-bg-opacity);
+            border:1px solid var(--nav-border);
+            border-radius:20px;overflow:hidden;display:flex;
+            padding:8px 12px;gap:8px;z-index:1000;
+            backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+            height:72px;
         }
         .nav-item{
             flex:1;padding:10px 0;color:var(--text-secondary);font-size:.8em;font-weight:600;text-align:center;
@@ -264,8 +228,8 @@
         *{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;
           -webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;}
         img,a,button,input,.tg-button,.profile-menu-btn,.buy-full-button,.reload-btn,
-        .close-btn,.nav-item,.device-btn,.faq-question,.download-faq-btn,.subscription-input{
-            -webkit-user-select:text;-moz-user-select:text;-ms-user-select:text;user-select:text;
+        .close-btn,.nav-item,.device-btn,.faq-question,.download-faq-btn{
+            -webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;
         }
     </style>
 </head>
@@ -358,20 +322,6 @@
                     </div>
                     <div class="balance-btn" onclick="goToLinkAndClose('https://t.me/on1xVPN_bot?start=f_5494846')">
                         <i class="fas fa-plus"></i> Пополнить
-                    </div>
-                </div>
-            </div>
-
-            <!-- НОВЫЙ БЛОК: ВСТАВКА ССЫЛКИ ПОДПИСКИ -->
-            <div class="subscription-input-block">
-                <div class="subscription-input-label">Вставь ссылку подписки</div>
-                <input type="text" id="subscription-link-input" class="subscription-input" placeholder="Вставьте ссылку сюда..." />
-                <div class="subscription-app-buttons">
-                    <div class="subscription-app-btn" onclick="activateSubscription('v2raytun')">
-                        <i class="fas fa-rocket"></i> V2RayTun
-                    </div>
-                    <div class="subscription-app-btn" onclick="activateSubscription('happ')">
-                        <i class="fas fa-shield-alt"></i> Happ
                     </div>
                 </div>
             </div>
@@ -528,9 +478,9 @@
             <div class="duration-block">
                 <div class="duration-title">Выберите срок подписки</div>
                 <div id="duration-options-buy" class="duration-options"></div>
-            </div>
-            <div id="buy-full-button-buy" class="buy-full-button disabled">
-                <i class="fas fa-shopping-cart"></i> Выберите тариф
+                <div id="buy-full-button-buy" class="buy-full-button disabled">
+                    <i class="fas fa-shopping-cart"></i> Выберите тариф
+                </div>
             </div>
         </div>
     </div>
@@ -677,28 +627,11 @@
     <script>
         /* ------------------- ЗАЩИТА ------------------- */
         document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('selectstart', e => {
-            const input = document.getElementById('subscription-link-input');
-            if (e.target === input) return;
-            e.preventDefault();
-        });
+        document.addEventListener('selectstart', e => e.preventDefault());
         document.addEventListener('dragstart', e => e.preventDefault());
-
-        document.addEventListener('copy', e => {
-            const input = document.getElementById('subscription-link-input');
-            if (e.target === input || input?.contains(e.target)) return;
-            e.preventDefault();
-        });
-        document.addEventListener('cut', e => {
-            const input = document.getElementById('subscription-link-input');
-            if (e.target === input || input?.contains(e.target)) return;
-            e.preventDefault();
-        });
-        document.addEventListener('paste', e => {
-            const input = document.getElementById('subscription-link-input');
-            if (e.target === input || input?.contains(e.target)) return;
-            e.preventDefault();
-        });
+        document.addEventListener('copy', e => e.preventDefault());
+        document.addEventListener('cut', e => e.preventDefault());
+        document.addEventListener('paste', e => e.preventDefault());
 
         /* ------------------- ТЕМА ------------------- */
         const themeToggle = document.getElementById('theme-toggle'), body = document.body;
@@ -900,29 +833,6 @@
                 });
         }
 
-        /* ------------------- АКТИВАЦИЯ ПОДПИСКИ В ПРИЛОЖЕНИЯХ ------------------- */
-        function activateSubscription(app) {
-            const input = document.getElementById('subscription-link-input');
-            const link = input.value.trim();
-            if (!link) {
-                alert('Пожалуйста, вставьте ссылку подписки.');
-                return;
-            }
-            let scheme = '';
-            if (app === 'v2raytun') {
-                scheme = 'v2raytun://import?link=' + encodeURIComponent(link);
-            } else if (app === 'happ') {
-                scheme = 'happ://import?link=' + encodeURIComponent(link);
-            }
-            if (scheme) {
-                window.location.href = scheme;
-                setTimeout(() => {
-                    if (document.hidden || document.webkitHidden) return;
-                    alert('Не удалось открыть приложение. Убедитесь, что оно установлено.');
-                }, 1500);
-            }
-        }
-
         /* ------------------- СТАТУС СИСТЕМ ------------------- */
         function updateSystemStatus() {
             const items = document.querySelectorAll('#status-page .status-item');
@@ -990,8 +900,6 @@
         document.addEventListener('DOMContentLoaded', () => {
             Telegram?.WebApp?.ready();
             Telegram?.WebApp?.disableVerticalSwipes?.();
-            Telegram?.WebApp?.expand(); // Telegram не перекрывает меню
-            Telegram?.WebApp?.enableClosingConfirmation();
             loadUserData();
         });
     </script>
